@@ -81,16 +81,21 @@ public class LevelOrder429 {
      * @return
      */
     public List<List<Integer>> levelOrder111(Node root) {
-        List<Integer> values = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
         Queue<Node> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()) {
-            Node nextNode = queue.remove();
-            values.add(nextNode.val);
-            for (Node child : nextNode.children) {
-                queue.add(child);
+            List<Integer> level = new ArrayList<>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                Node node = queue.poll();
+                level.add(node.val);
+                queue.addAll(node.children);
             }
+            result.add(level);
         }
+        return result;
     }
 
     public static void main(String[] args) {

@@ -12,9 +12,8 @@ public class NthUglyNumber49 {
     /***
      * 动态规划:
      *
-     * 时间复杂度：O(N) ： 其中N=n ，动态规划需遍历计算dp列表。
-     * 空间复杂度：O(N) ： 长度为N的dp 列表使用O(N)的额外空间。
-     *
+     * 时间复杂度：O(N) ： 其中N=n ，动态规划需遍历计算dp列表
+     * 空间复杂度：O(N) ： 长度为N的dp 列表使用O(N)的额外空间
      * @param n
      * @return
      */
