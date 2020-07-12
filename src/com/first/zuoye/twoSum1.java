@@ -53,7 +53,7 @@ public class twoSum1 {
      * @return
      */
     public static int[] twoSum111(int[] nums, int target) {
-        // 使用hashmap存储数组，查找的时间复杂度会降低为O(1)，整个算法的时间复杂度会变为O(n)，空间复杂度会变为O(n)
+        // 使用hashmap存储数组，查找的时间复杂度会降低为O(1)，整个算法的时间复杂度会变为O(n)，空间复杂度会变为O(n)s
         HashMap<Integer, Integer> tracker = new HashMap<Integer, Integer>();
         int length = nums.length;
         for (int num = 0; num < length; num++) {
