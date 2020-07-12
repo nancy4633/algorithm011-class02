@@ -54,6 +54,19 @@ def divide_conquer(problem, param1, param2, ...):
   result = process_result(subresult1, subresult2, subresult3, ...) 
   # revert the current level states 
 
+**回溯**
+回溯的代码实现模版：
+result = []
+def backtrack(路径, 选择列表):
+  # terminator
+  if 满足结束条件:
+    result.add(路径)
+    return
+  for 选择 in 选择列表:
+    做选择
+    backtrack(路径, 选择列表)
+    撤销选择
+
 尾递归：函数返回的时候，调用函数本身，而且return语句不能包含表达式。
 尾递归优势：解决递归栈溢出问题
 编译器或者解释器就可以把尾递归做优化，使递归本身无论调用多少次，都只占用一个栈帧，不会出现栈溢出的情况
