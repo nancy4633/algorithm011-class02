@@ -14,9 +14,17 @@ public class Node {
      */
     int right;
 
+    int x;
+    int y;
+
     public Node(String str, int left, int right) {
         this.res = str;
         this.left = left;
         this.right = right;
+    }
+
+    public Node(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }
