@@ -1,55 +1,85 @@
 学习笔记
 # 深度优先搜索(DFS)的实现代码：
-visited = set() #set实现visited
-# 递归实现：
-def DFS(node, visited):
-  if node in visited:  # terminator
-    return
-  visited.add(node)
-  # process current node
-  for next_node in node.children:
-    if next_node not in visited:
-      DFS(next_node, visited)
-# 非递归实现（栈）：
-def DFS(self, tree):
-  if tree.root is None:
-    return []
-  visited, stack = [], tree.root
-  while tree.stack:
-    node = stack.pop()
-    visited.add(node)
-    process(node)
-    nodes = generate_related_nodes(node)
-    stack.push(nodes)
+    # 递归实现：
+        public List<List<Integer>> levelOrder(TreeNode root) {
+            List<List<Integer>> allResults = new ArrayList<>();
+            if(root==null){
+                return allResults;
+            }
+            travel(root,0,allResults);
+            return allResults;
+        }
+        private void travel(TreeNode root,int level,List<List<Integer>> results){
+            if(results.size()==level){åå
+                results.add(new ArrayList<>());
+            }
+            results.get(level).add(root.val);
+            if(root.left!=null){
+                travel(root.left,level+1,results);
+            }
+            if(root.right!=null){
+                travel(root.right,level+1,results);
+            }
+        }
+
+    # 非递归实现（栈）：
+        def DFS(self, tree):
+          if tree.root is None:
+            return []
+          visited, stack = [], tree.root
+          while tree.stack:
+            node = stack.pop()
+            visited.add(node)
+            process(node)
+            nodes = generate_related_nodes(node)
+            stack.push(nodes)
   
 # 广度优先搜索(BFS)的实现代码
-# 非递归实现（队列）
-def BFS(self, tree):
-  queue = []
-  queue.append([start])
-  visited.add(start)
-  while queue:
-    node = queue.pop()
-    visited.add(node)
-    process(node)
-    nodes = generate_related_nodes(node)
-  # 不太了解python，如果是java代码这里是不是应该用add(offerlast)
-    queue.push(nodes)
+    # 非递归实现（队列）
+        public class TreeNode {
+            int val;
+            TreeNode left, right;
+            TreeNode(int x) {
+                val = x;
+            }
+        }
+        public List<List<Integer>> levelOrder(TreeNode root) {
+            List<List<Integer>> allResults = new ArrayList<>();
+            if (root == null) return allResults;
+            Queue<TreeNode> nodes = new LinkedList<>();
+            nodes.add(root);
+            while (!nodes.isEmpty()) {
+                int size = nodes.size();
+                List<Integer> results = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    TreeNode node = nodes.poll();
+                    results.add(node.val);
+                    if (node.left != null) nodes.add(node.left);
+                    if (node.right != null) nodes.add(node.right);
+                }
+                allResults.add(results);
+            }
+            return allResults;
+        }
 
 # 二分查找的实现代码
-left, right = 0, len(array) - 1 
-while left <= right: 
-  mid = (left + right) / 2 
-  if array[mid] == target: 
-  # find the target!! 
-    break or return result 
-  elif array[mid] < target: 
-    left = mid + 1 
-  else: 
-    right = mid - 1
+        public int binarySearch(int[] array, int target) {
+            int left = 0, right = array.length - 1, mid;
+            while (left <= right) {
+                mid = (right - left) / 2 + left;
+                if (array[mid] == target) {
+                    return mid;
+                } else if (array[mid] > target) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            return -1;
+        }
 		    
 # 补充：
-  LinkedList的add是offerlast，push是offerfirst。写代码的时候要注意！！！
+  LinkedList的add是offerlast，push是offerfirst。写代码的时候要注意！！！ps:java和python不一样
   虽然每天刷题无数，刷题思路也越来越明朗了，但是当看到十几个作业题，外加课后练习题，不下30个，心里还是有点儿被挑战的赶脚。
   后来发现重复的问题还是很多的，非常适合练手，同一类问题，到最后各种已经如数家珍了，哪个快哪个慢哪个超时都记清楚了。
   算法只靠看书真的不行，看来刷题真是王道，这是刚刚领悟的哈哈哈哈
@@ -69,8 +99,8 @@ while left <= right:
 周日开始看视频 + 1个习题
 周二课后习题*0 + 刷次数*0
 周二课后习题*0 + 刷次数*0
-周三课后习题*3 + 刷次数*3
-周四作业*3 + 刷次数*3
+周三课后习题*1 + 刷次数*1
+周四作业*1 + 刷次数*1
 周五作业*3 + 刷次数*3
 周六整理+总结+作业提交 + 刷次数*3
 
