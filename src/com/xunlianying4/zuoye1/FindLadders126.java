@@ -2,8 +2,21 @@ package com.xunlianying4.zuoye1;
 
 import java.util.*;
 
+//
 public class FindLadders126 {
 
+    /***
+     *
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    public List<List<String>> findLadders2(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> results = new ArrayList<>();
+
+        return results;
+    }
 
     /***
      * 回溯 + DFS
@@ -15,16 +28,11 @@ public class FindLadders126 {
      */
     public List<List<String>> findLadders1(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> ans = new ArrayList<>();
-        // 如果不含有结束单词，直接结束，不然后边会造成死循环
-        if (!wordList.contains(endWord)) {
-            return ans;
-        }
-        // 利用 BFS 得到所有的邻居节点,以及每个节点的所在层数
+        if (!wordList.contains(endWord)) return ans;
         HashMap<String, Integer> distance = new HashMap<>();
         HashMap<String, ArrayList<String>> map = new HashMap<>();
         bfs1(beginWord, endWord, wordList, map, distance);
         ArrayList<String> temp = new ArrayList<String>();
-        // temp 用来保存当前的路径
         temp.add(beginWord);
         findLaddersHelper1(beginWord, endWord, map, distance, temp, ans);
         return ans;
@@ -180,7 +188,7 @@ public class FindLadders126 {
     /***
      * 双向广度优先搜索
      *
-      * @param beginWord
+     * @param beginWord
      * @param endWord
      * @param wordList
      * @return
