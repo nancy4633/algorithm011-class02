@@ -27,7 +27,41 @@ public class LadderLength127 {
      * @return
      */
     public int ladderLength222(String beginWord, String endWord, List<String> wordList) {
-
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (wordSet.size() == 0 || !wordSet.contains(endWord)) return 0;
+        Set<String> visited = new HashSet<>(), begin_visited = new HashSet<>(), end_visited = new HashSet<>();
+        begin_visited.add(beginWord);
+        end_visited.add(endWord);
+        int length = beginWord.length(), step = 1;
+        while (!begin_visited.isEmpty() && !end_visited.isEmpty()) {
+            if (begin_visited.size() > end_visited.size()) {
+                Set<String> temp = begin_visited;
+                begin_visited = end_visited;
+                end_visited = temp;
+            }
+            Set<String> nextLevelVisited = new HashSet<>();
+            for (String word : begin_visited) {
+                char[] chars = word.toCharArray();
+                for (int i = 0; i < length; i++) {
+                    char originChar = chars[i];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        if (c == originChar) continue;
+                        chars[i] = c;
+                        String nextWord = String.valueOf(chars);
+                        if (wordSet.contains(nextWord)) {
+                            if (end_visited.contains(nextWord)) return step + 1;
+                            if (!visited.contains(nextWord)) {
+                                nextLevelVisited.add(nextWord);
+                                visited.add(nextWord);
+                            }
+                        }
+                    }
+                    chars[i] = originChar;
+                }
+            }
+            begin_visited = nextLevelVisited;
+            step++;
+        }
         return 0;
     }
 
