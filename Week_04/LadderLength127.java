@@ -2,8 +2,6 @@ package com.xunlianying4.zuoye1;
 
 import javafx.util.Pair;
 
-import java.util.*;
-
 // 给定两个单词（beginWord 和 endWord）和一个字典，找到从 beginWord 到 endWord 的最短转换序列的长度。转换需遵循如下规则：
 // 每次转换只能改变一个字母。转换过程中的中间单词必须是字典中的单词。
 // 说明:
@@ -17,9 +15,7 @@ import java.util.*;
 public class LadderLength127 {
 
     /***
-     * 双向广度优先遍历
-     * 第一快
-     * 第二刷
+     * 双向BFS
      *
      * @param beginWord
      * @param endWord
@@ -67,7 +63,6 @@ public class LadderLength127 {
 
     /***
      * DFS
-     * 第二刷
      * 跟基因变化是一类题，两类题都不很熟悉，二刷都没有独立写下来。确切的说，二刷是用来背题解的。努力！加油！有点儿泄气。
      *
      * @param beginWord
@@ -110,7 +105,7 @@ public class LadderLength127 {
     }
 
     /***
-     * 双向广度+深度优先遍历
+     * 双向DFS+BFS
      * 第二刷
      * 使用了构造函数，构造函数看起来简单，但是一般情况下，我自己是想不到要写构造函数的，这点要记住，初始默认值之类的可以用构造函数。
      *
@@ -170,7 +165,7 @@ public class LadderLength127 {
 
     /***
      * DFS
-     * 第三快
+     * 第四快
      * 时间复杂度：O(M×N)，其中 MM 是单词的长度 NN 是单词表中单词的总数。找到所有的变换需要对每个单词做 MM 次操作。同时，最坏情况下广度优先搜索也要访问所有的 NN 个单词。
      * 空间复杂度：O(M×N)，要在 all_combo_dict 字典中记录每个单词的 MM 个通用状态。访问数组的大小是 NN。广搜队列最坏情况下需要存储 NN 个单词。
      *
@@ -214,12 +209,10 @@ public class LadderLength127 {
     }
 
     /***
-     * 双向 广度+深度 优先搜索
-     * 第二快
-     *
+     * 双向DFS+BFS
+     * 第三快
      * 时间复杂度：O(M×N)，其中 MM 是单词的长度 NN 是单词表中单词的总数。与单向搜索相同的是，找到所有的变换需要M * N次操作。但是搜索时间会被缩小一半，因为两个搜索会在中间某处相遇。
      * 空间复杂度：O(M×N)，要在 all_combo_dict 字典中记录每个单词的 MM 个通用状态，这与单向搜索相同。但是因为会在中间相遇，所以双向搜索的搜索空间变小。
-     *
      * @param beginWord
      * @param endWord
      * @param wordList
@@ -282,8 +275,8 @@ public class LadderLength127 {
     }
 
     /***
-     * 双向广度优先遍历
-     * 第一快
+     * 双向BFS
+     * 第二快
      *
      * @param beginWord
      * @param endWord
@@ -330,5 +323,45 @@ public class LadderLength127 {
             step++;
         }
         return 0;
+    }
+
+    /***
+     * 双向BFS
+     * 第一快
+     *
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    public int ladderLength1111(String beginWord, String endWord, List<String> wordList) {
+        HashSet<String> start = new HashSet<>(), end = new HashSet<>(), words = new HashSet<>(wordList);
+        start.add(beginWord);
+        end.add(endWord);
+        if (!words.contains(endWord)) return 0;
+        return deBfs(start, end, words, 2);
+    }
+
+    private int deBfs(HashSet<String> start, HashSet<String> end, HashSet<String> words, int depth) {
+        if (start.size() > end.size()) return deBfs(end, start, words, depth);
+        words.removeAll(start);
+        HashSet<String> next = new HashSet<>();
+        for (String str : start) {
+            char[] chars = str.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                char temp = chars[i];
+                for (char j = 'a'; j <= 'z'; j++) {
+                    chars[i] = j;
+                    String word = new String(chars);
+                    if (words.contains(word)) {
+                        if (end.contains(word)) return depth;
+                        next.add(word);
+                    }
+                }
+                chars[i] = temp;
+            }
+        }
+        if (start.isEmpty()) return 0;
+        return deBfs(next, end, words, depth + 1);
     }
 }
