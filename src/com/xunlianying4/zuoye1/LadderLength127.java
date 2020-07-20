@@ -331,4 +331,44 @@ public class LadderLength127 {
         }
         return 0;
     }
+
+    /***
+     * 双向BFS
+     * 第一快
+     *
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    public int ladderLength1111(String beginWord, String endWord, List<String> wordList) {
+        HashSet<String> start = new HashSet<>(), end = new HashSet<>(), words = new HashSet<>(wordList);
+        start.add(beginWord);
+        end.add(endWord);
+        if (!words.contains(endWord)) return 0;
+        return deBfs(start, end, words, 2);
+    }
+
+    private int deBfs(HashSet<String> start, HashSet<String> end, HashSet<String> words, int depth) {
+        if (start.size() > end.size()) return deBfs(end, start, words, depth);
+        words.removeAll(start);
+        HashSet<String> next = new HashSet<>();
+        for (String str : start) {
+            char[] chars = str.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                char temp = chars[i];
+                for (char j = 'a'; j <= 'z'; j++) {
+                    chars[i] = j;
+                    String word = new String(chars);
+                    if (words.contains(word)) {
+                        if (end.contains(word)) return depth;
+                        next.add(word);
+                    }
+                }
+                chars[i] = temp;
+            }
+        }
+        if (start.isEmpty()) return 0;
+        return deBfs(next, end, words, depth + 1);
+    }
 }
