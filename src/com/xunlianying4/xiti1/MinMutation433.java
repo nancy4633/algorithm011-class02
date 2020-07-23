@@ -2,6 +2,7 @@ package com.xunlianying4.xiti1;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Stack;
 
 // 一条基因序列由一个带有8个字符的字符串表示，其中每个字符都属于 "A", "C", "G", "T"中的任意一个。
 // 假设我们要调查一个基因序列的变化。一次基因变化意味着这个基因序列中的一个字符发生了变化。
@@ -10,139 +11,116 @@ import java.util.LinkedList;
 // 现在给定3个参数 — start, end, bank，分别代表起始基因序列，目标基因序列及基因库，
 // ***请找出能够使起始基因序列变化为目标基因序列所需的最少变化次数。如果无法实现目标变化，请返回 -1
 // 思路：
-// 回溯 -
-// 动态规划 -
-// 贪心算法 - 容易找不到最优解
+// 回溯不论是单独使用，还是配合DFS、BFS都可以提速。
 public class MinMutation433 {
 
     /***
-     * DFS
-     * 二刷，艰难，还不是自己写出来的，第一遍相当于白做了，气个半死。
-     *
+     * DFS + 回溯
+     * 时间复杂度：O(n) - 100%
+     * 空间复杂度：O(h) 树的深度 - 20%
+     * 优点：
+     * 缺点：
      * @param start
      * @param end
      * @param bank
      * @return
      */
-    public int minMutation2(String start, String end, String[] bank) {
-        HashSet<String> visited = new HashSet<>();
-        dfs2(0, visited, start, end, bank);
-        // 这个要好好记住，比写公式简单多了
-        return count2 == Integer.MAX_VALUE ? -1 : count2;
+    public int minMutation4(String start, String end, String[] bank) {
+        if (start.equals(end)) return 0;
+        HashSet<String> visited = new HashSet<String>();
+        dfs4(start, end, bank, 0, visited);
+        return count4 == Integer.MAX_VALUE ? -1 : count4;
     }
 
-    int count2 = Integer.MAX_VALUE;
-
-    public void dfs2(int minStep, HashSet<String> visited, String start, String end, String[] bank) {
+    private void dfs4(String start, String end, String[] bank, int count, HashSet<String> visited) {
+        // terminator
         if (start.equals(end)) {
-            // 忘记赋值了，整个过程就为了count2。结果我忘写了，真尴尬。
-            count2 = Math.min(count2, minStep);
+            count4 = Math.min(count4, count);
             return;
         }
+        // process
         for (int i = 0; i < bank.length; i++) {
             int diff = 0;
             for (int j = 0; j < 8; j++) {
-                // 虽然很简单，还是不回写charat，我去，我自己真想不出来写charat，缺点儿化学反应。
-                // 自己写的时候总觉得，写一个diff变量，只判断0-1太傻了，其实傻就傻吧，大牛也这么写怕啥丢人呢。
-                if (bank[i].charAt(j) != start.charAt(j)) diff++;
-                // break写成return了，多加注意。
+                if (bank[i].charAt(j) != start.charAt(j)) diff++; // 这里比较的是start，切记！！！
                 if (diff > 1) break;
             }
             if (diff == 1 && !visited.contains(bank[i])) {
+                //drill down
                 visited.add(bank[i]);
-                // start参数传错了，下次注意。
-                dfs2(minStep + 1, visited, bank[i], end, bank);
-                // 没remove是为啥呢？我就没想起来。
+                dfs4(bank[i], end, bank, count + 1, visited);
+                // reverse state
                 visited.remove(bank[i]);
             }
         }
     }
 
+    private int count4 = Integer.MAX_VALUE;
+
     /***
-     * BFS
+     * DFS + 回溯
+     * 时间复杂度：O(n) - 100%
+     * 空间复杂度：O(h) 树的深度 - 20%
+     * 优点：代码更简洁
+     * 缺点：
+     * @param start
+     * @param end
+     * @param bank
+     * @return
+     */
+    public int minMutation3(String start, String end, String[] bank) {
+        HashSet<String> visited = new HashSet<>();
+        dfs3(start, end, bank, visited, 0);
+        return count3 == Integer.MAX_VALUE ? -1 : count3;
+    }
+
+    private int count3 = Integer.MAX_VALUE;
+
+    private void dfs3(String start, String end, String[] bank, HashSet<String> visited, int count) {
+        if (start.equals(end)) {                                    // terminator
+            count3 = Math.min(count3, count);
+            return;
+        }
+        for (int i = 0; i < bank.length; i++) {                     // process
+            int diff = 0;
+            if (match(bank[i], start) && !visited.contains(bank[i])) {
+                visited.add(bank[i]);                                // subprocess
+                dfs3(bank[i], end, bank, visited, count + 1); // drill down
+                visited.remove(bank[i]);                             // reverse state
+            }
+        }
+    }
+
+    /**
+     * BFS - 遍历
+     * 时间复杂度：O() - 100%
+     * 空间复杂度：O() - 20%
+     * 优点：
+     * 缺点：
      *
      * @param start
      * @param end
      * @param bank
      * @return
      */
-    public int minMutation22(String start, String end, String[] bank) {
-        HashSet<String> bank_library = new HashSet<>();
-        for (String temp : bank) {
-            bank_library.add(temp);
+    public int minMutation33(String start, String end, String[] bank) {
+        if (start.equals(end)) return 0;
+        Stack<String> stack = new Stack<>();
+
+        int count = -1;
+
+        while (!stack.isEmpty()) {
+
         }
-        char[] chars = {'A', 'C', 'G', 'T'};
-        LinkedList<String> deque = new LinkedList<>();
-        deque.offer(start);
-        int count = 0;
-        HashSet<String> visited = new HashSet<>();
-        while (!deque.isEmpty()) {
-            int size = deque.size();
-            while (size-- > 0) {
-                String poll = deque.poll();
-                if (poll.equals(end)) return count;
-                char[] curr = poll.toCharArray();
-                for (int i = 0; i < curr.length; i++) {
-                    char old = curr[i];
-                    for (char b : chars) {
-                        curr[i] = b;
-                        String newString = new String(curr);
-                        if (!visited.contains(newString) && bank_library.contains(newString)) {
-                            visited.add(newString);
-                            deque.offer(newString);
-                        }
-                    }
-                    curr[i] = old;
-                }
-            }
-            count++;
-        }
-        // 这里写错了，应该是-1。。。
         return -1;
     }
 
     /***
-     * DFS + 回溯
-     * 第一快
-     *
-     * 时间复杂度：O(n)
-     * 空间复杂度：O(h) 树的深度
-     *
-     * @param start
-     * @param end
-     * @param bank
-     * @return
-     */
-    public int minMutation1(String start, String end, String[] bank) {
-        HashSet<String> vistied = new HashSet<>();
-        dfs1(0, start, end, bank, vistied);
-        return count1 == Integer.MAX_VALUE ? -1 : count1;
-    }
-
-    int count1 = Integer.MAX_VALUE;
-
-    private void dfs1(int minStepCount, String start, String end, String[] bank, HashSet<String> vistied) {
-        if (start.equals(end)) {
-            count1 = Math.min(count1, minStepCount);
-            return;
-        }
-        for (int i = 0; i < bank.length; i++) {
-            int diff = 0;
-            for (int j = 0; j < 8; j++) {
-                if (bank[i].charAt(j) != start.charAt(j)) diff++;
-                if (diff > 1) break;
-            }
-            if (diff == 1 && !vistied.contains(bank[i])) {
-                vistied.add(bank[i]);
-                dfs1(minStepCount + 1, bank[i], end, bank, vistied);
-                vistied.remove(bank[i]);
-            }
-        }
-    }
-
-    /***
-     * BFS
-     * 第二快
+     * 回溯 - LinkedList
+     * 时间复杂度：O() - 100%
+     * 空间复杂度：O() - 20%
+     * 优点：
+     * 缺点：
      *
      * @param start
      * @param end
@@ -150,36 +128,81 @@ public class MinMutation433 {
      * @return
      */
     public int minMutation11(String start, String end, String[] bank) {
-        HashSet<String> bank_library = new HashSet<>();
-        for (String library : bank) {
-            bank_library.add(library);
-        }
-        char[] banks = {'A', 'C', 'G', 'T'};
-        LinkedList<String> dequeue = new LinkedList<>();
-        dequeue.offer(start);
-        int count = 0;
+        int result11 = 0, index = 1, level = 1;
         HashSet<String> visited = new HashSet<>();
-        while (!dequeue.isEmpty()) {
-            int size = dequeue.size();
-            while (size-- > 0) {
-                String poll = dequeue.poll();
-                if (poll.equals(end)) return count;
-                char[] curr = poll.toCharArray();
-                for (int i = 0; i < curr.length; i++) {
-                    char old = curr[i];
-                    for (char b : banks) {
-                        curr[i] = b;
-                        String newString = new String(curr);
-                        if (!visited.contains(newString) && bank_library.contains(newString)) {
-                            visited.add(newString);
-                            dequeue.offer(newString);
-                        }
-                    }
-                    curr[i] = old;
+        LinkedList<String> queue = new LinkedList<>();
+        queue.add(start);
+        visited.add(start);
+        while (!queue.isEmpty()) {
+            start = queue.poll();
+            bfs11(start, queue, visited, bank);
+            for (int i = 0; i < queue.size(); i++) {
+                if (queue.get(i).equals(end)) {//因为linkedList支持按照index获取元素，所以此处不使用queue或者deque
+                    result11 = level;
+                    return result11 == 0 ? -1 : result11;
                 }
             }
-            count++;
+            if (--index == 0) {
+                index = queue.size();
+                level++;
+            }
         }
-        return -1;
+        return result11 == 0 ? -1 : result11;
+    }
+
+    /***
+     * 遍历bank，得到与start只差一个字符的字符串，然后继续遍历
+     * @param start
+     * @param linkedList
+     * @param visited
+     * @param bank
+     */
+    private void bfs11(String start, LinkedList<String> linkedList, HashSet<String> visited, String[] bank) {
+        for (int i = 0; i < bank.length; i++) {
+            if (visited.contains(bank[i])) continue;
+            if (match(bank[i], start)) {
+                linkedList.add(bank[i]);
+                visited.add(bank[i]);
+            }
+        }
+    }
+
+    /***
+     * 回溯 - 数组
+     * 时间复杂度：O() - 100%
+     * 空间复杂度：O() - 20%
+     * 优点：
+     * 缺点：
+     * @param start
+     * @param end
+     * @param bank
+     * @return
+     */
+    public int minMutation111(String start, String end, String[] bank) {
+        int res = bfs111(start, end, bank, new boolean[bank.length]);
+        if (res > bank.length) return -1;
+        return res;
+    }
+
+    private int bfs111(String current, String end, String[] bank, boolean[] used) {
+        if (current.equals(end)) return 0;
+        int min = bank.length + 1;
+        for (int i = 0; i < bank.length; i++) {
+            if (!used[i] && match(current, bank[i])) {
+                used[i] = true;
+                min = Math.min(1 + bfs111(bank[i], end, bank, used), min);
+                used[i] = false;
+            }
+        }
+        return min;
+    }
+
+    private boolean match(String a, String b) {
+        int count = 0;
+        for (int i = 0; i < 8; i++) {
+            if (a.charAt(i) != b.charAt(i)) count++;
+            if (count > 1) return false;
+        }
+        return count == 1;
     }
 }

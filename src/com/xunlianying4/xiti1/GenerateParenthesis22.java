@@ -10,6 +10,21 @@ import java.util.Queue;
 // DFS+回溯
 public class GenerateParenthesis22 {
 
+    public List<String> generateParenthesis3(int n) {
+        List<String> results = new ArrayList<>();
+        if (n <= 0) return results;
+        dfs3(results, n, "", 0, 0);
+        return results;
+    }
+
+    private void dfs3(List<String> results, int n, String result, int left, int right) {
+        if (left == n && right == n) return;
+        if (left < right) return;
+        if (left > right && left < n) dfs3(results, n, "(", left + 1, right);
+
+    }
+
+
     /***
      * 回溯 + 深度优先遍历 （做加法）
      * 第二刷，印象中挺难的，没想到就过了，一定是我大显神通了哈哈哈
