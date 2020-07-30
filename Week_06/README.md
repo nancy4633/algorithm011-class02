@@ -26,8 +26,9 @@ public void devide_conquer(problem, param1, param2, ...) {
     return result;
 }
 #动态规划模版
-核心：状态转移方程+自底向上for循环
-调优方案：状态存储 + 状态压缩
+#DP三部曲：1.子问题 2.状态定义 3.DP方程
+#核心：状态转移方程+自底向上for循环
+#调优方案：状态存储 + 状态压缩
 public void dynamic_programming(int n) {
     // terminator
     if (n==0) return ;
