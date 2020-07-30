@@ -85,29 +85,68 @@ public class LongestCommonSubsequence1143 {
      * 时间复杂度:O(m*n) - 77.97%
      * 空间复杂度:O(n) - %
      * 优点:
-     * 缺点:
+     * 缺点: string的charat如果改用char数组会更好用
      *
      * @param text1
      * @param text2
      * @return
      */
     public int longestCommonSubsequence111(String text1, String text2) {
-        if (text1 == null || text2 == null || text1.length() == 0 || text2.length() == 0) return 0;
-        int m = text1.length(), n = text2.length();
-        int[] dp = new int[n + 1];
-        int temp1 = 0;
-        for (int i = 1; i <= m; i++) {
-            int temp2 = 0;
-            for (int j = 1; j <= n; j++) {
-                temp1 = dp[j];
+        if (text1 == null || text2 == null) return 0;
+        int len1 = text1.length(), len2 = text2.length();
+        if (len1 == 0 || len2 == 0) return 0;
+        int[] dp = new int[len2 + 1];
+        for (int i = 1; i <= len1; i++) {
+            int temp = 0;
+            for (int j = 1; j <= len2; j++) {
+                int prev = dp[j];
                 if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
-                    dp[j] = temp2 + 1;
+                    dp[j] = temp + 1;
                 } else {
-                    dp[j] = Math.max(temp1, dp[j - 1]);
+                    dp[j] = Math.max(prev, dp[j - 1]);
                 }
-                temp2 = temp1;
+                temp = prev;
             }
         }
-        return dp[n];
+        return dp[len2];
+    }
+
+    /***
+     * 动态规划（自底向上）+ 状态压缩（一维数组）
+     * 时间复杂度:O(m*n) - 99.98%
+     * 空间复杂度:O(max(n,m)) - 93.67%
+     * 优点: 跟上一解法的区别在于，把字符串转换成数组，而不是使用string的charat，
+     * 缺点: 其实使用大的字符串做为for循环的外侧，完全没必要。
+     * @param text1
+     * @param text2
+     * @return
+     */
+    public int longestCommonSubsequence1111(String text1, String text2) {
+        if (text1 == null || text2 == null) return 0;
+        int len1 = text1.length(), len2 = text2.length();
+        if (len1 == 0 || len2 == 0) return 0;
+        char[] colText, rowText;
+        //
+        if (len1 > len2) {
+            colText = text2.toCharArray();
+            rowText = text1.toCharArray();
+        } else {
+            colText = text1.toCharArray();
+            rowText = text2.toCharArray();
+        }
+        int[] dp = new int[colText.length + 1];
+        for (int i = 1; i <= rowText.length; i++) {
+            int tmp = 0;
+            for (int j = 1; j <= colText.length; j++) {
+                int prev = tmp;
+                tmp = dp[j];
+                if (rowText[i - 1] == colText[j - 1]) {
+                    dp[j] = prev + 1;
+                } else {
+                    dp[j] = Math.max(dp[j], dp[j - 1]);
+                }
+            }
+        }
+        return dp[colText.length];
     }
 }
