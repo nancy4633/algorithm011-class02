@@ -69,6 +69,16 @@ public class LeastInterval621 {
         return idle_slots > 0 ? idle_slots + tasks.length : tasks.length;
     }
 
+    /***
+     * 其实这个解法更接近我的思维
+     * 时间复杂度:O(time) - 21。12%
+     * 空间复杂度:O(1) - 37。10%
+     * 优点:
+     * 缺点:
+     * @param tasks
+     * @param n
+     * @return
+     */
     public int leastInterval1111(char[] tasks, int n) {
         int[] map = new int[26];
         for (char c : tasks) {
@@ -90,9 +100,9 @@ public class LeastInterval621 {
     }
 
     /***
-     * 优先队列
-     * 时间复杂度:O() - %
-     * 空间复杂度:O() - %
+     * 优先队列 - 没想到优先队列是最节省空间的。关键还用了那么多集合之类的工具类。居然也是最节省空间的。
+     * 时间复杂度:O(time) - 14.04%
+     * 空间复杂度:O(1) - 93.55%
      * 优点:
      * 缺点:
      * @param tasks
