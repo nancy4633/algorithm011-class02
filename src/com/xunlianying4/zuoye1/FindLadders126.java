@@ -4,7 +4,6 @@ import java.util.*;
 
 //
 public class FindLadders126 {
-
     /***
      *
      * @param beginWord
