@@ -1,5 +1,11 @@
 package com.xunlianying8.zuoye1;
 
+// n皇后问题研究的是如何将n个皇后放置在n×n的棋盘上，并且使皇后彼此之间不能相互攻击。
+// 给定一个整数n，返回n皇后不同的解决方案的数量。
+// 提示：
+// 皇后，是国际象棋中的棋子，意味着国王的妻子。皇后只做一件事，那就是“吃子”。当她遇见可以吃的棋子时，就迅速冲上去吃掉棋子。当然，她横、竖、斜都可走1或N-1步，可进可退。
+// 思路：
+//
 public class totalNQueens52 {
     /**
      * 位运算
@@ -57,11 +63,7 @@ public class totalNQueens52 {
             while (free_columns != 0) {
                 int curr_column = -free_columns & free_columns;
                 free_columns ^= curr_column;
-                count = backtrack(row + 1,
-                        (hills | curr_column) << 1,
-                        next_row | curr_column,
-                        (dales | curr_column) >> 1,
-                        count, n);
+                count = backtrack(row + 1, (hills | curr_column) << 1, next_row | curr_column, (dales | curr_column) >> 1, count, n);
             }
         }
         return count;
