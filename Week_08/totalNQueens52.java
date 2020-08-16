@@ -18,25 +18,24 @@ public class totalNQueens52 {
      * @return
      */
     public int totalNQueens1(int n) {
-        count = 0;
-        size = (1 << n) - 1;
+        total = 0;
+        limit = (1 << n) - 1;
         solve(0, 0, 0);
-        return count;
+        return total;
     }
 
-    private int size;
-    private int count;
+    private int limit, total;
 
-    private void solve(int row, int ld, int rd) {
-        if (row == size) {
-            count++;
+    private void solve(int row, int left, int right) {
+        if (row == limit) {
+            total++;
             return;
         }
-        int pos = size & (~(row | ld | rd));
+        int pos = limit & (~(row | left | right));
         while (pos != 0) {
             int p = pos & (-pos);
             pos -= p; // pos &= pos - 1;
-            solve(row | p, (ld | p) << 1, (rd | p) >> 1);
+            solve(row | p, (left | p) << 1, (right | p) >> 1);
         }
     }
 
