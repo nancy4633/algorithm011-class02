@@ -1,5 +1,6 @@
 package com.xunlianying8.zuoye1;
 
+// 第一遍
 // 编写一个函数，输入是一个无符号整数，返回其二进制表达式中数字位数为 ‘1’ 的个数（也被称为汉明重量）。
 // 提示：
 // 请注意，在某些语言（如 Java）中，没有无符号整数类型。在这种情况下，输入和输出都将被指定为有符号整数类型，并且不应影响您的实现，因为无论整数是有符号的还是无符号的，其内部的二进制表示形式都是相同的。
@@ -19,12 +20,12 @@ public class HammingWeight191 {
      * @return
      */
     public int hammingWeight1(int n) {
-        int sum = 0;
+        int count = 0;
         while (n != 0) {
-            sum++;
-            n &= (n - 1); // 去掉最后一位的0
+            n &= (n - 1); // 位元算：去掉最后一个1。
+            count++;
         }
-        return sum;
+        return count;
     }
 
     /**
@@ -38,11 +39,11 @@ public class HammingWeight191 {
      * @return
      */
     public int hammingWeight2(int n) {
-        int bits = 0, mask = 1;
+        int count = 0, temp = 1;
         for (int i = 0; i < 32; i++) {
-            if ((n & mask) != 0) bits++;
-            mask <<= 1;
+            if ((n & temp) != 0) count++;
+            temp <<= 1;
         }
-        return bits;
+        return count;
     }
 }

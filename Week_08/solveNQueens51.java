@@ -14,48 +14,100 @@ public class solveNQueens51 {
      * @return
      */
     public List<List<String>> solveNQueens1(int n) {
-        this.N = n;
-        results = new ArrayList<>();
-        chars = new char[n];
-        Arrays.fill(chars, '.');
-        records = new int[n];
-        if (n >= 1 && n <= 32) {
-            colMap = new HashMap<>();
-            for (int i = 0; i < n; i++) {
-                colMap.put(1 << (n - i - 1), i);
-            }
-            limit = n == 32 ? -1 : ((1 << n) - 1);
-            process(0, 0, 0, 0);
+        num = n;
+        result = new ArrayList<>();
+        if (n == 0) return result;
+        int col = 0, master = 0, slave = 0;
+        Stack<Integer> stack = new Stack<>();
+        backtrack(0, col, master, slave, stack);
+        return result;
+    }
+
+    private List<List<String>> result;
+    private int num;
+
+    private void backtrack(int row, int col, int master, int slave, Stack<Integer> stack) {
+        if (row == num) {
+            List<String> board = convert2board(stack, num);
+            result.add(board);
+            return;
         }
+        for (int i = 0; i < num; i++) {
+            if (((col >> i) & 1) == 0 && ((master >> (row + i)) & 1) == 0 && ((slave >> (row - i + num - 1)) & 1) == 0) {
+                stack.add(i);
+                col ^= (1 << i);
+                master ^= (1 << (row + i));
+                slave ^= (1 << (row - i + num - 1));
+                backtrack(row + 1, col, master, slave, stack);
+                slave ^= (1 << (row - i + num - 1));
+                master ^= (1 << (row + i));
+                col ^= (1 << i);
+                stack.pop();
+            }
+        }
+    }
+
+    private List<String> convert2board(Stack<Integer> stack, int n) {
+        List<String> board = new ArrayList<>();
+        for (Integer num : stack) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < n; i++) {
+                stringBuilder.append(".");
+            }
+            stringBuilder.replace(num, num + 1, "Q");
+            board.add(stringBuilder.toString());
+        }
+        return board;
+    }
+
+    /**
+     * 时间复杂度:O() - 100.00%
+     * 空间复杂度:O() - 43.74%
+     * 优点:
+     * 缺点:
+     *
+     * @param n
+     * @return
+     */
+    public List<List<String>> solveNQueens2(int n) {
+        List<List<String>> results = new ArrayList<>();
+        boolean[] ocp90 = new boolean[n],
+                ocp45 = new boolean[2 * n - 1],
+                ocp135 = new boolean[2 * n - 1];
+        char[][] map = new char[n][n];
+        for (char[] temp : map) {
+            Arrays.fill(temp, '.');
+        }
+        solve(0, n, map, results, ocp45, ocp90, ocp135);
         return results;
     }
 
-    private int N;
-    private List<List<String>> results;
-    private char[] chars;
-    private int[] records;
-    private Map<Integer, Integer> colMap;
-    private int limit;//低N位为1,其余位为0
-
-    public void process(int index, int leftMask, int colMask, int rightMask) {
-        if (colMask == limit) {//所有列都已被占，说明放置结束
-            List<String> list = new ArrayList<>();
-            for (int i = 0; i < N; i++) {
-                chars[records[i]] = 'Q';
-                list.add(new String(chars));
-                chars[records[i]] = '.';
-            }
-            results.add(list);
+    private void solve(int depth, int n, char[][] map, List<List<String>> results
+            , boolean[] ocp45, boolean[] ocp90, boolean[] ocp135) {
+        if (depth == n) {
+            addSolution(map, results);
+            return;
         }
-        int pos = limit & ~(leftMask | colMask | rightMask);//得到哪些位置可以放皇后
-        while (pos != 0) {
-            //在mostRightOne的位置放皇后
-            int mostRightOne = pos & (~pos + 1);
-            records[index] = colMap.get(mostRightOne);
-            pos ^= mostRightOne;//pos -= mostRightOne
-            process(index + 1, (leftMask | mostRightOne) << 1,
-                    colMask | mostRightOne, (rightMask | mostRightOne) >>> 1);
+        for (int i = 0; i < n; i++) {
+            if (!ocp90[i] && !ocp45[depth + i] && !ocp135[i - depth + n - 1]) {
+                ocp90[i] = true;
+                ocp45[depth + i] = true;
+                ocp135[i - depth + n - 1] = true;
+                map[depth][i] = 'Q';
+                solve(depth + 1, n, map, results, ocp45, ocp90, ocp135);
+                ocp90[i] = false;
+                ocp45[depth + i] = false;
+                ocp135[i - depth + n - 1] = false;
+                map[depth][i] = '.';
+            }
         }
     }
 
+    private void addSolution(char[][] bitMap, List<List<String>> results) {
+        List<String> result = new ArrayList<String>();
+        for (char[] bits : bitMap) {
+            result.add(String.valueOf(bits));
+        }
+        results.add(result);
+    }
 }
