@@ -1,6 +1,6 @@
 package com.xunlianying8.zuoye1;
 
-// 第一遍
+// 第二遍
 // 给定一个整数，编写一个函数来判断它是否是2的幂次方。
 // 思路：
 // 2的幂次方，这个数的二进制只会有一个1。
@@ -15,6 +15,7 @@ public class isPowerOfTwo231 {
      * @return
      */
     public boolean isPowerOfTwo1(int n) {
+        // 千万先记得判断n<=0的情况
         if (n <= 0) return false; // 数学：2的幂次方始终大于零
         return (n & (n - 1)) == 0;
     }

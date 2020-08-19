@@ -1,30 +1,11 @@
 package com.xunlianying8.zuoye1;
 
-// 第一遍
+// 第二遍
 // 颠倒给定的 32 位无符号整数的二进制位。
 // 思路：
 // 转换成字符串，再颠倒，再转换成int，是最耗时的，完全不考虑
 // 最好利用位运算。
 public class reverseBits190 {
-    /**
-     * 逐位运算
-     * 时间复杂度:O(1) - 100.00% - 但凡用到位运算完成的，最终的时间复杂度几乎都是1， 而且运算时间都能达到100%
-     * 空间复杂度:O(1) - 80.29% - 是两个常量
-     * 优点:
-     * 缺点:
-     *
-     * @param n
-     * @return
-     */
-    public int reverseBits(int n) {
-        n = ((n & 0xFFFF0000) >>> 16) | ((n & 0x0000FFFF) << 16);
-        n = ((n & 0xFF00FF00) >>> 8) | ((n & 0x00FF00FF) << 8);
-        n = ((n & 0xF0F0F0F0) >>> 4) | ((n & 0x0F0F0F0F) << 4);
-        n = ((n & 0xC0C0C0C0) >>> 2) | ((n & 0x03030303) << 2);
-        n = ((n & 0x0A0A0A0A) >>> 1) | ((n & 0x05050505) << 1);
-        return n;
-    }
-
     /**
      * 逐位颠倒
      * 时间复杂度:O(1) - 100.00%
@@ -37,6 +18,7 @@ public class reverseBits190 {
      */
     public int reverseBits1(int n) {
         int result = 0, pos = 0;
+        // 这里一定要记得32这个数字哦，因为int数据类型，就是32位，如果按照n来计算的话，就是错误的了！！！！
         while (pos < 32) {
             result += (((n >> pos) & 1) << (31 - pos)); //得到的最低位加过来
             pos++;
@@ -63,20 +45,4 @@ public class reverseBits190 {
         return n;
     }
 
-    /**
-     * 时间复杂度:O(1) - 100.00% -
-     * 空间复杂度:O(1) - 42.32% - 常量空间
-     * 优点:
-     * 缺点:
-     *
-     * @param n
-     * @return
-     */
-    public int reverseBits3(int n) {
-        int result = 0;
-        for (int pos = 31; pos >= 0; n >>= 1, pos--) {
-            result += (n & 1) << pos;
-        }
-        return result;
-    }
 }
