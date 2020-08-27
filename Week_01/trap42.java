@@ -1,52 +1,15 @@
-package com.first.zuoye;
+package com.xunlianying1;
 
 import java.util.Stack;
 
+// 第二遍
 // 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
-// 思路：！！！！这题没有仔细的看解法，还需好好过一遍
-// 暴力求解：其实是没思路，只想到了用栈，但是具体的实现，其实根本达不到coding的程度
-// 按行求 - 没看
-// 按列求 - 没看
-// 动态规划 - 没看
+// 思路：
+// 按列
+// 动态规划
 // 双指针
 // 栈
 public class trap42 {
-
-    /***
-     * 按行求
-     *
-     * @param height
-     * @return
-     */
-    public int trap1(int[] height) {
-        int sum = 0;
-        int max = getMax(height);//找到最大的高度，以便遍历。
-        for (int i = 1; i <= max; i++) {
-            boolean isStart = false; //标记是否开始更新 temp
-            int temp_sum = 0;
-            for (int j = 0; j < height.length; j++) {
-                if (isStart && height[j] < i) {
-                    temp_sum++;
-                }
-                if (height[j] >= i) {
-                    sum = sum + temp_sum;
-                    temp_sum = 0;
-                    isStart = true;
-                }
-            }
-        }
-        return sum;
-    }
-
-    private int getMax(int[] height) {
-        int max = 0;
-        for (int i = 0; i < height.length; i++) {
-            if (height[i] > max) {
-                max = height[i];
-            }
-        }
-        return max;
-    }
 
     /***
      * 按列求
@@ -56,28 +19,20 @@ public class trap42 {
      */
     public int trap11(int[] height) {
         int sum = 0;
-        //最两端的列不用考虑，因为一定不会有水。所以下标从 1 到 length - 2
+        int max_left;
+        int max_right;
+        int min;
         for (int i = 1; i < height.length - 1; i++) {
-            int max_left = 0;
-            //找出左边最高
+            max_left = 0;
             for (int j = i - 1; j >= 0; j--) {
-                if (height[j] > max_left) {
-                    max_left = height[j];
-                }
+                if (height[j] > max_left) max_left = height[j];
             }
-            int max_right = 0;
-            //找出右边最高
+            max_right = 0;
             for (int j = i + 1; j < height.length; j++) {
-                if (height[j] > max_right) {
-                    max_right = height[j];
-                }
+                if (height[j] > max_right) max_right = height[j];
             }
-            //找出两端较小的
-            int min = Math.min(max_left, max_right);
-            //只有较小的一段大于当前列的高度才会有水，其他情况不会有水
-            if (min > height[i]) {
-                sum = sum + (min - height[i]);
-            }
+            min = Math.min(max_left, max_right);
+            if (min > height[i]) sum = sum + (min - height[i]);
         }
         return sum;
     }
@@ -170,7 +125,4 @@ public class trap42 {
         return sum;
     }
 
-    public static void main(String[] args) {
-
-    }
 }
