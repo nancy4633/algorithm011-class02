@@ -24,7 +24,7 @@ public class swapPairs24 {
             sec = cur.next.next;
             fir.next = sec.next;
             cur.next = sec;
-            cur.next.next = fir;
+            cur.next.next = fir; // sec.next = fir  也可以写成这样
             cur = cur.next.next;
         }
         return dummy.next;

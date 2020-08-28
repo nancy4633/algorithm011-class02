@@ -21,12 +21,12 @@ public class detectCycle142 {
      * @return
      */
     public ListNode detectCycle1(ListNode head) {
-        ListNode fast = head, slow = head;
-        while (true) {
+        ListNode slow = head, fast = head; // 这里的fast必须用head，否则会超时。
+        while (true) { // 学会巧妙使用while(true)
             if (fast == null || fast.next == null) return null;
-            fast = fast.next.next;
             slow = slow.next;
-            if (fast == slow) break;
+            fast = fast.next.next;
+            if (slow == fast) break;
         }
         fast = head;
         while (slow != fast) {
@@ -37,7 +37,7 @@ public class detectCycle142 {
     }
 
     /**
-     * Floyd 算法
+     * Floyd 算法 - 不看
      * 时间复杂度:O(n) - 100.00%
      * 空间复杂度:O(1) - 33.61%
      * 优点:

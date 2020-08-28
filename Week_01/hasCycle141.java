@@ -3,7 +3,7 @@ package com.xunlianying1;
 import java.util.HashSet;
 import java.util.Set;
 
-// 第一遍 - 递归 + 快慢指针 - 没看懂！！！需要再看一遍
+// 第一遍 - 重点
 // 给定一个链表，判断链表中是否有环。
 // 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。
 // 如果 pos 是 -1，则在该链表中没有环。
@@ -22,18 +22,18 @@ public class hasCycle141 {
      */
     public boolean hasCycle1(ListNode head) {
         if (head == null || head.next == null) return false;
-        ListNode i = head;
-        ListNode j = head.next;
-        while (j != null && j.next != null) {
-            if (i == j) return true; // == 比 equals 快了好多！！！
-            i = i.next;
-            j = j.next.next;
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null && fast.next != null) { // 记得判断next非空的情况
+            if (slow == fast) return true; // == 比 equals 快了好多！！！
+            slow = slow.next;
+            fast = fast.next.next;
         }
         return false;
     }
 
     /**
-     * 标记法(每一个遍历过的节点值都置为 特定值) + 递归
+     * 标记法 + 递归 - 每一个遍历过的节点值都置为 特定值
      * 时间复杂度:O() - 100.00%
      * 空间复杂度:O() - 41.19%
      * 优点:
@@ -50,7 +50,7 @@ public class hasCycle141 {
     }
 
     /**
-     * 递归 + 快慢指针 - 没看懂
+     * 递归 + 快慢指针 - 把每一个遍历过的节点的next指针都指向自己。当再次遍历到同一点的时候先判断，node == node.next
      * 时间复杂度:O() - 100.00%
      * 空间复杂度:O() - 5.42%
      * 优点:
