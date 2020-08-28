@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-// 第一遍 - 重点
+// 第二遍 - 重点
 // 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
 // 注意：
 // !!!答案中不可以包含重复的三元组。
@@ -28,7 +28,7 @@ public class threeSum15 {
         List<List<Integer>> result = new LinkedList<>();
         int length = nums.length, i = 0;
         if (length < 3) return result;
-        Arrays.sort(nums);
+        Arrays.sort(nums); // 第二遍
         while (i < length) {
             if (nums[i] > 0) break;
             int target = -nums[i], low = i + 1, high = length - 1; // 因为忘记重新初始化high = length-1，排查了好久，昨天就终止了，类似的问题一定要记下来，可以下次复习的时候再看。
@@ -39,13 +39,13 @@ public class threeSum15 {
                 } else if (sum < target) {
                     low++;
                 } else {
-                    result.add(Arrays.asList(nums[i], nums[low], nums[high]));
+                    result.add(Arrays.asList(nums[i], nums[low], nums[high])); // 第二遍
                     do {
                         low++;
-                    } while (low < high && nums[low] == nums[low - 1]);
+                    } while (low < high && nums[low] == nums[low - 1]); // 第二遍
                     do {
                         high--;
-                    } while (low < high && nums[high] == nums[high + 1]);
+                    } while (low < high && nums[high] == nums[high + 1]); // 第二遍
                 }
             }
             while (i < length && -target == nums[i]) {

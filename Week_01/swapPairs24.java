@@ -6,9 +6,9 @@ package com.xunlianying1;
 public class swapPairs24 {
 
     /**
-     * 暴力求解：
-     * 时间复杂度:O() -
-     * 空间复杂度:O() -
+     * 遍历
+     * 时间复杂度:O() - 100.00%
+     * 空间复杂度:O() - 34.27%
      * 优点:
      * 缺点:
      *
@@ -16,24 +16,24 @@ public class swapPairs24 {
      * @return
      */
     public ListNode swapPairs(ListNode head) {
-        ListNode pre = new ListNode(0);
-        pre.next = head;
-        ListNode temp = pre;
-        while (temp.next != null && temp.next.next != null) {
-            ListNode start = temp.next;
-            ListNode end = temp.next.next;
-            temp.next = end;
-            start.next = end.next;
-            end.next = start;
-            temp = start;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode fir, sec, cur = dummy;
+        while (cur.next != null && cur.next.next != null) {
+            fir = cur.next;
+            sec = cur.next.next;
+            fir.next = sec.next;
+            cur.next = sec;
+            cur.next.next = fir;
+            cur = cur.next.next;
         }
-        return pre.next;
+        return dummy.next;
     }
 
     /**
-     * 递归
-     * 时间复杂度:O() -
-     * 空间复杂度:O() -
+     * 递归 - 重点
+     * 时间复杂度:O() - 100.00%
+     * 空间复杂度:O() - 10.57%
      * 优点:
      * 缺点:
      *
@@ -43,9 +43,8 @@ public class swapPairs24 {
     public static ListNode swapPairs2(ListNode head) {
         if (head == null || head.next == null) return head;
         ListNode swap = head.next;
-        head.next = swapPairs2(swap.next);
+        head.next = swapPairs2(head.next.next); // head.next = swapPairs2(swap.next);
         swap.next = head;
-        head = swap;
         return swap;
     }
 }
