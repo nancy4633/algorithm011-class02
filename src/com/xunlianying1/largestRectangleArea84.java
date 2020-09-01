@@ -6,14 +6,14 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.Stack;
 
-// 第一遍
+// 第二遍 - 重要 1-2-3解法都需要记住
 // 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
 // 求在该柱状图中，能够勾勒出来的矩形的最大面积。
 public class largestRectangleArea84 {
     /**
-     * 双指针
-     * 时间复杂度:O() - 99.58%
-     * 空间复杂度:O() - 39.30%
+     * 单调栈（双指针）
+     * 时间复杂度:O() - 99.60%
+     * 空间复杂度:O() - 44.39%
      * 优点:
      * 缺点:
      *
@@ -22,26 +22,26 @@ public class largestRectangleArea84 {
      */
     public int largestRectangleArea1(int[] heights) {
         int len = heights.length;
-        int[] left = new int[len];
-        int[] right = new int[len];
+        if (len == 0) return 0;
+        int[] left = new int[len], right = new int[len];
         left[0] = -1;
         right[len - 1] = len;
         int res = 0, tmp;
         for (int i = 1; i < len; i++) {
             tmp = i - 1;
-            while (tmp >= 0 && heights[tmp] >= heights[i]) {
+            while (tmp >= 0 && heights[tmp] >= heights[i]) { //生成left数组：左侧最大值
                 tmp = left[tmp];
             }
             left[i] = tmp;
         }
-        for (int i = len - 2; i >= 0; i--) {
+        for (int i = len - 2; i >= 0; i--) {// 生成right数组：右侧最大值
             tmp = i + 1;
             while (tmp < len && heights[tmp] >= heights[i]) {
                 tmp = right[tmp];
             }
             right[i] = tmp;
         }
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < len; i++) { // 差值就是面积，遍历取面积最大值
             res = Math.max(res, (right[i] - left[i] - 1) * heights[i]);
         }
         return res;
@@ -49,8 +49,8 @@ public class largestRectangleArea84 {
 
     /**
      * Deque(ArrayDeque)
-     * 时间复杂度:O() - 90.58%
-     * 空间复杂度:O() - 75.54%
+     * 时间复杂度:O() - 94.29%
+     * 空间复杂度:O() - 81.54%
      * 优点:
      * 缺点:
      *
@@ -58,20 +58,20 @@ public class largestRectangleArea84 {
      * @return
      */
     public int largestRectangleArea2(int[] heights) {
-        int res = 0, len = heights.length;
-        Deque<Integer> stack = new ArrayDeque<>();
+        int result = 0, len = heights.length, cur;
+        Deque<Integer> deque = new ArrayDeque<>();
         int[] new_heights = new int[len + 2];
         for (int i = 1; i < len + 1; i++) {
             new_heights[i] = heights[i - 1];
         }
         for (int i = 0; i < len + 2; i++) {
-            while (!stack.isEmpty() && new_heights[stack.peek()] > new_heights[i]) {
-                int cur = stack.pop();
-                res = Math.max(res, (i - stack.peek() - 1) * new_heights[cur]);
+            while (!deque.isEmpty() && new_heights[deque.peek()] > new_heights[i]) {
+                cur = deque.pop();
+                result = Math.max(result, (i - deque.peek() - 1) * new_heights[cur]);
             }
-            stack.push(i);
+            deque.push(i);
         }
-        return res;
+        return result;
     }
 
     /**
@@ -85,20 +85,16 @@ public class largestRectangleArea84 {
      * @return
      */
     public int largestRectangleArea3(int[] heights) {
-        int len = heights.length;
-        int res = 0;
+        int len = heights.length, res = 0;
         int[] newHeights = new int[len + 2];
-        newHeights[0] = 0;
         System.arraycopy(heights, 0, newHeights, 1, len);
-        newHeights[len + 1] = 0;
         len += 2;
-        heights = newHeights;
         Deque<Integer> deque = new ArrayDeque<>(len);
         deque.addLast(0);
         int curHeight = 0, curWidth = 0;
         for (int i = 1; i < len; i++) {
-            while (heights[i] < heights[deque.peekLast()]) {
-                curHeight = heights[deque.pollLast()];
+            while (newHeights[i] < newHeights[deque.peekLast()]) {
+                curHeight = newHeights[deque.pollLast()];
                 curWidth = i - deque.peekLast() - 1;
                 res = Math.max(res, curHeight * curWidth);
             }
