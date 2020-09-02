@@ -1,108 +1,107 @@
-package com.second.zuoye;
+package com.xunlianying2;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+// 第一遍
 // 给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
-// 思路：
-// 暴力求解
-// 栈
 public class IsAnagram242 {
-
-    /***
-     * 暴力求解：先排序，后对比是否相等。
+    /**
+     * 数组代替hashmap
+     * 时间复杂度:O() - 99.89%
+     * 空间复杂度:O() - 32.00%
+     * 优点:
+     * 缺点:
      *
-     * 时间复杂度：O(nlogn) - 排序的时间复杂度是O(nlogn)，比较的时间复杂度是O(n)
-     * 空间复杂度：O(1) - 空间取决于排序实现，如果使用 heapsort，通常需要 O(1)O(1) 辅助空间。注意，在 Java 中，toCharArray() 制作了一个字符串的拷贝，所以它花费 O(n)O(n) 额外的空间，但是我们忽略了这一复杂性分析，因为：这依赖于语言的细节。这取决于函数的设计方式。例如，可以将函数参数类型更改为 char[]。
-     * 这个时间复杂度分析，比我想的要复杂，值得学习
      * @param s
      * @param t
      * @return
      */
-    public static boolean isAnagram1(String s, String t) {
-        // 初始值判断
-        if (s == null && t == null)
-            return true;
-        if ((s == null) & (t == null) == false)
-            return false;
-        if (s.length() != t.length())
-            return false;
+    public boolean isAnagram1(String s, String t) {
+        int[] count1 = new int[26];
+        for (char c : s.toCharArray())
+            count1[c - 97] += 1;
+        for (char c : t.toCharArray())
+            count1[c - 97] -= 1;
+        for (int i = 0; i < 26; i++) {
+            if (count1[i] != 0) return false;
+        }
+        return true;
+    }
+
+    /**
+     * 数组实现hash
+     * 时间复杂度:O(n) - 86.56%
+     * 空间复杂度:O(1) - 27.80%
+     * 优点:
+     * 缺点:
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isAnagram2(String s, String t) {
+        int lens = s.length(), lent = t.length();
+        if (lens != lent) return false;
+        int[] table = new int[26];
+        for (int i = 0; i < lens; i++) {
+            table[s.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < lent; i++) {
+            table[t.charAt(i) - 'a']--;
+            if (table[t.charAt(i) - 'a'] < 0) return false;
+        }
+        return true;
+    }
+
+    /**
+     * hashmap - 最慢，这道题不适合用hashmap
+     * 时间复杂度:O() - 18.99%
+     * 空间复杂度:O() - 9.19%
+     * 优点:
+     * 缺点:
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isAnagram3(String s, String t) {
+        int lens = s.length(), lent = t.length();
+        if (lens != lent) return false;
+        Map<Character, Integer> charMap1 = new HashMap<>((int) (lens / 0.75F + 1.0F));
+        Map<Character, Integer> charMap2 = new HashMap<>((int) (lent / 0.75F + 1.0F));
+        for (char c : s.toCharArray())
+            charMap1.put(c, charMap1.getOrDefault(c, 0) + 1);
+        for (char c : t.toCharArray())
+            charMap2.put(c, charMap2.getOrDefault(c, 0) + 1);
+        if (charMap1.size() != charMap2.size()) return false;
+        for (char c : s.toCharArray()) {
+            if (!charMap1.get(c).equals(charMap2.getOrDefault(c, 0))) return false;
+        }
+        return true;
+    }
+
+    /**
+     * 暴力求解：先排序，后对比是否相等。
+     * 时间复杂度:O(nlogn) - 86.56% - 排序 - O(nlogn)，比较 - O(n)
+     * 空间复杂度:O(1) - 95.34% - 空间取决于排序实现，如果使用 heapsort，通常需要O(1)。注意，在 Java 中，toCharArray() 制作了一个字符串的拷贝，所以它花费 O(n)额外的空间，但是我们忽略了这一复杂性分析，因为：这依赖于语言的细节。这取决于函数的设计方式。例如，可以将函数参数类型更改为 char[]。
+     * 这个时间复杂度分析，比我想的要复杂，值得学习
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isAnagram4(String s, String t) {
+        if (s.length() != t.length()) return false;
         char[] sArray = s.toCharArray();
         char[] tArray = t.toCharArray();
-        // 数组排序是改变数组本身！！！
         Arrays.sort(sArray);
         Arrays.sort(tArray);
-        // 可以直接打印数组中的值
-        System.out.println(sArray);
-        System.out.println(tArray);
-        // 数组判断值是否相等！！！
         if (Arrays.equals(sArray, tArray)) {
             return true;
         } else {
             return false;
         }
-    }
-
-    /***
-     * hash
-     *
-     * 时间复杂度：O(n)
-     * 空间复杂度：O(1)
-     *
-     * @param s
-     * @param t
-     * @return
-     */
-    public boolean isAnagram11(String s, String t) {
-        // 初始值判断
-        if (s == null && t == null)
-            return true;
-        if ((s == null) & (t == null) == false)
-            return false;
-        if (s.length() != t.length())
-            return false;
-        int[] sArray = new int[26];
-        for (int i = 0; i < s.length(); i++) {
-            // 这里的++符号一开始不敢用，怕自己用错了，确实一开始用错了，不过现在有点儿理解了
-            sArray[s.charAt(i) - 'a']++;
-            sArray[t.charAt(i) - 'a']--;
-        }
-        for (int i : sArray) {
-            if (i != 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /***
-     * 优化的hash
-     *
-     * 时间复杂度：O(n)
-     * 空间复杂度：O(1)
-     *
-     * @param s
-     * @param t
-     * @return
-     */
-    public boolean isAnagram111(String s, String t) {
-        if (s.length() != t.length()) {
-            return false;
-        }
-        int[] table = new int[26];
-        for (int i = 0; i < s.length(); i++) {
-            table[s.charAt(i) - 'a']++;
-        }
-        // 这里的遍历就不一定是全遍历了，最坏情况是O(n)
-        for (int i = 0; i < t.length(); i++) {
-            table[t.charAt(i) - 'a']--;
-            if (table[t.charAt(i) - 'a'] < 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(isAnagram1("anagram", "nagaram"));
     }
 }
