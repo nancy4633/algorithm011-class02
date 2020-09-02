@@ -5,23 +5,6 @@ import java.util.*;
 // 第一遍
 // 给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
 public class GroupAnagrams49 {
-    public List<List<String>> groupAnagrams(String[] strs) {
-        HashMap<String, List<String>> hashmap = new HashMap<>();
-        for (int i = 0; i < strs.length; i++) { // 遍历字符串数组
-            char[] c = strs[i].toCharArray();
-            Arrays.sort(c);
-            String key = c.toString();
-            if (hashmap.containsKey(key)) {
-                hashmap.get(key).add(strs[i]);
-            } else {
-                List<String> temp = new ArrayList<>();
-                temp.add(strs[i]);
-                hashmap.put(key, temp);
-            }
-        }
-        return new ArrayList<>(hashmap.values());
-    }
-
     /**
      * HashMap - key=排序后的String； value - List<String> 所有排序后相同的String都放到一个list。
      * 时间复杂度：O(n*最长单词的长度*log最长单词的长度) - 97.60%
@@ -33,9 +16,9 @@ public class GroupAnagrams49 {
     public List<List<String>> groupAnagrams2(String[] strs) {
         HashMap<String, List<String>> result = new HashMap();
         for (int i = 0; i < strs.length; i++) {
-            char[] strsChars = strs[i].toCharArray();
+            char[] strsChars = strs[i].toCharArray(); // 中间变量该加就加吧，一开始不要想着代码简洁，以后练会了再考虑。
             Arrays.sort(strsChars);
-            String key = String.valueOf(strsChars);
+            String key = String.valueOf(strsChars); // 不可以用toString()
             if (result.containsKey(key)) {
                 result.get(key).add(strs[i]);
             } else {
@@ -44,7 +27,7 @@ public class GroupAnagrams49 {
                 result.put(key, temp);
             }
         }
-        return new ArrayList<List<String>>(result.values());
+        return new ArrayList<List<String>>(result.values()); // new ArrayList<...>(hashmap.value())就可以把同类型的values转换位list了，太神奇了。
     }
 
     /**

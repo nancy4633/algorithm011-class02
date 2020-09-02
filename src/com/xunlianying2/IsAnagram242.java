@@ -10,7 +10,7 @@ public class IsAnagram242 {
     /**
      * 数组代替hashmap
      * 时间复杂度:O() - 99.89%
-     * 空间复杂度:O() - 32.00%
+     * 空间复杂度:O() - 96.63%
      * 优点:
      * 缺点:
      *
@@ -20,10 +20,10 @@ public class IsAnagram242 {
      */
     public boolean isAnagram1(String s, String t) {
         int[] count1 = new int[26];
-        for (char c : s.toCharArray())
-            count1[c - 97] += 1;
-        for (char c : t.toCharArray())
-            count1[c - 97] -= 1;
+        for (char i : s.toCharArray())
+            count1[i - 97] += 1; // count1[i - 97]++;
+        for (char i : t.toCharArray())
+            count1[i - 97] -= 1; // count1[i - 97]--;
         for (int i = 0; i < 26; i++) {
             if (count1[i] != 0) return false;
         }
