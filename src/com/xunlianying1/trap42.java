@@ -10,100 +10,74 @@ import java.util.Stack;
 // 双指针
 // 栈
 public class trap42 {
-
-    /***
-     * 按列求
-     *
-     * @param height
-     * @return
-     */
-    public int trap11(int[] height) {
-        int sum = 0;
-        int max_left;
-        int max_right;
-        int min;
-        for (int i = 1; i < height.length - 1; i++) {
-            max_left = 0;
-            for (int j = i - 1; j >= 0; j--) {
-                if (height[j] > max_left) max_left = height[j];
-            }
-            max_right = 0;
-            for (int j = i + 1; j < height.length; j++) {
-                if (height[j] > max_right) max_right = height[j];
-            }
-            min = Math.min(max_left, max_right);
-            if (min > height[i]) sum = sum + (min - height[i]);
-        }
-        return sum;
-    }
-
-    /***
+    /**
      * 动态规划
+     * 时间复杂度:O(n) - 99.99%
+     * 空间复杂度:O() - 90.46%
+     * 优点:
+     * 缺点:
      *
      * @param height
      * @return
      */
-    public int tra111(int[] height) {
-        int sum = 0;
-        int[] max_left = new int[height.length];
-        int[] max_right = new int[height.length];
-
-        for (int i = 1; i < height.length - 1; i++) {
-            max_left[i] = Math.max(max_left[i - 1], height[i - 1]);
+    public int trap2(int[] height) {
+        int result = 0, len = height.length, min;
+        int[] left = new int[len], right = new int[len];
+        for (int i = 1; i < len - 1; i++) { // len-1 忽略数组最右边的节点
+            left[i] = Math.max(left[i - 1], height[i - 1]);
         }
-        for (int i = height.length - 2; i >= 0; i--) {
-            max_right[i] = Math.max(max_right[i + 1], height[i + 1]);
+        for (int i = len - 2; i > 0; i--) { // >0 忽略数组最左边的节点
+            right[i] = Math.max(right[i + 1], height[i + 1]);
         }
-        for (int i = 1; i < height.length - 1; i++) {
-            int min = Math.min(max_left[i], max_right[i]);
-            if (min > height[i]) {
-                sum = sum + (min - height[i]);
-            }
+        for (int i = 1; i < len - 1; i++) {
+            min = Math.min(left[i], right[i]);
+            if (min > height[i]) result += (min - height[i]);
         }
-        return sum;
+        return result;
     }
 
-    /***
+    /**
      * 双指针
+     * 时间复杂度:O(n) - 99.99%
+     * 空间复杂度:O(1) - 37.35%
+     * 优点:
+     * 缺点:
      *
      * @param height
      * @return
      */
-    public int trap1111(int[] height) {
-        int sum = 0;
-        int max_left = 0;
-        int max_right = 0;
-        int left = 1;
-        int right = height.length - 2; // 加右指针进去
-        for (int i = 1; i < height.length - 1; i++) {
-            //从左到右更
-            if (height[left - 1] < height[right + 1]) {
-                max_left = Math.max(max_left, height[left - 1]);
-                int min = max_left;
-                if (min > height[left]) {
-                    sum = sum + (min - height[left]);
-                }
+    public int trap1(int[] height) {
+        if (height == null || height.length == 0) return 0;
+        int left = 0;
+        int right = height.length - 1;
+        int left_max = 0;
+        int right_max = 0;
+        int res = 0;
+        while (left < right) {
+            if (height[left] < height[right]) {
+                if (height[left] < left_max) res += left_max - height[left];
+                else left_max = height[left];
                 left++;
-                //从右到左更
             } else {
-                max_right = Math.max(max_right, height[right + 1]);
-                int min = max_right;
-                if (min > height[right]) {
-                    sum = sum + (min - height[right]);
-                }
+                if (height[right] < right_max) res += right_max - height[right];
+                else right_max = height[right];
                 right--;
             }
         }
-        return sum;
+        return res;
     }
 
     /***
      * 栈
+     * 时间复杂度:O(n) - 38.01%
+     * 空间复杂度:O() -
+     * 优点:
+     * 缺点:
      *
      * @param height
      * @return
      */
-    public int trap11111(int[] height) {
+    public int trap3(int[] height) {
         int sum = 0;
         Stack<Integer> stack = new Stack<>();
         int current = 0;
@@ -125,4 +99,33 @@ public class trap42 {
         return sum;
     }
 
+    /***
+     * 按列求
+     * 时间复杂度:O() - 11.02%
+     * 空间复杂度:O() - 69.82%
+     * 优点:
+     * 缺点:
+     *
+     * @param height
+     * @return
+     */
+    public int trap4(int[] height) {
+        int sum = 0;
+        int max_left;
+        int max_right;
+        int min;
+        for (int i = 1; i < height.length - 1; i++) {
+            max_left = 0;
+            for (int j = i - 1; j >= 0; j--) {
+                if (height[j] > max_left) max_left = height[j];
+            }
+            max_right = 0;
+            for (int j = i + 1; j < height.length; j++) {
+                if (height[j] > max_right) max_right = height[j];
+            }
+            min = Math.min(max_left, max_right);
+            if (min > height[i]) sum = sum + (min - height[i]);
+        }
+        return sum;
+    }
 }

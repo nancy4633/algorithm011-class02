@@ -10,37 +10,53 @@ package com.xunlianying1;
 public class RemoveDuplicates26 {
 
     /****
-     * 暴力求解：
-     * 遍历：相同-》第一个指针不动，第二个指针后移；不相同-》第一、二指针都后移一位。
-     *
-     * 时间复杂度：O(n)
-     * 空间复杂度：O(1) - 只定义了两个常数i和j，没有新建数组。
+     * 暴力求解：相同-》第一个指针不动，第二个指针后移；不相同-》第一、二指针都后移一位。
+     * 时间复杂度:O(n) - 98.49%
+     * 空间复杂度:O(1) - 95.32%
+     * 优点:
+     * 缺点:
      *
      * @param nums
      * @return
      */
     public int removeDuplicates1(int[] nums) {
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
-        if (nums.length == 1) {
-            return 1;
-        }
+        int len = nums.length;
+        if (len <= 1) return len;
         int i = 0, j = i + 1;
-        while (j < nums.length) {
-            if (nums[i] == nums[j]) {
-                j++;
-            } else {
+        while (j < len) {
+            if (nums[i] != nums[j]) {
                 nums[i + 1] = nums[j];
                 i++;
-                j++;
             }
-
+            j++;
         }
         return i + 1;
     }
 
-    public static void main(String[] args) {
+    public int removeDuplicates2(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int p = 0;
+        int q = 1;
+        while (q < nums.length) {
+            if (nums[p] != nums[q]) {
+                if (q - p > 1) {
+                    nums[p + 1] = nums[q];
+                }
+                p++;
+            }
+            q++;
+        }
+        return p + 1;
+    }
 
+    public int removeDuplicates3(int[] nums) {
+        int i = 0;
+        for (int j = 1; j < nums.length; j++) {
+            if (nums[i] != nums[j]) {
+                if (++i == j) continue;
+                nums[i] = nums[j];
+            }
+        }
+        return i + 1;
     }
 }

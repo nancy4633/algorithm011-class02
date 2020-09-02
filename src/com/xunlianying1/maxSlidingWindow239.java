@@ -3,11 +3,90 @@ package com.xunlianying1;
 import java.util.ArrayDeque;
 import java.util.LinkedList;
 
+// 第一遍
 // 给定一个数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
 // 返回滑动窗口中的最大值。
 // 进阶：
 // 你能在线性时间复杂度内解决此题吗？
 public class maxSlidingWindow239 {
+    /**
+     * 效率很高的原因猜测可能是没有使用比较复杂的工具类如linkedList等，简单操作消耗的时间少；
+     * 如果不考虑这个原因，其实这个算法如果每次都要完全遍历k个元素，时间开销应该不会很低
+     * 时间复杂度:O() - 100.00%
+     * 空间复杂度:O() - 77.02%
+     * 优点:
+     * 缺点:
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] maxSlidingWindow1(int[] nums, int k) {
+        int length = nums.length;
+        int[] result = new int[length - k + 1];
+        int max = (int) Double.NEGATIVE_INFINITY;
+        int max_index = -1, left = 0, right = k - 1;
+        while (right < length) {
+            if (max_index < left) {
+                max = (int) Double.NEGATIVE_INFINITY;
+                for (int i = left; i <= right; i++) {
+                    if (max < nums[i]) {
+                        max = nums[i];
+                        max_index = i;
+                    }
+                }
+            } else {
+                if (max < nums[right]) { // 剪枝 // 新窗口，只需要用max与right节点对比就可以了。
+                    max = nums[right];
+                    max_index = right;
+                }
+            }
+            result[left] = max;
+            left++;
+            right++;
+        }
+        return result;
+    }
+
+    /**
+     * 时间复杂度:O() - 94.58%
+     * 空间复杂度:O() - 73.24%
+     * 优点:
+     * 缺点:
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] maxSlidingWindow2(int[] nums, int k) {
+        int len = nums.length;
+        int[] result = new int[len - k + 1];
+        int start = 0;
+        int end = Math.min(start + k, len) - 1;
+        int max = getMax(nums, start, end);
+        int i = 0;
+        result[i++] = max;
+        while (end < len - 1) {
+            end = end + 1;
+            start = start + 1;
+            if (nums[end] > max) {
+                max = nums[end];
+            } else if (nums[start - 1] == max) {
+                max = getMax(nums, start, end);
+            }
+            result[i++] = max;
+        }
+        return result;
+    }
+
+    private int getMax(int[] nums, int start, int end) {
+        int max = Integer.MIN_VALUE;
+        for (int i = start; i <= end; i++) {
+            max = Math.max(nums[i], max);
+        }
+        return max;
+    }
+
 
     /**
      * 时间复杂度:O() - 92.87%
@@ -19,7 +98,7 @@ public class maxSlidingWindow239 {
      * @param k
      * @return
      */
-    public int[] maxSlidingWindow2(int[] nums, int k) {
+    public int[] maxSlidingWindow3(int[] nums, int k) {
         int n = nums.length;
         if (n * k == 0) return nums;
         int leftMax[] = new int[n];
@@ -55,7 +134,7 @@ public class maxSlidingWindow239 {
      * @param k
      * @return
      */
-    public int[] maxSlidingWindow3(int[] nums, int k) {
+    public int[] maxSlidingWindow4(int[] nums, int k) {
         int n = nums.length;
         if (n * k == 0) return new int[0];
         if (k == 1) return nums;
