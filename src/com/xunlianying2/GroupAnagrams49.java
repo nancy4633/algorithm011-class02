@@ -5,18 +5,34 @@ import java.util.*;
 // 第一遍
 // 给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
 public class GroupAnagrams49 {
-    /***
-     * HashMap - 每个单词先排序，再直接比较是否相等
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String, List<String>> hashmap = new HashMap<>();
+        for (int i = 0; i < strs.length; i++) { // 遍历字符串数组
+            char[] c = strs[i].toCharArray();
+            Arrays.sort(c);
+            String key = c.toString();
+            if (hashmap.containsKey(key)) {
+                hashmap.get(key).add(strs[i]);
+            } else {
+                List<String> temp = new ArrayList<>();
+                temp.add(strs[i]);
+                hashmap.put(key, temp);
+            }
+        }
+        return new ArrayList<>(hashmap.values());
+    }
+
+    /**
+     * HashMap - key=排序后的String； value - List<String> 所有排序后相同的String都放到一个list。
      * 时间复杂度：O(n*最长单词的长度*log最长单词的长度) - 97.60%
      * 空间复杂度：O(n*最长单词的长度) - 92.36%
      *
      * @param strs
      * @return
      */
-    public static List<List<String>> groupAnagrams2(String[] strs) {
+    public List<List<String>> groupAnagrams2(String[] strs) {
         HashMap<String, List<String>> result = new HashMap();
-        int len = strs.length;
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < strs.length; i++) {
             char[] strsChars = strs[i].toCharArray();
             Arrays.sort(strsChars);
             String key = String.valueOf(strsChars);
@@ -31,24 +47,24 @@ public class GroupAnagrams49 {
         return new ArrayList<List<String>>(result.values());
     }
 
-    /***
-     * 质数 - 溢出报错
-     * 每个大于1的自然数，要么本身就是质数，要么可以写为2个以上的质数的积，而且这些质因子按大小排列之后，写法仅有一种方式。
-     * 时间复杂度：O(n*最长单词的长度)
-     * 空间复杂度：O(n*最长单词的长度)
+    /**
+     * hashmap - key=每个char的ASCII码作为索引的26位数组然后按照出现次数作为位数计算得到的key值，太逆天了，太麻烦了； value - List<String> 所有排序后相同的String都放到一个list。
+     * 时间复杂度：O(n*最长单词的长度) - 7.24%
+     * 空间复杂度：O(n*最长单词的长度) - 5.13%
      *
      * @param strs
      * @return
      */
-    public static List<List<String>> groupAnagrams5(String[] strs) {
-        HashMap<Integer, List<String>> hash = new HashMap<>();
-        // 把每个字母对应成一个质数
-        int[] prime = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103};
+    public List<List<String>> groupAnagrams9(String[] strs) {
+        HashMap<String, List<String>> hash = new HashMap<>();
         for (int i = 0; i < strs.length; i++) {
-            int key = 1;
-            //累乘得到 key
+            int[] num = new int[26];
             for (int j = 0; j < strs[i].length(); j++) {
-                key *= prime[strs[i].charAt(j) - 'a'];
+                num[strs[i].charAt(j) - 'a']++;
+            }
+            String key = "";
+            for (int temp : num) {
+                key = key + temp + '#';
             }
             if (hash.containsKey(key)) {
                 hash.get(key).add(strs[i]);
@@ -62,23 +78,21 @@ public class GroupAnagrams49 {
     }
 
     /**
-     * 其实还是hashmap键值的确定，这里又用到了数组
-     * 时间复杂度：O(n*最长单词的长度) - 7.03%
-     * 空间复杂度：O(n*最长单词的长度) - 5.13%
+     * 质数 - 溢出报错 - 思路挺好的，但是面试的时候应该不会用这种解题方式，太麻烦
+     * 每个大于1的自然数，要么本身就是质数，要么可以写为2个以上的质数的积，而且这些质因子按大小排列之后，写法仅有一种方式。
+     * 时间复杂度：O(n*最长单词的长度)
+     * 空间复杂度：O(n*最长单词的长度)
      *
      * @param strs
      * @return
      */
-    public static List<List<String>> groupAnagrams9(String[] strs) {
-        HashMap<String, List<String>> hash = new HashMap<>();
+    public static List<List<String>> groupAnagrams5(String[] strs) {
+        HashMap<Integer, List<String>> hash = new HashMap<>();
+        int[] prime = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103};
         for (int i = 0; i < strs.length; i++) {
-            int[] num = new int[26];
+            int key = 1;
             for (int j = 0; j < strs[i].length(); j++) {
-                num[strs[i].charAt(j) - 'a']++;
-            }
-            String key = "";
-            for (int j = 0; j < num.length; j++) {
-                key = key + num[j] + '#';
+                key *= prime[strs[i].charAt(j) - 'a'];
             }
             if (hash.containsKey(key)) {
                 hash.get(key).add(strs[i]);
