@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.Stack;
 
-// 第二遍 - 重要 1-2-3解法都需要记住
+// 第三遍 - 重要 1-2-3解法都需要记住，优先记住解法2，因为时间紧张～
 // 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
 // 求在该柱状图中，能够勾勒出来的矩形的最大面积。
 public class largestRectangleArea84 {
@@ -26,25 +26,25 @@ public class largestRectangleArea84 {
         int[] left = new int[len], right = new int[len];
         left[0] = -1;
         right[len - 1] = len;
-        int res = 0, tmp;
+        int result = 0, temp;
         for (int i = 1; i < len; i++) {
-            tmp = i - 1;
-            while (tmp >= 0 && heights[tmp] >= heights[i]) { //生成left数组：左侧最大值
-                tmp = left[tmp];
+            temp = i - 1; // 左边的，也就是从0开始
+            while (temp >= 0 && heights[temp] >= heights[i]) { //生成left数组：左侧最大值 // temp >= 0 因为temp都是在左边
+                temp = left[temp];
             }
-            left[i] = tmp;
+            left[i] = temp;
         }
         for (int i = len - 2; i >= 0; i--) {// 生成right数组：右侧最大值
-            tmp = i + 1;
-            while (tmp < len && heights[tmp] >= heights[i]) {
-                tmp = right[tmp];
+            temp = i + 1; // 右边的，也就是从len-1开始
+            while (temp < len && heights[temp] >= heights[i]) { // temp < len，因为temp都是在右边
+                temp = right[temp];
             }
-            right[i] = tmp;
+            right[i] = temp;
         }
         for (int i = 0; i < len; i++) { // 差值就是面积，遍历取面积最大值
-            res = Math.max(res, (right[i] - left[i] - 1) * heights[i]);
+            result = Math.max(result, (right[i] - left[i] - 1) * heights[i]);
         }
-        return res;
+        return result;
     }
 
     /**
@@ -59,7 +59,7 @@ public class largestRectangleArea84 {
      */
     public int largestRectangleArea2(int[] heights) {
         int result = 0, len = heights.length, cur;
-        Deque<Integer> deque = new ArrayDeque<>();
+        Deque<Integer> deque = new ArrayDeque<>(); // 也可以用stack，但是ArrayDeque效率更高，不知道为什么，暂时搁置。
         int[] new_heights = new int[len + 2];
         for (int i = 1; i < len + 1; i++) {
             new_heights[i] = heights[i - 1];

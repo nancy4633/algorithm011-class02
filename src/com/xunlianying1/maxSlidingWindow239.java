@@ -2,6 +2,7 @@ package com.xunlianying1;
 
 import java.util.ArrayDeque;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 // 第一遍
 // 给定一个数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
@@ -9,9 +10,31 @@ import java.util.LinkedList;
 // 进阶：
 // 你能在线性时间复杂度内解决此题吗？
 public class maxSlidingWindow239 {
+
     /**
-     * 效率很高的原因猜测可能是没有使用比较复杂的工具类如linkedList等，简单操作消耗的时间少；
-     * 如果不考虑这个原因，其实这个算法如果每次都要完全遍历k个元素，时间开销应该不会很低
+     * PriorityQueue - 学习priorityqueue定义大顶堆
+     * 时间复杂度:O() - 超时
+     * 空间复杂度:O() -
+     * 优点:
+     * 缺点:
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] maxSlidingWindow0(int[] nums, int k) {
+        int len = nums.length;
+        int[] result = new int[len - k + 1];
+        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> (o2 - o1)); // 用法很赞，但是超时了。哈哈哈
+        for (int i = 0; i < len; i++) {
+            if (i >= k) pq.remove(nums[i - k]);
+            pq.offer(nums[i]);
+            if (pq.size() == k) result[i - k + 1] = pq.peek();
+        }
+        return result;
+    }
+
+    /**
      * 时间复杂度:O() - 100.00%
      * 空间复杂度:O() - 77.02%
      * 优点:
@@ -22,13 +45,11 @@ public class maxSlidingWindow239 {
      * @return
      */
     public int[] maxSlidingWindow1(int[] nums, int k) {
-        int length = nums.length;
-        int[] result = new int[length - k + 1];
-        int max = (int) Double.NEGATIVE_INFINITY;
-        int max_index = -1, left = 0, right = k - 1;
+        int length = nums.length, max = (int) Double.NEGATIVE_INFINITY, max_index = -1, left = 0, right = k - 1; // right的初始值要记住！
+        int[] result = new int[length - k + 1]; // length的默认值要注意！！！
         while (right < length) {
             if (max_index < left) {
-                max = (int) Double.NEGATIVE_INFINITY;
+                max = (int) Double.NEGATIVE_INFINITY; // max每次都要重新赋值！！！
                 for (int i = left; i <= right; i++) {
                     if (max < nums[i]) {
                         max = nums[i];

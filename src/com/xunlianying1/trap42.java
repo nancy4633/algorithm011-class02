@@ -2,7 +2,7 @@ package com.xunlianying1;
 
 import java.util.Stack;
 
-// 第二遍
+// 第三遍 - 重点 解法1
 // 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
 // 思路：
 // 按列
@@ -20,16 +20,16 @@ public class trap42 {
      * @param height
      * @return
      */
-    public int trap2(int[] height) {
+    public int trap1(int[] height) {
         int result = 0, len = height.length, min;
         int[] left = new int[len], right = new int[len];
-        for (int i = 1; i < len - 1; i++) { // len-1 忽略数组最右边的节点
+        for (int i = 1; i < len - 1; i++) { //1 ~ len-2
             left[i] = Math.max(left[i - 1], height[i - 1]);
         }
-        for (int i = len - 2; i > 0; i--) { // >0 忽略数组最左边的节点
+        for (int i = len - 2; i > 0; i--) { //1 ~ len-2
             right[i] = Math.max(right[i + 1], height[i + 1]);
         }
-        for (int i = 1; i < len - 1; i++) {
+        for (int i = 1; i < len - 1; i++) { //1 ~ len-2
             min = Math.min(left[i], right[i]);
             if (min > height[i]) result += (min - height[i]);
         }
@@ -46,25 +46,28 @@ public class trap42 {
      * @param height
      * @return
      */
-    public int trap1(int[] height) {
+    public int trap2(int[] height) {
         if (height == null || height.length == 0) return 0;
-        int left = 0;
-        int right = height.length - 1;
-        int left_max = 0;
-        int right_max = 0;
-        int res = 0;
+        int left = 0, right = height.length - 1, result = 0;
+        int left_h = 0, right_h = 0;
         while (left < right) {
             if (height[left] < height[right]) {
-                if (height[left] < left_max) res += left_max - height[left];
-                else left_max = height[left];
+                if (height[left] < left_h) {
+                    result += left_h - height[left];
+                } else {
+                    left_h = height[left];
+                }
                 left++;
             } else {
-                if (height[right] < right_max) res += right_max - height[right];
-                else right_max = height[right];
+                if (height[right] < right_h) {
+                    result += right_h - height[right];
+                } else {
+                    right_h = height[right];
+                }
                 right--;
             }
         }
-        return res;
+        return result;
     }
 
     /***
@@ -78,19 +81,15 @@ public class trap42 {
      * @return
      */
     public int trap3(int[] height) {
-        int sum = 0;
+        int sum = 0, current = 0, h, distance, min;
         Stack<Integer> stack = new Stack<>();
-        int current = 0;
         while (current < height.length) {
-            //如果栈不空并且当前指向的高度大于栈顶高度就一直循环
             while (!stack.empty() && height[current] > height[stack.peek()]) {
-                int h = height[stack.peek()]; //取出要出栈的元素
+                h = height[stack.peek()]; //取出要出栈的元素
                 stack.pop(); //出栈
-                if (stack.empty()) { // 栈空就出去
-                    break;
-                }
-                int distance = current - stack.peek() - 1; //两堵墙之前的距离。
-                int min = Math.min(height[stack.peek()], height[current]);
+                if (stack.empty()) break;
+                distance = current - stack.peek() - 1; //两堵墙之前的距离。
+                min = Math.min(height[stack.peek()], height[current]);
                 sum = sum + distance * (min - h);
             }
             stack.push(current); //当前指向的墙入栈

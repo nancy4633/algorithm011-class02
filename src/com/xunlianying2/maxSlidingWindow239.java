@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-// 第一遍
+// 第二遍
 // 给定一个数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
 // 返回滑动窗口中的最大值。
 // 进阶：
@@ -24,11 +24,13 @@ public class maxSlidingWindow239 {
     public int[] maxSlidingWindow0(int[] nums, int k) {
         int len = nums.length;
         int[] result = new int[len - k + 1];
-        if (len == 0 || k == 0) return result;
-        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> (o2 - o1)); // 用法很赞，但是超时了。哈哈哈
+        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> (o2-o1));
         for (int i = 0; i < len; i++) {
-            int start = i - k;
-            if (start >= 0) pq.remove(nums[start]);
+            if (i >= k) {
+                System.out.println(nums[i - k]);
+                pq.remove(nums[i - k]);
+            }
+            System.out.println(nums[i]);
             pq.offer(nums[i]);
             if (pq.size() == k) result[i - k + 1] = pq.peek();
         }
@@ -47,13 +49,13 @@ public class maxSlidingWindow239 {
      */
     public int[] maxSlidingWindow1(int[] nums, int k) {
         int length = nums.length;
-        int[] result = new int[length - k + 1];
+        int[] result = new int[length - k + 1]; // 记住！容易忽视边界值，要谨慎
         int max = (int) Double.NEGATIVE_INFINITY;
         int max_index = -1, left = 0, right = k - 1;
         while (right < length) {
             if (max_index < left) {
                 max = (int) Double.NEGATIVE_INFINITY;
-                for (int i = left; i <= right; i++) {
+                for (int i = left; i <= right; i++) { // 判断条件的边界值，等号之类的，面试时一定要慎重。平时做题也要慎重
                     if (max < nums[i]) {
                         max = nums[i];
                         max_index = i;

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+// 第二遍 - 遍历的重点：把做节点全压进栈，然后pop，打印，再取右节点
 // 给定一个二叉树，返回它的中序 遍历。
 // 思路：
 // 递归
 // 栈
 // 莫里斯遍历
 public class InorderTraversal94 {
-
     /****
      * 递归
      *
@@ -39,11 +39,10 @@ public class InorderTraversal94 {
         }
     }
 
-    /****
+    /**
      * 栈
-     *
-     * 时间复杂度：O(n)
-     * 空间复杂度：O(n)
+     * 时间复杂度：O(n) - 49.41%
+     * 空间复杂度：O(n) - 87.51%
      *
      * @param root
      * @return
@@ -51,16 +50,14 @@ public class InorderTraversal94 {
     public List<Integer> inorderTraversal11(TreeNode root) {
         List<Integer> result = new ArrayList<Integer>();
         Stack<TreeNode> stack = new Stack();
-        TreeNode temp = root;
-        while (temp != null || !stack.isEmpty()) {
-            while (temp != null) {
-                stack.push(temp);
-                temp = temp.left;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
             }
-            temp = stack.pop();
-            result.add(temp.val);
-            // 这个地方的逻辑总是写错，需要多练习！！！
-            temp = temp.right;
+            root = stack.pop();
+            result.add(root.val);
+            root = root.right;
         }
         return result;
     }
