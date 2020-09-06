@@ -1,5 +1,10 @@
 package com.xunlianying1;
 
+// 第二遍
+// 时间复杂度:O() - 99.88%
+// 空间复杂度:O() - 5.02%
+// 优点:
+// 缺点:
 class MinStack155 {
     class Node {
         int value;
@@ -15,12 +20,10 @@ class MinStack155 {
 
     Node head;
 
-    //每次加入的节点放到头部
     public void push(int x) {
         if (null == head) {
             head = new Node(x, x);
         } else {
-            //当前值和之前头结点的最小值较小的做为当前的 min
             Node n = new Node(x, Math.min(x, head.min));
             n.next = head;
             head = n;
@@ -28,19 +31,16 @@ class MinStack155 {
     }
 
     public void pop() {
-        if (head != null)
-            head = head.next;
+        if (head != null) head = head.next;
     }
 
     public int top() {
-        if (head != null)
-            return head.value;
+        if (head != null) return head.value;
         return -1;
     }
 
     public int getMin() {
-        if (null != head)
-            return head.min;
+        if (null != head) return head.min;
         return -1;
     }
 }

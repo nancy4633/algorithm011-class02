@@ -10,6 +10,17 @@ import java.util.HashMap;
 // 因为 nums[0] + nums[1] = 2 + 7 = 9
 // 所以返回 [0, 1]
 public class twoSum1 {
+
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> hashMap = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            int temp = target - nums[i];
+            if (hashMap.containsKey(nums[i])) return new int[]{i, hashMap.get(nums[i])};
+            hashMap.put(temp, i);
+        }
+        return new int[2];
+    }
+
     /**
      * 时间复杂度:O(n) - 99.60%
      * 空间复杂度:O(n) - 91.80%
@@ -21,17 +32,12 @@ public class twoSum1 {
      * @return
      */
     public static int[] twoSum1(int[] nums, int target) {
-        HashMap<Integer, Integer> hashMap = new HashMap<>();
-        int length = nums.length, index; // 居然把index写在外面更节省空间。
-        for (int i = 0; i < length; i++) {
-            if (hashMap.containsKey(nums[i])) {
-                index = hashMap.get(nums[i]);
-                return new int[]{index, i}; // 记住数组的定义方式
-            } else {
-                hashMap.put(target - nums[i], i);
-            }
+        HashMap<Integer, Integer> hashMap = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            if (hashMap.containsKey(nums[i])) return new int[]{i, hashMap.get(nums[i])};
+            hashMap.put(target - nums[i], i);
         }
-        return new int[2]; // 记住数组的定义方式
+        return new int[2];
     }
 
     /**
