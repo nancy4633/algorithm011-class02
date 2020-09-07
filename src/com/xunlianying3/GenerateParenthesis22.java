@@ -1,148 +1,121 @@
 package com.xunlianying3;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
+// 第一遍 - 重点：char[] 代替String，这个想法太牛了～虽然也说不上是牛，但是习惯性的并不会想到用char[]
 // 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
-// 思路：
-// 暴力求解 - 其实就是下面说的动态规划，太傻了，先不看了。
-// 递归 - 深度优先遍历、广度优先遍历、动态规划
 public class GenerateParenthesis22 {
-    /***
-     * 递归
-     * 深度优先遍历
-     *
-     * 时间复杂度：O(n)
-     * 空间复杂度：O(1)
+    /**
+     * 递归（char[2*n]） + DFS
+     * 就是把解法2的String换成2n长度的char数组，因为字符串的任何修改都意味着重新一个申请并创建对象，耗时耗空间。思路要集中在最耗这两点的问题上。
+     * 时间复杂度:O() - 100.00%
+     * 空间复杂度:O() - 99.80%
+     * 优点:
+     * 缺点:
      *
      * @param n
      * @return
      */
-    public static List<String> generateParenthesis2(int n) {
+    public List<String> generateParenthesis1(int n) {
         List<String> result = new ArrayList<>();
-        if (n == 0) return result;
+        if (n <= 0) return result;
+        char[] dict = new char[2 * n];
+        dfs1(n, 0, 0, result, dict);
+        return result;
+    }
+
+    public void dfs1(int n, int left, int right, List<String> result, char[] dict) {
+        if (right == n) { // 这里不用判断left了，挺厉害的，可以把这个省了
+            result.add(new String(dict)); // 不清楚为什么比 String.valueOf(dict)快一丢丢～
+            return;
+        }
+        if (left < n) {
+            dict[left + right] = '(';
+            dfs1(n, left + 1, right, result, dict);
+        }
+        if (right < left) {
+            dict[left + right] = ')';
+            dfs1(n, left, right + 1, result, dict);
+        }
+    }
+
+    /**
+     * 递归（String） + DFS
+     * 时间复杂度：O(n) - 96.90%
+     * 空间复杂度：O(1) - 89.17%
+     *
+     * @param n
+     * @return
+     */
+    public List<String> generateParenthesis2(int n) {
+        List<String> result = new ArrayList<>();
         dfs2("", n, n, result);
         return result;
     }
 
-    public static void dfs2(String current, int left, int right, List<String> result) {
-        if (left == 0 && right == 0) {
-            result.add(current);
-            // 此处的return语句容易漏掉，切记！！！
-            return;
-        }
-        if (left > right) return;
-        // 这里的-1，不可以写成--，原因是--会在drill down的时候影响当前层的参数值。切记！！！
-        if (left <= right && left > 0) dfs2(current + "(", left - 1, right, result);
-        if (left < right && right > 0) dfs2(current + ")", left, right - 1, result);
-    }
-
-    /***
-     * 动态规划
-     * 广度优先遍历
-     *
-     * 时间复杂度：O()
-     * 空间复杂度：O()
-     *
-     * @param n
-     * @return
-     */
-    public static List<String> generateParenthesis22(int n) {
-        List<String> result = new ArrayList<>();
-
-        return result;
-    }
-
-    /***
-     * 深度优先遍历
-     *
-     * 时间复杂度：O(n)
-     * 空间复杂度：O(1)
-     *
-     * @param n
-     * @return
-     */
-    public static List<String> generateParenthesis1(int n) {
-        List<String> result = new ArrayList<>();
-        if (n == 0) return result;
-        dfs("", n, n, result);
-        return result;
-    }
-
-    public static void dfs(String currentString, int left, int right, List<String> result) {
+    public void dfs2(String s, int left, int right, List<String> result) {
         if (left == 0 & right == 0) {
-            result.add(currentString);
+            result.add(s);
             return;
         }
         if (left > right) return;
-        if (left > 0) dfs(currentString + "(", left - 1, right, result);
-        if (right > 0) dfs(currentString + ")", left, right - 1, result);
+        if (left > 0) dfs2(s + "(", left - 1, right, result);
+        if (right > 0) dfs2(s + ")", left, right - 1, result);
     }
 
-    /***
-     * 广度优先遍历
-     *
-     *
+    /**
+     * 递归 + DFS
+     * 时间复杂度:O() - 96.90%
+     * 空间复杂度:O() - 96.41%
+     * 优点:
+     * 缺点:
      *
      * @param n
      * @return
      */
-    public List<String> generateParenthesis11(int n) {
-        List<String> res = new ArrayList<>();
-        if (n == 0) {
-            return res;
-        }
-        Queue<Node> queue = new LinkedList<>();
-        queue.offer(new Node("", n, n));
+    public List<String> generateParenthesis3(int n) {
+        List<String> result = new ArrayList<>();
+        dfs3(0, 0, n, "", result);
+        return result;
+    }
 
-        while (!queue.isEmpty()) {
-
-            Node curNode = queue.poll();
-            if (curNode.left == 0 && curNode.right == 0) {
-                res.add(curNode.res);
-            }
-            if (curNode.left > 0) {
-                queue.offer(new Node(curNode.res + "(", curNode.left - 1, curNode.right));
-            }
-            if (curNode.right > 0 && curNode.left < curNode.right) {
-                queue.offer(new Node(curNode.res + ")", curNode.left, curNode.right - 1));
-            }
+    public void dfs3(int left, int right, int n, String s, List<String> result) {
+        if (left == n && right == n) {
+            result.add(s);
+            return;
         }
-        return res;
+        if (left < n) dfs3(left + 1, right, n, s + "(", result);
+        if (right < left) dfs3(left, right + 1, n, s + ")", result);
     }
 
     /**
      * 动态规划
+     * 时间复杂度:O() - 11.57%
+     * 空间复杂度:O() - 16.34%
+     * 优点:
+     * 缺点:
      *
      * @param n
      * @return
      */
-    public static List<String> generateParenthesis111(int n) {
-        if (n == 0) {
-            return new ArrayList<>();
-        }
-        // 这里 dp 数组我们把它变成列表的样子，方便调用而已
+    public List<String> generateParenthesis4(int n) {
         List<List<String>> dp = new ArrayList<>(n);
-
-        List<String> dp0 = new ArrayList<>();
-        dp0.add("");
-        dp.add(dp0);
-
+        List<String> temp = new ArrayList<>(), str1, str2;
+        temp.add("");
+        dp.add(temp);
         for (int i = 1; i <= n; i++) {
-            List<String> cur = new ArrayList<>();
+            temp = new ArrayList<>();
             for (int j = 0; j < i; j++) {
-                List<String> str1 = dp.get(j);
-                List<String> str2 = dp.get(i - 1 - j);
+                str1 = dp.get(j);
+                str2 = dp.get(i - 1 - j);
                 for (String s1 : str1) {
                     for (String s2 : str2) {
-                        // 枚举右括号的位置
-                        cur.add("(" + s1 + ")" + s2);
+                        temp.add("(" + s1 + ")" + s2);
                     }
                 }
             }
-            dp.add(cur);
+            dp.add(temp);
         }
         return dp.get(n);
     }

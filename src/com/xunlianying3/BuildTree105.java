@@ -2,30 +2,51 @@ package com.xunlianying3;
 
 import java.util.Stack;
 
+// 第一遍
 // 根据一棵树的前序遍历与中序遍历构造二叉树。
 // 注意:
 // 你可以假设树中没有重复的元素。
 // 已知一个二叉树的前序遍历和中序遍历的结果，求这个二叉树，那么这个二叉树如何表达呢？？？
-// 思路：
-// 树的遍历
-// 分治
-// 疑问：Integer.MAX_VALUE 为什么要有这个数呢？
 public class BuildTree105 {
-    /***
-     * 迭代 栈：
-     * 类似于树的遍历
-     *
-     * 时间复杂度：O(n) - 第二快
-     * 空间复杂度：O(n)
+    /**
+     * 递归
+     * 时间复杂度：O(n) - 100.00%
+     * 空间复杂度：O(n) - 92.75%
      *
      * @param preorder
      * @param inorder
      * @return
      */
     public TreeNode buildTree1(int[] preorder, int[] inorder) {
-        if (preorder == null || preorder.length == 0) {
+        return dfs1(preorder, inorder, (long) Integer.MAX_VALUE + 1);
+    }
+
+    int pre_index = 0, in_index = 0;
+
+    private TreeNode dfs1(int[] preorder, int[] inorder, long limit) {
+        if (pre_index == preorder.length) return null;
+        if (inorder[in_index] == limit) {
+            in_index++;
             return null;
         }
+        int val = preorder[pre_index++];
+        TreeNode root = new TreeNode(val);
+        root.left = dfs1(preorder, inorder, val); // 做节点有限制，要小于父节点的值
+        root.right = dfs1(preorder, inorder, limit); // 右节点没有限制，所以取int的无限大加一。
+        return root;
+    }
+
+    /**
+     * 迭代 + 栈：类似于树的遍历
+     * 时间复杂度：O(n) - 98.06%
+     * 空间复杂度：O(n) - 99.71%
+     *
+     * @param preorder
+     * @param inorder
+     * @return
+     */
+    public TreeNode buildTree3(int[] preorder, int[] inorder) {
+        if (preorder == null || preorder.length == 0) return null;
         TreeNode root = new TreeNode(preorder[0]);
         Stack<TreeNode> stack = new Stack<TreeNode>();
         stack.push(root);
@@ -47,39 +68,4 @@ public class BuildTree105 {
         }
         return root;
     }
-
-    /***
-     * 递归
-     *
-     * 时间复杂度：O(n) - 最快，
-     * 空间复杂度：O(n)
-     *
-     * @param preorder
-     * @param inorder
-     * @return
-     */
-    public TreeNode buildTree11(int[] preorder, int[] inorder) {
-        return buildTreeHelper(preorder, inorder, (long) Integer.MAX_VALUE + 1);
-    }
-
-    int pre = 0, in = 0;
-
-    private TreeNode buildTreeHelper(int[] preorder, int[] inorder, long stop) {
-        //到达末尾返回 null
-        if (pre == preorder.length) return null;
-        //到达停止点返回 null
-        //当前停止点已经用了，in 后移
-        if (inorder[in] == stop) {
-            in++;
-            return null;
-        }
-        int root_val = preorder[pre++];
-        TreeNode root = new TreeNode(root_val);
-        //左子树的停止点是当前的根节点
-        root.left = buildTreeHelper(preorder, inorder, root_val);
-        //右子树的停止点是当前树的停止点
-        root.right = buildTreeHelper(preorder, inorder, stop);
-        return root;
-    }
-
 }

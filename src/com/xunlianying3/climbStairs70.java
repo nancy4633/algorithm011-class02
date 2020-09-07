@@ -8,12 +8,12 @@ public class climbStairs70 {
     /**
      * 动态规划 - 两个变量
      * 时间复杂度：O(n) - 100.00%
-     * 空间复杂度：O(1) - 98.46%
+     * 空间复杂度：O(1) - 99.27%
      *
      * @param n
      * @return
      */
-    public int climbStairs33(int n) {
+    public int climbStairs1(int n) {
         int p = 0, q = 1;
         for (int i = 0; i < n; i++) {
             q += p;
@@ -25,12 +25,12 @@ public class climbStairs70 {
     /**
      * 动态规划
      * 时间复杂度：O(n) - 100.00%
-     * 空间复杂度：O(1) - 96.18%
+     * 空间复杂度：O(1) - 98.81%
      *
      * @param n
      * @return
      */
-    public int climbStairs11(int n) {
+    public int climbStairs2(int n) {
         int p = 0, q = 0, r = 1;
         for (int i = 1; i <= n; ++i) {
             p = q;
@@ -40,8 +40,9 @@ public class climbStairs70 {
         return r;
     }
 
-    /***
-     * 动态规划 - 思想和尾递归类似，但是因为递归会消耗过多的递归栈，所有for循环更优，使用尾递归的时间复杂度是：O(2^n)！！！
+    /**
+     * 动态规划 + 一维数组
+     * 思想和尾递归类似，但是因为递归会消耗过多的递归栈，所有for循环更优，使用尾递归的时间复杂度是：O(2^n)！！！
      * 这里提到的尾递归，是指未进行优化的递归，是二叉树的形式进行递归，很多分支重复计算，所以时间复杂度O(2^n)。
      * 时间复杂度：O(n) - 100.00%
      * 空间复杂度：O(n) - 86.00%
@@ -49,7 +50,7 @@ public class climbStairs70 {
      * @param n
      * @return
      */
-    public int climbStairs22(int n) {
+    public int climbStairs3(int n) {
         int[] result = new int[n + 1];
         result[0] = 1; // 尤其注意，这里不是0。对于边界值，一定要多留意。
         result[1] = 1;
@@ -67,7 +68,7 @@ public class climbStairs70 {
      * @param n
      * @return
      */
-    public int climbStairs2(int n) {
+    public int climbStairs4(int n) {
         double sqrt5 = Math.sqrt(5);
         return (int) ((Math.pow((1 + sqrt5) / 2, n + 1) - Math.pow((1 - sqrt5) / 2, n + 1)) / sqrt5);
     }
@@ -80,7 +81,7 @@ public class climbStairs70 {
      * @param n
      * @return
      */
-    public int climbStairs111(int n) {
+    public int climbStairs5(int n) {
         int[][] q = {{1, 1}, {1, 0}};
         int[][] result = pow(q, n);
         return result[0][0];
