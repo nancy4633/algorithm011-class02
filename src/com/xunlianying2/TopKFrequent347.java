@@ -2,7 +2,7 @@ package com.xunlianying2;
 
 import java.util.*;
 
-// 第二遍
+// 第二遍 - 重点，着重理解
 // 给定一个非空的整数数组，返回其中出现频率前 k 高的元素。
 // priorityqueue的poll()是移除第一个元素。所以这里面一定是用小顶堆。好生气哦。
 public class TopKFrequent347 {

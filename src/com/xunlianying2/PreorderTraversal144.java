@@ -6,12 +6,7 @@ import java.util.Stack;
 
 // 第一遍 - 栈 + 遍历 ， 尤其要记住
 // 给定一个二叉树，返回它的 前序 遍历。
-// 思路：
-// 模仿中序遍历的写法，想到两种方式
-// 递归
-// 栈
 public class PreorderTraversal144 {
-
     /**
      * 遍历
      * 时间复杂度：O(n) 递归函数 T(n) = 2*T(n/2)+1 - 100.00%
@@ -41,7 +36,7 @@ public class PreorderTraversal144 {
      * @param root
      * @return
      */
-    public List<Integer> preorderTraversal11(TreeNode root) {
+    public List<Integer> preorderTraversal2(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         Stack<TreeNode> stack = new Stack();
         while (root != null || !stack.isEmpty()) {
