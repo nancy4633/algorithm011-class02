@@ -6,13 +6,11 @@ package com.xunlianying3;
 // 迭代 - 动态规划、树的广度优先遍历
 //
 public class MyPow50 {
-
-    /***
+    /**
      * 快速幂 + 递归：
      * 快速幂算法的本质：分治算法
-     *
-     * 时间复杂度：O(logn) - 递归的层数
-     * 空间复杂度：O(logn) - 递归栈的使用的空间
+     * 时间复杂度：O(logn) - 95.81% - 递归的层数
+     * 空间复杂度：O(logn) - 98.76% - 递归栈的使用的空间
      *
      * @param x
      * @param n
@@ -29,12 +27,10 @@ public class MyPow50 {
         return (n % 2 == 0) ? (temp * temp) : (temp * temp * x);
     }
 
-    /***
+    /**
      * 快速幂 + 迭代
-     * 逻辑看的有点儿晕，下次再看，说实在的，迭代的代码冗余又难懂。递归练完后要好好练练迭代
-     *
-     * 时间复杂度：O(logn) - 对n进行二进制拆分的时间复杂度
-     * 空间复杂度：O(1)
+     * 时间复杂度：O(logn) - 95.81% - 对n进行二进制拆分的时间复杂度
+     * 空间复杂度：O(1) - 73.12%
      *
      * @param x
      * @param n
@@ -61,5 +57,20 @@ public class MyPow50 {
         return ans;
     }
 
-
+    /**
+     * 公式
+     * 时间复杂度:O() - 95.81%
+     * 空间复杂度:O() - 97.94%
+     * 优点:
+     * 缺点:
+     *
+     * @param x
+     * @param n
+     * @return
+     */
+    public double myPow0(double x, int n) {
+        double s = n != 0 ? myPow0(x, n / 2) : 1;
+        x = ((n % 2) == 0 ? 1 : x);
+        return n > 0 ? x * s * s : 1 / x * s * s;
+    }
 }

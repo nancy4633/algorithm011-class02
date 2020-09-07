@@ -4,118 +4,58 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// 第一遍
 // n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
-// 思路：
-// 回溯
-// 迭代
 public class SolveNQueens51 {
 
-    /***
-     * 回溯 - 递归实现的回溯算法，把哥哥可能性都分开写了，但是代码看起来好乱。
-     *
-     * 时间复杂度：O(n)
-     * 空间复杂度：O(n)
+    /**
+     * DFS + 回溯 + 剪枝
+     * 时间复杂度:O() - 100.00%
+     * 空间复杂度:O() - 98.22%
+     * 优点:
+     * 缺点:
      *
      * @param n
      * @return
      */
     public List<List<String>> solveNQueens1(int n) {
-        this.n = n;
-        rows = new int[n];
-        hills = new int[4 * n - 1];
-        dales = new int[2 * n - 1];
-        queens = new int[n];
-        backtrack(0);
-        return output;
-    }
-
-    // "hill" diagonals &   dale" diagonals & queens positions
-    int rows[], hills[], dales[], queens[];
-    int n;
-    // output
-    List<List<String>> output = new ArrayList();
-
-    public boolean isNotUnderAttack(int row, int col) {
-        int res = rows[col] + hills[row - col + 2 * n] + dales[row + col];
-        return (res == 0) ? true : false;
-    }
-
-    public void placeQueen(int row, int col) {
-        queens[row] = col;
-        rows[col] = 1;
-        hills[row - col + 2 * n] = 1;  // "hill" diagonals
-        dales[row + col] = 1;   //"dale" diagonals
-    }
-
-    public void removeQueen(int row, int col) {
-        queens[row] = 0;
-        rows[col] = 0;
-        hills[row - col + 2 * n] = 0;
-        dales[row + col] = 0;
-    }
-
-    public void addSolution() {
-        List<String> solution = new ArrayList<String>();
-        for (int i = 0; i < n; ++i) {
-            int col = queens[i];
-            StringBuilder sb = new StringBuilder();
-            for (int j = 0; j < col; ++j) sb.append(".");
-            sb.append("Q");
-            for (int j = 0; j < n - col - 1; ++j) sb.append(".");
-            solution.add(sb.toString());
+        chessBoard = new char[n][n];
+        for (char[] ch : chessBoard) {
+            Arrays.fill(ch, '.');
         }
-        output.add(solution);
-    }
-
-    public void backtrack(int row) {
-        for (int col = 0; col < n; col++) {
-            if (isNotUnderAttack(row, col)) {
-                placeQueen(row, col);
-                // if n queens are already placed
-                if (row + 1 == n) addSolution();
-                    // if not proceed to place the rest
-                else backtrack(row + 1);
-                // backtrack
-                removeQueen(row, col);
-            }
-        }
-    }
-
-    /***
-     * 递归 + 迭代
-     * 代码好看一点点
-     *
-     * 时间复杂度：O(n)
-     * 空间复杂度：O(n)
-     *
-     * @param n
-     * @return
-     */
-    public List<String[]> solveNQueens11(int n) {
-        List<String[]> res = new ArrayList<>();
-        helper(0, new boolean[n], new boolean[2 * n], new boolean[2 * n], new String[n], res);
+        cols = new boolean[n];
+        mainDiag = new boolean[2 * n + 1];
+        deputyDiag = new boolean[2 * n - 1];
+        dfs1(n, 0);
         return res;
     }
 
-    private void helper(int r, boolean[] cols, boolean[] d1, boolean[] d2,
-                        String[] board, List<String[]> res) {
-        if (r == board.length) res.add(board.clone());
-        else {
-            for (int c = 0; c < board.length; c++) {
-                int id1 = r - c + board.length, id2 = 2 * board.length - r - c - 1;
-                if (!cols[c] && !d1[id1] && !d2[id2]) {
-                    char[] row = new char[board.length];
-                    Arrays.fill(row, '.');
-                    row[c] = 'Q';
-                    board[r] = new String(row);
-                    cols[c] = true;
-                    d1[id1] = true;
-                    d2[id2] = true;
-                    helper(r + 1, cols, d1, d2, board, res);
-                    cols[c] = false;
-                    d1[id1] = false;
-                    d2[id2] = false;
-                }
+    List<List<String>> res = new ArrayList<>();
+    char[][] chessBoard;
+    boolean[] cols;
+    boolean[] mainDiag;
+    boolean[] deputyDiag;
+
+    public void dfs1(int n, int len) {
+        if (n == len) {
+            List<String> oneRes = new ArrayList<>();
+            for (char[] ch : chessBoard) {
+                oneRes.add(new String(ch));
+            }
+            res.add(oneRes);
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            if (!cols[i] && !mainDiag[n + len - i] && !deputyDiag[len + i]) {
+                chessBoard[len][i] = 'Q';
+                cols[i] = true;
+                mainDiag[n + len - i] = true;
+                deputyDiag[len + i] = true;
+                dfs1(n, len + 1);
+                chessBoard[len][i] = '.';
+                cols[i] = false;
+                mainDiag[n + len - i] = false;
+                deputyDiag[len + i] = false;
             }
         }
     }
