@@ -2,37 +2,33 @@ package com.xunlianying3;
 
 import java.util.*;
 
-// 第一遍
+// 第一遍 先只看解法一。
 // 给定一个可包含重复数字的序列，返回所有不重复的全排列。
 public class PermuteUnique47 {
-
     /**
      * 回溯
      * 时间复杂度:O() - 100.00%
-     * 空间复杂度:O() - 98.36%
+     * 空间复杂度:O() - 99.70%
      * 优点:
      * 缺点:
      *
      * @param nums
      * @return
      */
-    public List<List<Integer>> permuteUnique2(int[] nums) {
-        this.nums = nums;
-        list = new ArrayList<>();
-        //切记必须要先排序啊！！！！！！这样只有相邻的才可能相等，才可以判断去除！！！！！
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        results = new ArrayList<>();
         Arrays.sort(nums);
-        List<Integer> ll = new ArrayList<>();
-        boolean[] flag = new boolean[nums.length];
-        dfs2(ll, flag, 0);
-        return list;
+        this.nums = nums;
+        dfs2(new ArrayList<>(), new boolean[nums.length], 0);
+        return results;
     }
 
-    List<List<Integer>> list;
+    List<List<Integer>> results;
     int[] nums;
 
     public void dfs2(List<Integer> ll, boolean[] flag, int length) {
         if (length == nums.length) {
-            list.add(new ArrayList<>(ll));
+            results.add(new ArrayList<>(ll));
             return;
         }
         for (int i = 0; i < nums.length; i++) {
@@ -47,37 +43,36 @@ public class PermuteUnique47 {
     }
 
     /**
-     * 回溯 + 剪枝
-     * 时间复杂度：O() - 75.87%
-     * 空间复杂度：O() - 50.49%
+     * 回溯 + 剪枝 + Deque
+     * 时间复杂度：O() - 75.80%
+     * 空间复杂度：O() - 98.07%
      *
      * @param nums
      * @return
      */
     public List<List<Integer>> permuteUnique3(int[] nums) {
-        int len = nums.length;
         List<List<Integer>> res = new ArrayList<>();
-        if (len == 0) return res;
+        if (nums.length == 0) return res;
         Arrays.sort(nums);
-        boolean[] used = new boolean[len];
-        Deque<Integer> path = new ArrayDeque<>(len);
-        dfs3(nums, len, 0, used, path, res);
+        boolean[] used = new boolean[nums.length];
+        Deque<Integer> deque = new ArrayDeque<>(nums.length);
+        dfs3(nums, 0, used, deque, res);
         return res;
     }
 
-    private void dfs3(int[] nums, int len, int depth, boolean[] used, Deque<Integer> path, List<List<Integer>> res) {
-        if (depth == len) {
-            res.add(new ArrayList<>(path));
+    private void dfs3(int[] nums, int depth, boolean[] used, Deque<Integer> deque, List<List<Integer>> res) {
+        if (depth == nums.length) {
+            res.add(new ArrayList<>(deque));
             return;
         }
-        for (int i = 0; i < len; ++i) {
+        for (int i = 0; i < nums.length; ++i) {
             if (used[i]) continue;
             if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
-            path.addLast(nums[i]);
+            deque.addLast(nums[i]);
             used[i] = true;
-            dfs3(nums, len, depth + 1, used, path, res);
+            dfs3(nums, depth + 1, used, deque, res);
             used[i] = false;
-            path.removeLast();
+            deque.removeLast();
         }
     }
 }

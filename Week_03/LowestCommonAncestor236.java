@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-// 第一遍 : 重点 只要记住解法一就可以了。
+// 第二遍 : 重点 只要记住解法一就可以了。其它解法也是使用递归，但是太冗余了
 // 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
 // 最近公共祖先：对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。
 // 说明:
@@ -45,23 +45,22 @@ public class LowestCommonAncestor236 {
      * @return
      */
     public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
-        dfs3(root, p, q);
+        dfs2(root, p, q);
         return this.ans;
     }
 
     private TreeNode ans;
 
-    private boolean dfs3(TreeNode root, TreeNode p, TreeNode q) {
+    private boolean dfs2(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null) return false;
-        boolean lson = dfs3(root.left, p, q);
-        boolean rson = dfs3(root.right, p, q);
+        boolean lson = dfs2(root.left, p, q);
+        boolean rson = dfs2(root.right, p, q);
         if ((lson && rson) || ((root.val == p.val || root.val == q.val) && (lson || rson))) ans = root;
         return lson || rson || (root.val == p.val || root.val == q.val);
     }
 
     /**
-     * 树的遍历：单独写递归函数，更容易想到
-     * 存储父节点
+     * 树的遍历：单独写递归函数，更容易想到, 存储父节点
      * 时间复杂度：O(n) - 7.62% - 其中n为二叉树节点数；最差情况下，需要递归遍历树的所有节点。
      * 空间复杂度：O(n) - 5.04% - 最差情况下，递归深度达到N ，系统使用O(n)大小的额外空间。
      *
@@ -71,7 +70,7 @@ public class LowestCommonAncestor236 {
      * @return
      */
     public TreeNode lowestCommonAncestor3(TreeNode root, TreeNode p, TreeNode q) {
-        dfs4(root);
+        dfs3(root);
         while (p != null) {
             visited.add(p.val);
             p = parent.get(p.val);
@@ -86,14 +85,14 @@ public class LowestCommonAncestor236 {
     Map<Integer, TreeNode> parent = new HashMap<Integer, TreeNode>();
     Set<Integer> visited = new HashSet<Integer>();
 
-    public void dfs4(TreeNode root) {
+    public void dfs3(TreeNode root) {
         if (root.left != null) {
             parent.put(root.left.val, root);
-            dfs4(root.left);
+            dfs3(root.left);
         }
         if (root.right != null) {
             parent.put(root.right.val, root);
-            dfs4(root.right);
+            dfs3(root.right);
         }
     }
 }

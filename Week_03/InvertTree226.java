@@ -2,13 +2,13 @@ package com.xunlianying3;
 
 import java.util.LinkedList;
 
-// 第一遍 - 重点： 迭代 + BFS 写得不是很顺
+// 第二遍 - 重点： 迭代写得不是很顺
 // 翻转一棵二叉树。怎么翻转？左右调换吗？
 public class InvertTree226 {
     /**
      * 递归 + DFS
      * 时间复杂度：O(n) - 每个元素都必须访问一次 - 100.00%
-     * 空间复杂度：O(h) - 最坏的情况下，需要存放O(h)个函数调用(h是树的高度) - 97.42%
+     * 空间复杂度：O(h) - 最坏的情况下，需要存放O(h)个函数调用(h是树的高度) - 99.2%
      *
      * @param root
      * @return
@@ -33,11 +33,14 @@ public class InvertTree226 {
         if (root == null) return root;
         LinkedList<TreeNode> queue = new LinkedList<>(); // Queue<TreeNode> queue = new LinkedList<>(); 但是LinkedList更快
         queue.add(root);
-        TreeNode temp;
+        TreeNode cur, temp;
         while (!queue.isEmpty()) {
-            temp = queue.poll();
-            if (temp.right != null) queue.add(temp.right);
-            if (temp.left != null) queue.add(temp.left);
+            cur = queue.poll();
+            temp = cur.left;
+            cur.left = cur.right;
+            cur.right = temp;
+            if (cur.left != null) queue.add(cur.left);
+            if (cur.right != null) queue.add(cur.right);
         }
         return root;
     }
