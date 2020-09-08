@@ -20,7 +20,7 @@ public class IsValidBST98 {
      */
     public boolean isValidBST1(TreeNode root) {
         if (root == null) return true;
-        if (!isValidBST1(root.left)) return false;
+        if (!isValidBST1(root.left)) return false; // 这句话之所以放在后面两句话的前面，是因为，要先递归到最左侧，才开始判断值，否则判断条件依然是不一致的。
         if (root.val <= preroot) return false;
         preroot = root.val; // 父节点的值，给下一轮遍历用
         return isValidBST1(root.right);

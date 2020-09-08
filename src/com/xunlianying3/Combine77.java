@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-// 第一遍 今天要把苦难的事情做完，明天才会更轻松，要先做困难的，加油。
+// 第二遍 今天要把苦难的事情做完，明天才会更轻松，要先做困难的，加油。
 // 给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
 // 没有重复的集合！！！
 public class Combine77 {
@@ -19,26 +19,26 @@ public class Combine77 {
      * @param k
      * @return
      */
-    public List<List<Integer>> combine1(int n, int k) {
-        List<List<Integer>> result = new ArrayList<>();
-        getResult1(1, n, k, new ArrayList<>(), result);
-        return result;
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> results = new ArrayList<>();
+        getResult(1, n, k, new ArrayList<>(), results); // 此处n从1开始，不是0！！！
+        return results;
     }
 
-    private void getResult1(int start, int n, int k, ArrayList<Integer> temp, List<List<Integer>> ans) {
-        if (temp.size() == k) {
-            ans.add(new ArrayList<>(temp));
+    private void getResult(int start, int n, int k, ArrayList<Integer> result, List<List<Integer>> results) {
+        if (result.size() == k) {
+            results.add(new ArrayList<>(result));
             return;
         }
-        for (int i = start; i < n - (k - temp.size()) + 1; i++) { // 1<=i<=n i不是index，是具体的值
-            temp.add(i);
-            getResult1(i + 1, n, k, temp, ans);
-            temp.remove(temp.size() - 1); // reverse state 移除list中最后一个数字
+        for (int i = start; i <= n - (k - result.size()) + 1; i++) { // 此处的计算要清楚，本办法也ok～
+            result.add(i);
+            getResult(i + 1, n, k, result, results);
+            result.remove(result.size() - 1); // reverse state 移除list中最后一个数字
         }
     }
 
     /**
-     * 回溯 + 剪枝 + Stack
+     * 回溯 + 剪枝 + Stack，跟解法一的ArrayList的原理是一样的。
      * 时间复杂度：O() - 97.61%
      * 空间复杂度：O() - 44.38%
      *
@@ -62,34 +62,6 @@ public class Combine77 {
             p.push(i);
             getResult2(n, k, i + 1, p, result);
             p.pop();
-        }
-    }
-
-    /**
-     * 回溯
-     * 时间复杂度：O() - 21.39%
-     * 空间复杂度：O() - 90.75%
-     *
-     * @param n
-     * @param k
-     * @return
-     */
-    public List<List<Integer>> combine3(int n, int k) {
-        List<List<Integer>> result = new ArrayList<>();
-        if (n <= 0 || k <= 0 || n < k) return result;
-        getResult3(n, k, 1, new Stack<>(), result);
-        return result;
-    }
-
-    private void getResult3(int n, int k, int begin, Stack<Integer> pre, List<List<Integer>> result) {
-        if (pre.size() == k) {
-            result.add(new ArrayList<>(pre));
-            return;
-        }
-        for (int i = begin; i <= n; i++) {
-            pre.add(i);
-            getResult3(n, k, i + 1, pre, result);
-            pre.pop();
         }
     }
 }
