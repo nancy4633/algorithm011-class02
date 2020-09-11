@@ -7,11 +7,12 @@ import java.util.Map;
 
 // 第一遍
 // 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
-// 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+// 给出数字到字母的映射如下（与电话按键相同）。
+// 注意:
+// 不对应任何字母。
 public class LetterCombinations17 {
-
     /**
-     * 回溯
+     * 回溯 + 一维String数组
      * 时间复杂度:O() - 100.00%
      * 空间复杂度:O() - 98.97%
      * 优点:
@@ -20,26 +21,28 @@ public class LetterCombinations17 {
      * @param digits
      * @return
      */
-    public List<String> letterCombinations0(String digits) {
-        List<String> result = new ArrayList<String>();
-        if (digits == null || digits.length() < 1) return result;
-        StringBuilder sb = new StringBuilder();
-        traceback0(digits.length(), result, digits, 0, sb);
-        return result;
+    public List<String> letterCombinations1(String digits) {
+        List<String> results = new ArrayList<>();
+        if (digits == null || digits.length() < 1) return results;
+        StringBuilder result = new StringBuilder();
+        dfs1(digits, digits.length(), 0, results, result);
+        return results;
     }
 
-    String[] chars = new String[]{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    String[] keys = new String[]{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 
-    public void traceback0(int n, List<String> result, String digits, int i, StringBuilder sb) {
-        if (i == n) {
-            result.add(sb.toString());
+    public void dfs1(String digits, int len, int index, List<String> results, StringBuilder result) {
+        if (index == len) {
+            results.add(new String(result));
             return;
         }
-        String toBeAppend = chars[digits.charAt(i) - '0' - 2];
-        for (int idx = 0; idx < toBeAppend.length(); idx++) {
-            sb.append(toBeAppend.charAt(idx));
-            traceback0(n, result, digits, i + 1, sb);
-            sb.deleteCharAt(sb.length() - 1);
+        // 当前index对应的可能的码值
+        String key = keys[digits.charAt(index) - 50];  // 也可以写成： keys[digits.charAt(index) - '0' - 2];
+        // 0的ASCII码值是48， A的ASCII码是65, a的ASCII码是97
+        for (int id = 0; id < key.length(); id++) { // 遍历所有的当前index对应的可能的码值
+            result.append(key.charAt(id)); // 加到result的末尾
+            dfs1(digits, len, index + 1, results, result); // 继续操作接下来的index。
+            result.deleteCharAt(result.length() - 1); // reverse state，这一步应该是回溯的精髓，非常赞，只要有这一步基本上就可以认为是经典的回溯
         }
     }
 
@@ -53,7 +56,7 @@ public class LetterCombinations17 {
      * @param digits
      * @return
      */
-    public List<String> letterCombinations(String digits) {
+    public List<String> letterCombinations5(String digits) {
         if ("".equals(digits)) return new ArrayList<>();
         char[][] q = new char[][]{
                 {},
@@ -99,29 +102,29 @@ public class LetterCombinations17 {
      * @param digits
      * @return
      */
-    public List<String> letterCombinations3(String digits) {
+    public List<String> letterCombinations6(String digits) {
         List<String> list = new ArrayList<>();
         if (digits.equals("")) return list;
         String[] strs = new String[]{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
         int len = digits.length();
         char[] chars = new char[len];
-        recurse3(strs, list, digits, chars, 0);
+        reverse6(strs, list, digits, chars, 0);
         return list;
     }
 
-    public void recurse3(String[] strs, List<String> list, String digits, char[] chars, int count) {
+    public void reverse6(String[] strs, List<String> list, String digits, char[] chars, int count) {
         if (count == chars.length) {
             list.add(new String(chars));
             return;
         }
         for (char c : strs[digits.charAt(count) - '2'].toCharArray()) {
             chars[count] = c;
-            recurse3(strs, list, digits, chars, count + 1);
+            reverse6(strs, list, digits, chars, count + 1);
         }
     }
 
     /**
-     * 回溯： map + 递归
+     * 回溯 + map
      * 时间复杂度： 88.66%
      * 空间复杂度： 91.24%
      *
@@ -160,7 +163,7 @@ public class LetterCombinations17 {
     }
 
     /**
-     * 回溯： 数组 + 递归
+     * 回溯 + 一维String数组
      * 时间复杂度： 37.32%
      * 空间复杂度： 31.06%
      *

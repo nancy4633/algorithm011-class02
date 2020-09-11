@@ -2,7 +2,7 @@ package com.xunlianying3;
 
 import java.util.Stack;
 
-// 第二遍
+// 第三遍 没有一次成功，需要继续练习
 // 根据一棵树的前序遍历与中序遍历构造二叉树。
 // 注意:
 // 你可以假设树中没有重复的元素。

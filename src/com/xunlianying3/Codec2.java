@@ -14,44 +14,34 @@ import java.util.Queue;
 // 时间复杂度： 48.74%
 // 空间复杂度： 65.24%
 public class Codec2 {
+
+    // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        if (root == null) return "";
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        StringBuffer res = new StringBuffer();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            TreeNode curNode = queue.poll();
-            if (curNode != null) {
-                res.append(curNode.val + ",");
-                queue.offer(curNode.left);
-                queue.offer(curNode.right);
-            } else {
-                res.append("null,");
-            }
-        }
-        return res.toString();
+        String result = "";
+        if (root == null) return result += "#!";
+        result += (root.val + "!");
+        result += serialize(root.left);
+        result += serialize(root.right);
+        return result;
     }
 
+    // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        if (data == "") return null;
-        String[] val = data.substring(0, data.length() - 1).split(",");
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        TreeNode root = new TreeNode(Integer.parseInt(val[0]));
-        int cur = 1;
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            TreeNode curNode = queue.poll();
-            if (!"null".equals(val[cur])) {
-                curNode.left = new TreeNode(Integer.valueOf(val[cur]));
-                queue.offer(curNode.left);
-            }
-            cur++;
-            if (!"null".equals(val[cur])) {
-                curNode.right = new TreeNode(Integer.valueOf(val[cur]));
-                queue.offer(curNode.right);
-            }
-            cur++;
+        String[] s = data.split("!");
+        if (s == null || s.length == 0 || s[0].equals("#")) return null;
+        LinkedList<String> queue = new LinkedList<>();
+        for (String temp : s) {
+            queue.push(temp);
         }
+        return reverse(queue);
+    }
+
+    private TreeNode reverse(LinkedList<String> queue) {
+        String value = queue.pop();
+        if (value.equals("#")) return null;
+        TreeNode root = new TreeNode(Integer.valueOf(value));
+        root.left = reverse(queue);
+        root.right = reverse(queue);
         return root;
     }
 }

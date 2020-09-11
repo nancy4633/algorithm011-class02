@@ -20,7 +20,7 @@ public class MajorityElement169 {
      * @param nums
      * @return
      */
-    public int majorityElement0(int[] nums) {
+    public int majorityElement1(int[] nums) {
         int majority = nums[0], cnt = 0, quorum = nums.length >> 1;
         for (int i = 0; i < nums.length; i++) {
             if (majority == nums[i]) {
@@ -42,7 +42,7 @@ public class MajorityElement169 {
      * @param nums
      * @return
      */
-    public int majorityElement1(int[] nums) {
+    public int majorityElement2(int[] nums) {
         int last = nums[0];
         int count = 1;
         for (int i = 1; i < nums.length; i++) {
@@ -67,9 +67,9 @@ public class MajorityElement169 {
      * @param nums
      * @return
      */
-    public int majorityElement2(int[] nums) {
+    public int majorityElement3(int[] nums) {
         Arrays.sort(nums);
-        return nums[nums.length / 2];
+        return nums[nums.length >> 1]; // return nums[nums.length / 2];
     }
 
     /**
@@ -82,7 +82,7 @@ public class MajorityElement169 {
      * @param nums
      * @return
      */
-    public int majorityElement3(int[] nums) {
+    public int majorityElement4(int[] nums) {
         return majorityElementRec3(nums, 0, nums.length - 1);
     }
 
@@ -115,7 +115,7 @@ public class MajorityElement169 {
      * @param nums
      * @return
      */
-    public int majorityElement4(int[] nums) {
+    public int majorityElement5(int[] nums) {
         Random rand = new Random();
         int majorityCount = nums.length / 2;
         while (true) {
@@ -138,15 +138,15 @@ public class MajorityElement169 {
 
     /**
      * Boyer-Moore 投票算法
-     * 时间复杂度:O() -
-     * 空间复杂度:O() -
+     * 时间复杂度:O() - 43.63%
+     * 空间复杂度:O() - 54.11%
      * 优点:
      * 缺点:
      *
      * @param nums
      * @return
      */
-    public int majorityElement5(int[] nums) {
+    public int majorityElement6(int[] nums) {
         int count = 0;
         Integer candidate = null;
         for (int num : nums) {
@@ -164,7 +164,7 @@ public class MajorityElement169 {
      * @param nums
      * @return
      */
-    public int majorityElement6(int[] nums) {
+    public int majorityElement7(int[] nums) {
         Map<Integer, Integer> result = new HashMap();
         if (nums == null || nums.length == 0) return -1;
         for (int i = 0; i < nums.length; i++) {

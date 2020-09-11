@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-// 第二遍 今天要把苦难的事情做完，明天才会更轻松，要先做困难的，加油。
+// 第四遍 今天要把苦难的事情做完，明天才会更轻松，要先做困难的，加油。
 // 给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
 // 没有重复的集合！！！
 public class Combine77 {
@@ -21,7 +21,7 @@ public class Combine77 {
      */
     public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> results = new ArrayList<>();
-        getResult(1, n, k, new ArrayList<>(), results); // 此处n从1开始，不是0！！！
+        getResult(1, n, k, new ArrayList<>(), results); // 此处n从1开始，不是0！！！//又一次发生，一定要仔细审题
         return results;
     }
 
@@ -30,10 +30,10 @@ public class Combine77 {
             results.add(new ArrayList<>(result));
             return;
         }
-        for (int i = start; i <= n - (k - result.size()) + 1; i++) { // 此处的计算要清楚，本办法也ok～
+        for (int i = start; i <= n - (k - result.size()) + 1; i++) { // 此处的等号要记清楚；此处的计算要清楚，本办法也ok～
             result.add(i);
             getResult(i + 1, n, k, result, results);
-            result.remove(result.size() - 1); // reverse state 移除list中最后一个数字
+            result.remove(result.size() - 1); // reverse state 移除list中最后一个数字 // remove, 思维惯性要避免
         }
     }
 

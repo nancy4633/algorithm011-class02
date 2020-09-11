@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-// 第一遍
+// 第二遍 - 抄了两遍，总算理解了，然后又默写了两边，下午再复习一遍就好了。
 // 给定一个 没有重复 数字的序列，返回其所有可能的全排列。
 public class Permute46 {
-
     /**
-     * 回溯
+     * 回溯 + DFS + 剪枝
      * 时间复杂度:O() - 99.73%
      * 空间复杂度:O() - 95.15%
      * 优点:
@@ -19,30 +18,31 @@ public class Permute46 {
      * @param nums
      * @return
      */
-    public List<List<Integer>> permute0(int[] nums) {
-        p0(0, nums);
-        return listNums;
+    public List<List<Integer>> permute1(int[] nums) {
+        dfs1(0, nums);
+        return results;
     }
 
-    private List<List<Integer>> listNums = new ArrayList<>();
+    private List<List<Integer>> results = new ArrayList<>();
 
-    public void p0(int start, int[] nums) {
-        if (start >= nums.length - 1) {
-            List<Integer> nnnn = new ArrayList<>();
-            for (int i = 0; i < nums.length; i++) {
-                nnnn.add(nums[i]);
+    public void dfs1(int index, int[] nums) { // 直接操作原始数组，两两交换
+        // terminator:遍历到nums最后一个节点，就没有可交换的节点了，所以直接终止。
+        if (index == nums.length - 1) { // 这里的结束条件是length - 1，因为到最后一个的时候就无法swap了，属于剪枝。
+            List<Integer> result = new ArrayList<>();
+            for (int i : nums) {
+                result.add(i);
             }
-            listNums.add(nnnn);
+            results.add(result);
             return;
         }
-        for (int i = start; i < nums.length; i++) {
-            swap0(i, start, nums);
-            p0(start + 1, nums);
-            swap0(i, start, nums);
+        for (int i = index; i < nums.length; i++) { // 算是剪枝 // 这里的i是从index开始的
+            swap1(i, index, nums); // 其中i=start就是不交换的意思。
+            dfs1(index + 1, nums); // 全排列用的是index传递， 子集用的是i传递。
+            swap1(i, index, nums); // 恢复数组，用于下一次遍历。
         }
     }
 
-    public void swap0(int source, int target, int nums[]) {
+    public void swap1(int source, int target, int nums[]) {
         int temp = nums[target];
         nums[target] = nums[source];
         nums[source] = temp;
@@ -58,7 +58,7 @@ public class Permute46 {
      * @param nums
      * @return
      */
-    public List<List<Integer>> permute1(int[] nums) {
+    public List<List<Integer>> permute2(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         backTrack1(0, list, nums);
         return list;
@@ -73,14 +73,14 @@ public class Permute46 {
             list.add(arr);
         } else {
             for (int i = t; i < x.length; i++) {
-                swap1(x, i, t);
+                swap2(x, i, t);
                 backTrack1(t + 1, list, x);
-                swap1(x, i, t);
+                swap2(x, i, t);
             }
         }
     }
 
-    public void swap1(int[] x, int m, int n) {
+    public void swap2(int[] x, int m, int n) {
         int temp = x[m];
         x[m] = x[n];
         x[n] = temp;
@@ -94,7 +94,7 @@ public class Permute46 {
      * @param nums
      * @return
      */
-    public List<List<Integer>> permute2(int[] nums) {
+    public List<List<Integer>> permute3(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         int[] visited = new int[nums.length];
         backtrack2(res, nums, new ArrayList<Integer>(), visited);
@@ -124,7 +124,7 @@ public class Permute46 {
      * @param nums
      * @return
      */
-    public List<List<Integer>> permute3(int[] nums) {
+    public List<List<Integer>> permute4(int[] nums) {
         int len = nums.length;
         List<List<Integer>> res = new ArrayList<>();
         if (len == 0) return res;
@@ -159,7 +159,7 @@ public class Permute46 {
      * @param nums
      * @return
      */
-    public List<List<Integer>> permute4(int[] nums) {
+    public List<List<Integer>> permute5(int[] nums) {
         int len = nums.length;
         List<List<Integer>> res = new ArrayList<>();
         if (len == 0) return res;

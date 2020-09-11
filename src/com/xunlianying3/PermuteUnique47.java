@@ -2,7 +2,7 @@ package com.xunlianying3;
 
 import java.util.*;
 
-// 第一遍 先只看解法一。
+// 第二遍 先只看解法一。
 // 给定一个可包含重复数字的序列，返回所有不重复的全排列。
 public class PermuteUnique47 {
     /**
@@ -19,26 +19,26 @@ public class PermuteUnique47 {
         results = new ArrayList<>();
         Arrays.sort(nums);
         this.nums = nums;
-        dfs2(new ArrayList<>(), new boolean[nums.length], 0);
+        dfs1(new ArrayList<>(), new boolean[nums.length], 0);
         return results;
     }
 
     List<List<Integer>> results;
     int[] nums;
 
-    public void dfs2(List<Integer> ll, boolean[] flag, int length) {
-        if (length == nums.length) {
-            results.add(new ArrayList<>(ll));
+    public void dfs1(List<Integer> result, boolean[] flag, int index) {
+        if (index == nums.length) { // 也可以写成：result.size() == nums.length 这样的话就可以删掉index了   // terminator
+            results.add(new ArrayList<>(result));
             return;
         }
-        for (int i = 0; i < nums.length; i++) {
-            if (flag[i]) continue;
-            if (i > 0 && nums[i - 1] == nums[i] && flag[i - 1] == false) continue;
-            ll.add(nums[i]);
-            flag[i] = true;
-            dfs2(ll, flag, length + 1);
-            ll.remove(ll.size() - 1);
-            flag[i] = false;
+        for (int i = 0; i < nums.length; i++) { // 遍历
+            if (flag[i]) continue; // 剪枝
+            if (i > 0 && nums[i - 1] == nums[i] && flag[i - 1] == false) continue; // 剪枝
+            result.add(nums[i]); // process
+            flag[i] = true; // process
+            dfs1(result, flag, index + 1); // drill down
+            result.remove(result.size() - 1); // reverse state
+            flag[i] = false; // reverse state
         }
     }
 

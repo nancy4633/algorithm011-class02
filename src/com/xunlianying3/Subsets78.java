@@ -3,15 +3,14 @@ package com.xunlianying3;
 import java.util.ArrayList;
 import java.util.List;
 
-// 第一遍
+// 第二遍
 // 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
 // 说明：解集不能包含重复的子集。
 public class Subsets78 {
-
     /**
-     * 回溯
+     * 回溯 + DFS
      * 时间复杂度:O() - 99.37%
-     * 空间复杂度:O() - 32.04%
+     * 空间复杂度:O() - 99.16%
      * 优点:
      * 缺点:
      *
@@ -19,25 +18,25 @@ public class Subsets78 {
      * @return
      */
     public List<List<Integer>> subsets1(int[] nums) {
-        if (nums == null || nums.length == 0) return lists;
-        List<Integer> list = new ArrayList<>();
-        process1(list, nums, 0);
-        return lists;
+        results1 = new ArrayList<>();
+        if (nums == null || nums.length == 0) return results1;
+        dfs1(nums, 0, new ArrayList<>());
+        return results1;
     }
 
-    List<List<Integer>> lists = new ArrayList<>();
+    List<List<Integer>> results1;
 
-    private void process1(List<Integer> list, int[] nums, int start) {
-        lists.add(new ArrayList(list));
-        for (int i = start; i < nums.length; i++) {
-            list.add(nums[i]);
-            process1(list, nums, i + 1);
-            list.remove(list.size() - 1);
+    private void dfs1(int[] nums, int index, List<Integer> result) {
+        results1.add(new ArrayList(result));
+        for (int i = index; i < nums.length; i++) {
+            result.add(nums[i]);
+            dfs1(nums, i + 1, result); // 全排列用的是index， 子集用的是i。
+            result.remove(result.size() - 1);
         }
     }
 
     /**
-     * 递归
+     * 遍历
      * 时间复杂度:O() - 99.37%
      * 空间复杂度:O() - 93.96%
      * 优点:
@@ -64,7 +63,7 @@ public class Subsets78 {
     }
 
     /**
-     * 回溯
+     * 回溯 - 利用了之前的n个数中取k个数的组合，解法一样，只是主函数加了一层for循环，保证每种解法都遍历到。
      * 时间复杂度:O() - 99.37%
      * 空间复杂度:O() - 48.47%
      * 优点:
@@ -76,20 +75,20 @@ public class Subsets78 {
     public List<List<Integer>> subsets3(int[] nums) {
         n = nums.length;
         for (k = 0; k < n + 1; ++k) {
-            backtrack3(0, new ArrayList<Integer>(), nums);
+            backtrack3(0, new ArrayList<>(), nums);
         }
-        return output;
+        return results2;
     }
 
-    List<List<Integer>> output = new ArrayList();
+    List<List<Integer>> results2 = new ArrayList();
     int n, k;
 
-    public void backtrack3(int first, ArrayList<Integer> curr, int[] nums) {
-        if (curr.size() == k) output.add(new ArrayList(curr));
+    public void backtrack3(int first, ArrayList<Integer> result, int[] nums) {
+        if (result.size() == k) results2.add(new ArrayList(result));
         for (int i = first; i < n; ++i) {
-            curr.add(nums[i]);
-            backtrack3(i + 1, curr, nums);
-            curr.remove(curr.size() - 1);
+            result.add(nums[i]);
+            backtrack3(i + 1, result, nums);
+            result.remove(result.size() - 1);
         }
     }
 

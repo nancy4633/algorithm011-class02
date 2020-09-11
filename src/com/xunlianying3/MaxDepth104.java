@@ -61,8 +61,8 @@ public class MaxDepth104 {
             maxDepth++;
             int levelSize = queue.size();
             for (int i = 0; i < levelSize; i++) {
-                TreeNode node = queue.pollFirst();
-                if (node.left != null) queue.add(node.left); // 这里不能用push；
+                TreeNode node = queue.pollFirst(); // LinkedList的poll-pollfirst,
+                if (node.left != null) queue.add(node.left); // 这里不能用push；push-addFirst，add-addLast
                 if (node.right != null) queue.add(node.right);
             }
         }

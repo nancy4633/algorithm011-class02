@@ -2,7 +2,7 @@ package com.xunlianying3;
 
 import java.util.Stack;
 
-// 第二遍 重点：树的递归写的还可以，现在主要问题是树的遍历，while循环容易写错。
+// 第三遍 重点：LinkedList的offer-addfirst  pop-removefirst  offer-add-addlast
 // 给定一个二叉树，判断其是否是一个有效的二叉搜索树。
 // 假设一个二叉搜索树具有如下特征：
 // 节点的左子树只包含小于当前节点的数。
@@ -39,14 +39,14 @@ public class IsValidBST98 {
     public boolean isValidBST2(TreeNode root) {
         Stack<TreeNode> stack = new Stack();
         long preroot = Long.MIN_VALUE; // double inorder = -Double.MAX_VALUE; 作用就是超过int的取之范围，以免边缘值造成错误
-        stack.push(root);
+        stack.push(root); // Stack的push方法是继承自Vector的addElement方法。Vector的Object[] elementData数组实现的
         while (!stack.isEmpty() && root != null) {
             while (root != null) {
                 root = root.left;
                 stack.push(root);
             }
             root = stack.pop();
-            if (root.val <= preroot) return false; // 这里是： <=   !!!
+            if (root.val <= preroot) return false; // 这里是： <=   一定要看清题目的条件！！！
             preroot = root.val;
             root = root.right;
         }

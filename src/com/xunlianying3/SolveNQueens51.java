@@ -7,11 +7,10 @@ import java.util.List;
 // 第一遍
 // n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
 public class SolveNQueens51 {
-
     /**
      * DFS + 回溯 + 剪枝
      * 时间复杂度:O() - 100.00%
-     * 空间复杂度:O() - 98.22%
+     * 空间复杂度:O() - 99.20%
      * 优点:
      * 缺点:
      *
@@ -27,36 +26,33 @@ public class SolveNQueens51 {
         mainDiag = new boolean[2 * n + 1];
         deputyDiag = new boolean[2 * n - 1];
         dfs1(n, 0);
-        return res;
+        return results;
     }
 
-    List<List<String>> res = new ArrayList<>();
+    List<List<String>> results = new ArrayList<>();
     char[][] chessBoard;
-    boolean[] cols;
-    boolean[] mainDiag;
-    boolean[] deputyDiag;
+    boolean[] cols, mainDiag, deputyDiag;
 
-    public void dfs1(int n, int len) {
-        if (n == len) {
-            List<String> oneRes = new ArrayList<>();
+    public void dfs1(int n, int index) {
+        if (n == index) {
+            List<String> result = new ArrayList<>();
             for (char[] ch : chessBoard) {
-                oneRes.add(new String(ch));
+                result.add(new String(ch));
             }
-            res.add(oneRes);
+            results.add(result);
             return;
         }
         for (int i = 0; i < n; i++) {
-            if (!cols[i] && !mainDiag[n + len - i] && !deputyDiag[len + i]) {
-                chessBoard[len][i] = 'Q';
-                cols[i] = true;
-                mainDiag[n + len - i] = true;
-                deputyDiag[len + i] = true;
-                dfs1(n, len + 1);
-                chessBoard[len][i] = '.';
-                cols[i] = false;
-                mainDiag[n + len - i] = false;
-                deputyDiag[len + i] = false;
-            }
+            if (cols[i] || mainDiag[n + index - i] || deputyDiag[index + i]) continue;
+            chessBoard[index][i] = 'Q';
+            cols[i] = true;
+            mainDiag[n + index - i] = true;
+            deputyDiag[index + i] = true;
+            dfs1(n, index + 1);
+            chessBoard[index][i] = '.';
+            cols[i] = false;
+            mainDiag[n + index - i] = false;
+            deputyDiag[index + i] = false;
         }
     }
 }
