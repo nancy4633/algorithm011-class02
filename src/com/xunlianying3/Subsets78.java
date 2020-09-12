@@ -3,7 +3,7 @@ package com.xunlianying3;
 import java.util.ArrayList;
 import java.util.List;
 
-// 第二遍
+// 第三遍 - 还需要刻苦练习∑
 // 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
 // 说明：解集不能包含重复的子集。
 public class Subsets78 {
@@ -17,7 +17,7 @@ public class Subsets78 {
      * @param nums
      * @return
      */
-    public List<List<Integer>> subsets1(int[] nums) {
+    public List<List<Integer>> subsets1(int[] nums) { // 不需要排序：没要求是否包含重复元素
         results1 = new ArrayList<>();
         if (nums == null || nums.length == 0) return results1;
         dfs1(nums, 0, new ArrayList<>());
@@ -30,7 +30,7 @@ public class Subsets78 {
         results1.add(new ArrayList(result));
         for (int i = index; i < nums.length; i++) {
             result.add(nums[i]);
-            dfs1(nums, i + 1, result); // 全排列用的是index， 子集用的是i。
+            dfs1(nums, i + 1, result); // 全排列用的是index， 子集用的是i。//
             result.remove(result.size() - 1);
         }
     }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// 第一遍
+// 第二遍
 // 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
 // 给出数字到字母的映射如下（与电话按键相同）。
 // 注意:
@@ -23,7 +23,7 @@ public class LetterCombinations17 {
      */
     public List<String> letterCombinations1(String digits) {
         List<String> results = new ArrayList<>();
-        if (digits == null || digits.length() < 1) return results;
+        if (digits == null || digits.length() < 1) return results; // 这一句要判断哦，否则会报错，把[] 返回成[""]
         StringBuilder result = new StringBuilder();
         dfs1(digits, digits.length(), 0, results, result);
         return results;

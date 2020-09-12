@@ -19,24 +19,24 @@ public class PermuteUnique47 {
         results = new ArrayList<>();
         Arrays.sort(nums);
         this.nums = nums;
-        dfs1(new ArrayList<>(), new boolean[nums.length], 0);
+        dfs1(new ArrayList<>(), new boolean[nums.length]);
         return results;
     }
 
     List<List<Integer>> results;
     int[] nums;
 
-    public void dfs1(List<Integer> result, boolean[] flag, int index) {
-        if (index == nums.length) { // 也可以写成：result.size() == nums.length 这样的话就可以删掉index了   // terminator
+    public void dfs1(List<Integer> result, boolean[] flag) {
+        if (result.size() == nums.length) { // 也可以写成：result.size() == nums.length 这样的话就可以删掉index了   // terminator
             results.add(new ArrayList<>(result));
             return;
         }
         for (int i = 0; i < nums.length; i++) { // 遍历
             if (flag[i]) continue; // 剪枝
-            if (i > 0 && nums[i - 1] == nums[i] && flag[i - 1] == false) continue; // 剪枝
+            if (i > 0 && nums[i - 1] == nums[i] && !flag[i - 1]) continue; // 剪枝 // 判断条件要理解含义。
             result.add(nums[i]); // process
             flag[i] = true; // process
-            dfs1(result, flag, index + 1); // drill down
+            dfs1(result, flag); // drill down
             result.remove(result.size() - 1); // reverse state
             flag[i] = false; // reverse state
         }
@@ -51,13 +51,13 @@ public class PermuteUnique47 {
      * @return
      */
     public List<List<Integer>> permuteUnique3(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-        if (nums.length == 0) return res;
+        List<List<Integer>> results = new ArrayList<>();
+        if (nums.length == 0) return results;
         Arrays.sort(nums);
         boolean[] used = new boolean[nums.length];
         Deque<Integer> deque = new ArrayDeque<>(nums.length);
-        dfs3(nums, 0, used, deque, res);
-        return res;
+        dfs3(nums, 0, used, deque, results);
+        return results;
     }
 
     private void dfs3(int[] nums, int depth, boolean[] used, Deque<Integer> deque, List<List<Integer>> res) {

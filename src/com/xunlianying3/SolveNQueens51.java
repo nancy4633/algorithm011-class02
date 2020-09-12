@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-// 第一遍
+// 第二遍
 // n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
 public class SolveNQueens51 {
     /**
@@ -18,6 +18,7 @@ public class SolveNQueens51 {
      * @return
      */
     public List<List<String>> solveNQueens1(int n) {
+        results = new ArrayList<>();
         chessBoard = new char[n][n];
         for (char[] ch : chessBoard) {
             Arrays.fill(ch, '.');
@@ -29,12 +30,12 @@ public class SolveNQueens51 {
         return results;
     }
 
-    List<List<String>> results = new ArrayList<>();
+    List<List<String>> results;
     char[][] chessBoard;
     boolean[] cols, mainDiag, deputyDiag;
 
-    public void dfs1(int n, int index) {
-        if (n == index) {
+    public void dfs1(int n, int row) {
+        if (row == n) {
             List<String> result = new ArrayList<>();
             for (char[] ch : chessBoard) {
                 result.add(new String(ch));
@@ -43,16 +44,16 @@ public class SolveNQueens51 {
             return;
         }
         for (int i = 0; i < n; i++) {
-            if (cols[i] || mainDiag[n + index - i] || deputyDiag[index + i]) continue;
-            chessBoard[index][i] = 'Q';
+            if (cols[i] || mainDiag[row + (n - i)] || deputyDiag[row + i]) continue;
+            chessBoard[row][i] = 'Q';
             cols[i] = true;
-            mainDiag[n + index - i] = true;
-            deputyDiag[index + i] = true;
-            dfs1(n, index + 1);
-            chessBoard[index][i] = '.';
+            mainDiag[n + row - i] = true;
+            deputyDiag[row + i] = true;
+            dfs1(n, row + 1);
+            chessBoard[row][i] = '.';
             cols[i] = false;
-            mainDiag[n + index - i] = false;
-            deputyDiag[index + i] = false;
+            mainDiag[n + row - i] = false;
+            deputyDiag[row + i] = false;
         }
     }
 }

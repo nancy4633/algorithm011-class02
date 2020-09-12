@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-// 第二遍 - 抄了两遍，总算理解了，然后又默写了两边，下午再复习一遍就好了。
+// 第三遍 - 刷题的正确姿势，好好审题并提出疑问，抄答案三遍，默写三遍，直到一次运行成功为止。
 // 给定一个 没有重复 数字的序列，返回其所有可能的全排列。
 public class Permute46 {
     /**

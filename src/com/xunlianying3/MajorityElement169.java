@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-// 第一遍
+// 第一遍 解法一 好好理解一下
 // 给定一个大小为 n 的数组，找到其中的多数元素。多数元素是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
 // 你可以假设数组是非空的，并且给定的数组总是存在多数元素。
 // 众数（Mode）是指在统计分布上具有明显集中趋势点的数值，代表数据的一般水平。 也是一组数据中出现次数最多的数值，有时众数在一组数中有好几个。用M表示。
@@ -26,7 +26,7 @@ public class MajorityElement169 {
             if (majority == nums[i]) {
                 if (++cnt > quorum) return majority;
             } else {
-                if (--cnt == 0) majority = nums[i + 1];
+                if (--cnt == 0) majority = nums[i + 1]; // 妙啊， 下一个是啥，啥就加一。
             }
         }
         return majority;
