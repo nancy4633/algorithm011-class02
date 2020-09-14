@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-// 第三遍 - 刷题的正确姿势，好好审题并提出疑问，抄答案三遍，默写三遍，直到一次运行成功为止。
+// 第四遍 - 刷题的正确姿势，好好审题并提出疑问，抄答案三遍，默写三遍，直到一次运行成功为止。
 // 给定一个 没有重复 数字的序列，返回其所有可能的全排列。
 public class Permute46 {
     /**
@@ -37,6 +37,7 @@ public class Permute46 {
         }
         for (int i = index; i < nums.length; i++) { // 算是剪枝 // 这里的i是从index开始的
             swap1(i, index, nums); // 其中i=start就是不交换的意思。
+            // 此处没传递result，所以用index，如果像combine传递了result就用i   ！！！
             dfs1(index + 1, nums); // 全排列用的是index传递， 子集用的是i传递。
             swap1(i, index, nums); // 恢复数组，用于下一次遍历。
         }

@@ -3,7 +3,7 @@ package com.xunlianying3;
 import java.util.ArrayList;
 import java.util.List;
 
-// 第三遍 - 还需要刻苦练习∑
+// 第四遍 - 还需要刻苦练习∑
 // 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
 // 说明：解集不能包含重复的子集。
 public class Subsets78 {
@@ -30,6 +30,7 @@ public class Subsets78 {
         results1.add(new ArrayList(result));
         for (int i = index; i < nums.length; i++) {
             result.add(nums[i]);
+            // 因为这里传递了result，所以传递i，不需要传递index，像permute没传递result，就需要传递index了。这是递归的规矩吧。
             dfs1(nums, i + 1, result); // 全排列用的是index， 子集用的是i。//
             result.remove(result.size() - 1);
         }

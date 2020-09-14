@@ -16,6 +16,7 @@ public class PermuteUnique47 {
      * @return
      */
     public List<List<Integer>> permuteUnique(int[] nums) {
+        LinkedList<Integer> test;
         results = new ArrayList<>();
         Arrays.sort(nums);
         this.nums = nums;

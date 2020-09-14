@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// 第二遍
+// 第三遍
 // 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
 // 给出数字到字母的映射如下（与电话按键相同）。
 // 注意:
@@ -42,8 +42,13 @@ public class LetterCombinations17 {
         for (int id = 0; id < key.length(); id++) { // 遍历所有的当前index对应的可能的码值
             result.append(key.charAt(id)); // 加到result的末尾
             dfs1(digits, len, index + 1, results, result); // 继续操作接下来的index。
-            result.deleteCharAt(result.length() - 1); // reverse state，这一步应该是回溯的精髓，非常赞，只要有这一步基本上就可以认为是经典的回溯
+            result.deleteCharAt(index); // reverse state，这一步应该是回溯的精髓，非常赞，只要有这一步基本上就可以认为是经典的回溯
         }
+//        for (char c : key.toCharArray()) {
+//            result.append(c);
+//            dfs1(digits, len, index + 1, results, result);
+//            result.deleteCharAt(index);
+//        }
     }
 
     /**
