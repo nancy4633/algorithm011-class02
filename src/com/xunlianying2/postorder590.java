@@ -9,20 +9,6 @@ import java.util.Stack;
 // 给定一个 N 叉树，返回其节点值的后序遍历。
 // 说明: 递归法很简单，你可以使用迭代法完成此题吗?
 public class postorder590 {
-    LinkedList<Integer> result = new LinkedList<>();
-
-    public List<Integer> postorder(Node root) {
-        Stack<Node> stack = new Stack<>();
-        if (root == null) return result;
-        while (root != null) {
-            stack.push(root);
-            for (Node temp : root.children) {
-                stack.push(temp);
-            }
-        }
-        return result;
-    }
-
     /**
      * 遍历
      * 时间复杂度:O() - 40.14%

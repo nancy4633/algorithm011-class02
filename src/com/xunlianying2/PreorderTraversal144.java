@@ -1,52 +1,55 @@
 package com.xunlianying2;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-// 第一遍 - 栈 + 遍历 ， 尤其要记住
+// 第三遍 - 遍历（LinkedList尤其要记住）
 // 给定一个二叉树，返回它的 前序 遍历。
 public class PreorderTraversal144 {
+
+
+
+
     /**
-     * 遍历
-     * 时间复杂度：O(n) 递归函数 T(n) = 2*T(n/2)+1 - 100.00%
-     * 空间复杂度：最坏情况下需要空间O(n)，平均情况为O(logn)。 - 45.94%
+     * 递归（自身递归）
+     * 时间复杂度:O() - 100.00%
+     * 空间复杂度:O() - 97.49%
+     * 优点:
+     * 缺点:
      *
      * @param root
      * @return
      */
     public List<Integer> preorderTraversal1(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        preorderHelper(root, result);
-        return result;
+        if (root == null) return results;
+        results.add(root.val);
+        preorderTraversal1(root.left);
+        preorderTraversal1(root.right);
+        return results;
     }
 
-    public void preorderHelper(TreeNode treeNode, List<Integer> result) {
-        if (treeNode == null) return;
-        result.add(treeNode.val);
-        if (treeNode.left != null) preorderHelper(treeNode.left, result);
-        if (treeNode.right != null) preorderHelper(treeNode.right, result);
-    }
+    List<Integer> results = new ArrayList<>();
 
     /**
-     * 栈 + 遍历
-     * 时间复杂度：O(n) - 46.66%
-     * 空间复杂度：O(n) - 89.21%
+     * 遍历 + LinkedList (比stack效率高很多)
+     * 时间复杂度：O(n) - 100.00%
+     * 空间复杂度：O(n) - 96.73%
      *
      * @param root
      * @return
      */
     public List<Integer> preorderTraversal2(TreeNode root) {
         List<Integer> result = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack();
+        LinkedList<TreeNode> stack = new LinkedList();
         while (root != null || !stack.isEmpty()) {
             while (root != null) {
-                System.out.println(root.val + ",");
-                result.add(root.val);
-                stack.push(root); // stack.add(root)
+                result.add(root.val); // 前序
+                stack.addFirst(root); // addFirst和pollFirst addLast和pollLast
                 root = root.left;
             }
-            root = stack.pop();
+            root = stack.pollFirst();
             root = root.right;
         }
         return result;

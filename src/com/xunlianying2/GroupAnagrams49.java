@@ -2,7 +2,7 @@ package com.xunlianying2;
 
 import java.util.*;
 
-// 第一遍
+// 第二遍
 // 给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
 public class GroupAnagrams49 {
     /**
@@ -19,15 +19,9 @@ public class GroupAnagrams49 {
             char[] strsChars = strs[i].toCharArray(); // 中间变量该加就加吧，一开始不要想着代码简洁，以后练会了再考虑。
             Arrays.sort(strsChars);
             String key = String.valueOf(strsChars); // 不可以用toString()
-            if (result.containsKey(key)) {
-                result.get(key).add(strs[i]);
-            } else {
-                List<String> temp = new ArrayList<>();
-                temp.add(strs[i]);
-                result.put(key, temp);
-            }
+            result.getOrDefault(key, new ArrayList<>()).add(strs[i]);
         }
-        return new ArrayList<List<String>>(result.values()); // new ArrayList<...>(hashmap.value())就可以把同类型的values转换位list了，太神奇了。
+        return new ArrayList<>(result.values()); // new ArrayList<...>(hashmap.value())就可以把同类型的values转换位list了，太神奇了。
     }
 
     /**
@@ -61,7 +55,7 @@ public class GroupAnagrams49 {
     }
 
     /**
-     * 质数 - 溢出报错 - 思路挺好的，但是面试的时候应该不会用这种解题方式，太麻烦
+     * 质数 - 报错！！！å - 溢出报错 - 思路挺好的，但是面试的时候应该不会用这种解题方式，太麻烦
      * 每个大于1的自然数，要么本身就是质数，要么可以写为2个以上的质数的积，而且这些质因子按大小排列之后，写法仅有一种方式。
      * 时间复杂度：O(n*最长单词的长度)
      * 空间复杂度：O(n*最长单词的长度)
@@ -69,7 +63,7 @@ public class GroupAnagrams49 {
      * @param strs
      * @return
      */
-    public static List<List<String>> groupAnagrams5(String[] strs) {
+    public List<List<String>> groupAnagrams5(String[] strs) {
         HashMap<Integer, List<String>> hash = new HashMap<>();
         int[] prime = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103};
         for (int i = 0; i < strs.length; i++) {
@@ -88,7 +82,7 @@ public class GroupAnagrams49 {
         return new ArrayList<List<String>>(hash.values());
     }
 
-    /***
+    /**
      * 暴力求解：
      * 时间复杂度：O(n * k) - 超时
      * 空间复杂度：O(n * k) -
@@ -140,6 +134,4 @@ public class GroupAnagrams49 {
         }
         return true;
     }
-
-
 }
