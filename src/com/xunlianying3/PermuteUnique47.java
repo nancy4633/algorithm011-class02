@@ -2,7 +2,7 @@ package com.xunlianying3;
 
 import java.util.*;
 
-// 第二遍 先只看解法一。
+// 第三遍 先只看解法一。 因为有了flag所以不需要index， 因为有了result，所以递归条件也不是index的当前值，所以完全不需要index变量
 // 给定一个可包含重复数字的序列，返回所有不重复的全排列。
 public class PermuteUnique47 {
     /**
@@ -16,7 +16,6 @@ public class PermuteUnique47 {
      * @return
      */
     public List<List<Integer>> permuteUnique(int[] nums) {
-        LinkedList<Integer> test;
         results = new ArrayList<>();
         Arrays.sort(nums);
         this.nums = nums;

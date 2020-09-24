@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-// 第四遍 - 刷题的正确姿势，好好审题并提出疑问，抄答案三遍，默写三遍，直到一次运行成功为止。
+// 第六遍 - 又对啦
 // 给定一个 没有重复 数字的序列，返回其所有可能的全排列。
 public class Permute46 {
     /**
      * 回溯 + DFS + 剪枝
      * 时间复杂度:O() - 99.73%
-     * 空间复杂度:O() - 95.15%
+     * 空间复杂度:O() - 99.83%
      * 优点:
      * 缺点:
      *

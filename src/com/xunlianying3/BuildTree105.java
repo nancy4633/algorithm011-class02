@@ -2,7 +2,7 @@ package com.xunlianying3;
 
 import java.util.Stack;
 
-// 第三遍 没有一次成功，需要继续练习
+// 第五遍 只看解法1，已经有一点点思路了。
 // 根据一棵树的前序遍历与中序遍历构造二叉树。
 // 注意:
 // 你可以假设树中没有重复的元素。
@@ -11,7 +11,7 @@ public class BuildTree105 {
     /**
      * 递归
      * 时间复杂度：O(n) - 100.00%
-     * 空间复杂度：O(n) - 92.75%
+     * 空间复杂度：O(n) - 99.69%
      *
      * @param preorder
      * @param inorder
@@ -39,30 +39,30 @@ public class BuildTree105 {
     /**
      * 迭代 + 栈：类似于树的遍历
      * 时间复杂度：O(n) - 98.06%
-     * 空间复杂度：O(n) - 99.71%
+     * 空间复杂度：O(n) - 100.00%
      *
      * @param preorder
      * @param inorder
      * @return
      */
-    public TreeNode buildTree3(int[] preorder, int[] inorder) {
+    public TreeNode buildTree2(int[] preorder, int[] inorder) {
         if (preorder == null || preorder.length == 0) return null;
         TreeNode root = new TreeNode(preorder[0]);
-        Stack<TreeNode> stack = new Stack<TreeNode>();
+        Stack<TreeNode> stack = new Stack<>();
         stack.push(root);
-        int inorderIndex = 0;
+        int in_index = 0;
         for (int i = 1; i < preorder.length; i++) {
-            int preorderVal = preorder[i];
+            int val = preorder[i];
             TreeNode node = stack.peek();
-            if (node.val != inorder[inorderIndex]) {
-                node.left = new TreeNode(preorderVal);
+            if (node.val != inorder[in_index]) {
+                node.left = new TreeNode(val);
                 stack.push(node.left);
             } else {
-                while (!stack.isEmpty() && stack.peek().val == inorder[inorderIndex]) {
+                while (!stack.isEmpty() && stack.peek().val == inorder[in_index]) {
                     node = stack.pop();
-                    inorderIndex++;
+                    in_index++;
                 }
-                node.right = new TreeNode(preorderVal);
+                node.right = new TreeNode(val);
                 stack.push(node.right);
             }
         }
