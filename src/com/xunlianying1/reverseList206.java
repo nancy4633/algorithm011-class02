@@ -17,9 +17,7 @@ public class reverseList206 {
      * @return
      */
     public ListNode reverseList1(ListNode head) {
-        ListNode pre = null;
-        ListNode cur = head;
-        ListNode tmp;
+        ListNode pre = null, cur = head, tmp;
         while (cur != null) {
             tmp = cur.next; // 这个遍历吧，其实就是一个接一个，前一个公式的后面接后一个公式的前面。
             cur.next = pre;
