@@ -17,14 +17,12 @@ public class reverseList206 {
      * @return
      */
     public ListNode reverseList1(ListNode head) {
-        ListNode pre = null;
-        ListNode cur = head;
-        ListNode tmp;
-        while (cur != null) {
-            tmp = cur.next; // 这个遍历吧，其实就是一个接一个，前一个公式的后面接后一个公式的前面。
-            cur.next = pre;
-            pre = cur;
-            cur = tmp;
+        ListNode pre = null, cur = head, tmp;
+        while (cur != null) { // terminator
+            tmp = cur.next;
+            cur.next = pre; // process
+            pre = cur; // drill down
+            cur = tmp; // drill down
         }
         return pre;
     }
