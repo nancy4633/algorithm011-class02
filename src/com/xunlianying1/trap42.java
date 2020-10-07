@@ -2,18 +2,13 @@ package com.xunlianying1;
 
 import java.util.Stack;
 
-// 第三遍 - 重点 解法1
+// 第三遍 - 重点：解法1 、 解法2
 // 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
-// 思路：
-// 按列
-// 动态规划
-// 双指针
-// 栈
 public class trap42 {
     /**
      * 动态规划
      * 时间复杂度:O(n) - 99.99%
-     * 空间复杂度:O() - 90.46%
+     * 空间复杂度:O() - 99.35%
      * 优点:
      * 缺点:
      *
@@ -23,7 +18,7 @@ public class trap42 {
     public int trap1(int[] height) {
         int result = 0, len = height.length, min;
         int[] left = new int[len], right = new int[len];
-        for (int i = 1; i < len - 1; i++) { //1 ~ len-2
+        for (int i = 1; i < len - 1; i++) { //1 ~ len-2 的max
             left[i] = Math.max(left[i - 1], height[i - 1]);
         }
         for (int i = len - 2; i > 0; i--) { //1 ~ len-2
@@ -48,29 +43,29 @@ public class trap42 {
      */
     public int trap2(int[] height) {
         if (height == null || height.length == 0) return 0;
-        int left = 0, right = height.length - 1, result = 0;
-        int left_h = 0, right_h = 0;
-        while (left < right) {
-            if (height[left] < height[right]) {
-                if (height[left] < left_h) {
-                    result += left_h - height[left];
+        int left_index = 0, right_index = height.length - 1, result = 0;
+        int left_height = 0, right_height = 0;
+        while (left_index < right_index) {
+            if (height[left_index] < height[right_index]) {
+                if (height[left_index] < left_height) {
+                    result += left_height - height[left_index];
                 } else {
-                    left_h = height[left];
+                    left_height = height[left_index];
                 }
-                left++;
+                left_index++;
             } else {
-                if (height[right] < right_h) {
-                    result += right_h - height[right];
+                if (height[right_index] < right_height) {
+                    result += right_height - height[right_index];
                 } else {
-                    right_h = height[right];
+                    right_height = height[right_index];
                 }
-                right--;
+                right_index--;
             }
         }
         return result;
     }
 
-    /***
+    /**
      * 栈
      * 时间复杂度:O(n) - 38.01%
      * 空间复杂度:O() -
@@ -98,7 +93,7 @@ public class trap42 {
         return sum;
     }
 
-    /***
+    /**
      * 按列求
      * 时间复杂度:O() - 11.02%
      * 空间复杂度:O() - 69.82%
@@ -109,10 +104,7 @@ public class trap42 {
      * @return
      */
     public int trap4(int[] height) {
-        int sum = 0;
-        int max_left;
-        int max_right;
-        int min;
+        int sum = 0, max_left, max_right, min;
         for (int i = 1; i < height.length - 1; i++) {
             max_left = 0;
             for (int j = i - 1; j >= 0; j--) {
