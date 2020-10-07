@@ -8,7 +8,7 @@ public class swapPairs24 {
     /**
      * 遍历
      * 时间复杂度:O() - 100.00%
-     * 空间复杂度:O() - 34.27%
+     * 空间复杂度:O() - 84.17%
      * 优点:
      * 缺点:
      *
@@ -18,17 +18,17 @@ public class swapPairs24 {
     public ListNode swapPairs1(ListNode head) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        ListNode fir, sec, cur = dummy;
+        ListNode cur = dummy, fir, sec;
         while (cur.next != null && cur.next.next != null) { //拿每一个循环的前一个节点：这样才可以保证一整个list的串联，如果每次只是内部逻辑，那么list就断了
             // init
             fir = cur.next;
             sec = cur.next.next;
             // process
-            fir.next = sec.next;
             cur.next = sec;
-            cur.next.next = fir; // sec.next = fir 同样
+            fir.next = sec.next;
+            sec.next = fir; // cur.next.next = fir 同样
             // drill down
-            cur = cur.next.next; // cur = fir 同样
+            cur = fir; // cur = cur.next.next; 同样
         }
         return dummy.next;
     }
@@ -36,7 +36,7 @@ public class swapPairs24 {
     /**
      * 递归 - 重点
      * 时间复杂度:O() - 100.00%
-     * 空间复杂度:O() - 10.57%
+     * 空间复杂度:O() - 35.92%
      * 优点:
      * 缺点:
      *
@@ -46,8 +46,8 @@ public class swapPairs24 {
     public static ListNode swapPairs2(ListNode head) {
         if (head == null || head.next == null) return head;
         ListNode swap = head.next;
-        head.next = swapPairs2(head.next.next); // head.next = swapPairs2(swap.next);
+        head.next = swapPairs2(head.next.next); // head.next发生变化;
         swap.next = head; // 为什么不可以是 head.next.next = head;
-        return swap; // 为什么不可以是head.next
+        return swap; // 返回变化前的head.next
     }
 }
