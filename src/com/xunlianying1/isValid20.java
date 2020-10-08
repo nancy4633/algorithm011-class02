@@ -2,7 +2,7 @@ package com.xunlianying1;
 
 import java.util.*;
 
-// 第一遍
+// 第二遍
 // 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
 // 有效字符串需满足：
 // 左括号必须用相同类型的右括号闭合。
@@ -19,9 +19,9 @@ public class isValid20 {
      * @param s
      * @return
      */
-    public boolean isValid1(String s) {
+    public boolean isValid1(String s) { // 不用判断s为空或者长度为奇数的情况，影响速度，下面已经把这些情况包含了。
         char[] charArray = new char[s.length() + 1];
-        int p = 1;
+        int p = 1; // 因为存在第一个符号就是右～，所以p==0的情况是用来考虑越界的。
         for (char c : s.toCharArray()) {
             if (c == '(' || c == '{' || c == '[') {
                 charArray[p++] = c;

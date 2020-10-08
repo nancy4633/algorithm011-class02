@@ -1,55 +1,17 @@
 package com.xunlianying1;
 
-
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.Stack;
 
-// 第三遍 - 重要 1-2-3解法都需要记住，优先记住解法2，因为时间紧张～
+// 第四遍 - 重要 基本思想都是：原始数组前后加零
 // 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
 // 求在该柱状图中，能够勾勒出来的矩形的最大面积。
 public class largestRectangleArea84 {
     /**
-     * 单调栈（双指针）
-     * 时间复杂度:O() - 99.60%
-     * 空间复杂度:O() - 44.39%
-     * 优点:
-     * 缺点:
-     *
-     * @param heights
-     * @return
-     */
-    public int largestRectangleArea1(int[] heights) {
-        int len = heights.length;
-        if (len == 0) return 0;
-        int[] left = new int[len], right = new int[len];
-        left[0] = -1;
-        right[len - 1] = len;
-        int result = 0, temp;
-        for (int i = 1; i < len; i++) {
-            temp = i - 1; // 左边的，也就是从0开始
-            while (temp >= 0 && heights[temp] >= heights[i]) { //生成left数组：左侧最大值 // temp >= 0 因为temp都是在左边
-                temp = left[temp];
-            }
-            left[i] = temp;
-        }
-        for (int i = len - 2; i >= 0; i--) {// 生成right数组：右侧最大值
-            temp = i + 1; // 右边的，也就是从len-1开始
-            while (temp < len && heights[temp] >= heights[i]) { // temp < len，因为temp都是在右边
-                temp = right[temp];
-            }
-            right[i] = temp;
-        }
-        for (int i = 0; i < len; i++) { // 差值就是面积，遍历取面积最大值
-            result = Math.max(result, (right[i] - left[i] - 1) * heights[i]);
-        }
-        return result;
-    }
-
-    /**
      * Deque(ArrayDeque)
-     * 时间复杂度:O() - 94.29%
+     * 时间复杂度:O() - 94.70%
      * 空间复杂度:O() - 81.54%
      * 优点:
      * 缺点:
@@ -61,7 +23,7 @@ public class largestRectangleArea84 {
         int result = 0, len = heights.length, cur;
         Deque<Integer> deque = new ArrayDeque<>(); // 也可以用stack，但是ArrayDeque效率更高，不知道为什么，暂时搁置。
         int[] new_heights = new int[len + 2];
-        for (int i = 1; i < len + 1; i++) {
+        for (int i = 1; i <= len; i++) {
             new_heights[i] = heights[i - 1];
         }
         for (int i = 0; i < len + 2; i++) {
@@ -71,6 +33,36 @@ public class largestRectangleArea84 {
             }
             deque.push(i);
         }
+        return result;
+    }
+
+    /**
+     * 单调栈（双指针）
+     * 时间复杂度:O() - 99.77%
+     * 空间复杂度:O() - 44.39%
+     * 优点:
+     * 缺点:
+     *
+     * @param heights
+     * @return
+     */
+    public int largestRectangleArea1(int[] heights) {
+        int len = heights.length, result = 0, pos;
+        if (len == 0) return 0;
+        int[] left = new int[len], right = new int[len];
+        left[0] = -1;
+        right[len - 1] = len;
+        for (int i = 1; i < len; i++) {
+            pos = i - 1; // 左边的，也就是从heights的0开始
+            while (pos >= 0 && heights[pos] >= heights[i]) pos = left[pos];
+            left[i] = pos;
+        }
+        for (int i = len - 2; i >= 0; i--) {// 生成right数组：右侧最大值
+            pos = i + 1; // 右边的，也就是从heights的len-1开始
+            while (pos < len && heights[pos] >= heights[i]) pos = right[pos];
+            right[i] = pos;
+        }
+        for (int i = 0; i < len; i++) result = Math.max(result, (right[i] - left[i] - 1) * heights[i]);
         return result;
     }
 

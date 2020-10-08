@@ -4,12 +4,73 @@ import java.util.ArrayDeque;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-// 第一遍
+// 第三遍 重点 解法3 解法0
 // 给定一个数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
 // 返回滑动窗口中的最大值。
 // 进阶：
 // 你能在线性时间复杂度内解决此题吗？
 public class maxSlidingWindow239 {
+    /**
+     * 时间复杂度:O() - 92.87%
+     * 空间复杂度:O() - 54.59%
+     * 优点:
+     * 缺点:
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] maxSlidingWindow3(int[] nums, int k) {
+        int n = nums.length;
+        if (n * k == 0) return nums;
+        int[] left = new int[n], right = new int[n], result = new int[n - k + 1];
+        left[0] = nums[0];
+        right[n - 1] = nums[n - 1];
+        int max = Integer.MIN_VALUE;
+        for (int i = 1; i < n; i++) {
+            if (i % k == 0) max = Integer.MIN_VALUE;
+            max = max >= nums[i] ? max : nums[i];
+            left[i] = max;
+        }
+        max = Integer.MIN_VALUE;
+        for (int i = n - 2; i >= 0; i--) {
+            if (i % k == 0) max = Integer.MIN_VALUE;
+            max = max >= nums[i] ? max : nums[i];
+            right[i] = max;
+        }
+        for (int i = 0; i < result.length; i++) {
+            int j = i + k - 1;
+            result[i] = Math.max(right[i], left[j]);
+        }
+        return result;
+    }
+
+    /**
+     * 解法一的另一种写法，比较容易懂，但是解法一写的更简洁
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        if (n * k == 0) return nums;
+        int[] left = new int[n], right = new int[n], result = new int[n - k + 1];
+        left[0] = nums[0];
+        right[n - 1] = nums[n - 1];
+        for (int i = 1; i < n; i++) {
+            if (i % k == 0) left[i] = nums[i];
+            else left[i] = left[i - 1] >= nums[i] ? left[i - 1] : nums[i];
+        }
+        for (int i = n - 2; i >= 0; i--) {
+            if (i % k == 0) right[i] = nums[i];
+            else right[i] = right[i + 1] >= nums[i] ? right[i + 1] : nums[i];
+        }
+        for (int i = 0; i < n - k + 1; i++) {
+            result[i] = right[i] >= left[i + k - 1] ? right[i] : left[i + k - 1];
+        }
+        return result;
+    }
 
     /**
      * PriorityQueue - 学习priorityqueue定义大顶堆
@@ -25,11 +86,11 @@ public class maxSlidingWindow239 {
     public int[] maxSlidingWindow0(int[] nums, int k) {
         int len = nums.length;
         int[] result = new int[len - k + 1];
-        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> (o2 - o1)); // 用法很赞，但是超时了。哈哈哈
+        PriorityQueue<Integer> queue = new PriorityQueue<>((o1, o2) -> (o2 - o1)); // 用法很赞，但是超时了。哈哈哈
         for (int i = 0; i < len; i++) {
-            if (i >= k) pq.remove(nums[i - k]);
-            pq.offer(nums[i]);
-            if (pq.size() == k) result[i - k + 1] = pq.peek();
+            if (i >= k) queue.remove(nums[i - k]);
+            queue.offer(nums[i]);
+            if (queue.size() == k) result[i - k + 1] = queue.peek();
         }
         return result;
     }
@@ -45,9 +106,9 @@ public class maxSlidingWindow239 {
      * @return
      */
     public int[] maxSlidingWindow1(int[] nums, int k) {
-        int length = nums.length, max = (int) Double.NEGATIVE_INFINITY, max_index = -1, left = 0, right = k - 1; // right的初始值要记住！
-        int[] result = new int[length - k + 1]; // length的默认值要注意！！！
-        while (right < length) {
+        int len = nums.length, max = (int) Double.NEGATIVE_INFINITY, max_index = -1, left = 0, right = k - 1; // right的初始值要记住！
+        int[] result = new int[len - k + 1]; // length的默认值要注意！！！
+        while (right < len) {
             if (max_index < left) {
                 max = (int) Double.NEGATIVE_INFINITY; // max每次都要重新赋值！！！
                 for (int i = left; i <= right; i++) {
@@ -108,41 +169,6 @@ public class maxSlidingWindow239 {
         return max;
     }
 
-
-    /**
-     * 时间复杂度:O() - 92.87%
-     * 空间复杂度:O() - 54.59%
-     * 优点:
-     * 缺点:
-     *
-     * @param nums
-     * @param k
-     * @return
-     */
-    public int[] maxSlidingWindow3(int[] nums, int k) {
-        int n = nums.length;
-        if (n * k == 0) return nums;
-        int leftMax[] = new int[n];
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < n; i++) {
-            if (i % k == 0) max = Integer.MIN_VALUE;
-            if (max < nums[i]) max = nums[i];
-            leftMax[i] = Math.max(nums[i], max);
-        }
-        int rightMax[] = new int[n];
-        max = Integer.MIN_VALUE;
-        for (int i = n - 1; i >= 0; i--) {
-            if (i % k == 0) max = Integer.MIN_VALUE;
-            if (max < nums[i]) max = nums[i];
-            rightMax[i] = Math.max(nums[i], max);
-        }
-        int result[] = new int[n - k + 1];
-        for (int i = 0; i < result.length; i++) {
-            int j = i + k - 1;
-            result[i] = Math.max(rightMax[i], leftMax[j]);
-        }
-        return result;
-    }
 
     /**
      * 动态规划

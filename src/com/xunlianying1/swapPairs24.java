@@ -1,6 +1,6 @@
 package com.xunlianying1;
 
-// 第二遍
+// 第三遍
 // 给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
 // 你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
 public class swapPairs24 {
@@ -45,9 +45,9 @@ public class swapPairs24 {
      */
     public static ListNode swapPairs2(ListNode head) {
         if (head == null || head.next == null) return head;
-        ListNode swap = head.next;
+        ListNode sec = head.next;
         head.next = swapPairs2(head.next.next); // head.next发生变化;
-        swap.next = head; // 为什么不可以是 head.next.next = head;
-        return swap; // 返回变化前的head.next
+        sec.next = head; // 这是的head.next已经变了 所以不能用 head.next.next = head;
+        return sec; // 返回变化前的head.next
     }
 }

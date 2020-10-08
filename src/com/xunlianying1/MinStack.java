@@ -3,10 +3,6 @@ package com.xunlianying1;
 public class MinStack {
     Node head;
 
-    public MinStack() {
-
-    }
-
     public void push(int x) {
         if (head == null) {
             head = new Node(x, x);

@@ -3,7 +3,7 @@ package com.xunlianying1;
 import java.util.HashSet;
 import java.util.Set;
 
-// 第二遍
+// 第三遍
 // 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
 // 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
 // 说明：不允许修改给定的链表！！！！
@@ -28,7 +28,7 @@ public class detectCycle142 {
             fast = fast.next.next;
             if (slow == fast) break; // ！！！因为初始值是相等的，所以这个要放在后面判断
         }
-        fast = head;
+        fast = head; // 因为不允许修改原始链表，所以此处用fast代替head，实际原理是直接用slow和head步步接近。
         while (slow != fast) {
             slow = slow.next;
             fast = fast.next; // 这里是next ，不是next。next！！！
@@ -37,9 +37,9 @@ public class detectCycle142 {
     }
 
     /**
-     * Floyd 算法 - 不看
+     * Floyd 算法（递归） - 和双指针原理一样
      * 时间复杂度:O(n) - 100.00%
-     * 空间复杂度:O(1) - 33.61%
+     * 空间复杂度:O(1) - 76.49%
      * 优点:
      * 缺点:
      *
@@ -47,25 +47,23 @@ public class detectCycle142 {
      * @return
      */
     public ListNode detectCycle2(ListNode head) {
-        if (head == null) return null;
-        ListNode intersect = getIntersect(head);
-        if (intersect == null) return null;
-        ListNode ptr1 = head;
-        ListNode ptr2 = intersect;
-        while (ptr1 != ptr2) {
-            ptr1 = ptr1.next;
-            ptr2 = ptr2.next;
+        if (head == null || head.next == null) return null;
+        ListNode slow = traverse(head), fast = head;  // 因为不允许修改原始链表，所以此处用fast代替head，实际原理是直接用slow和head步步接近。
+        if (slow == null) return null;
+        while (fast != slow) {
+            fast = fast.next;
+            slow = slow.next;
         }
-        return ptr1;
+        return fast;
     }
 
-    private ListNode getIntersect(ListNode head) {
-        ListNode tortoise = head;
-        ListNode hare = head;
-        while (hare != null && hare.next != null) {
-            tortoise = tortoise.next;
-            hare = hare.next.next;
-            if (tortoise == hare) return tortoise;
+    private ListNode traverse(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) return slow;
         }
         return null;
     }

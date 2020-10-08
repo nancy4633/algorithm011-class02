@@ -1,6 +1,6 @@
 package com.xunlianying1;
 
-// 第三遍
+// 第四遍
 // 给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。
 // k 是一个正整数，它的值小于或等于链表的长度。
 // 如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
@@ -8,7 +8,7 @@ public class reverseKGroup25 {
     /**
      * 递归 - 递归参数= head+tail
      * 时间复杂度:O() - 100.00%
-     * 空间复杂度:O() - 77.87%
+     * 空间复杂度:O() - 80.94%
      * 优点:
      * 缺点:
      *
@@ -20,22 +20,22 @@ public class reverseKGroup25 {
         ListNode tail = head;
         for (int i = 0; i < k; i++) {
             if (tail == null) return head; // 长度不到k的段落不需要反转
-            tail = tail.next; // 每一组的反转不包含tail。tail是下一组的head
+            tail = tail.next; // 每一组的反转不包含tail。tail是下一k组的队头
         }
         ListNode newHead = reverse(head, tail);
-        head.next = reverseKGroup(tail, k); // 每一组的反转不包含tail。tail是下一组的head
+        head.next = reverseKGroup(tail, k); // 每一组的反转不包含tail。tail是下一k组的队头
         return newHead;
     }
 
-    private ListNode reverse(ListNode head, ListNode tail) { // 反转不包含tail
-        ListNode pre = null, next = null;
+    private ListNode reverse(ListNode head, ListNode tail) { // tail是下一组k的队头
+        ListNode pre = null, next; // 反而这里容易写错！！
         while (head != tail) {
             next = head.next;
             head.next = pre;
             pre = head;
             head = next;
         }
-        return pre;
+        return pre; // pre是现在这组的队尾
     }
 
     /**

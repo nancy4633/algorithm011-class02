@@ -1,6 +1,6 @@
 package com.xunlianying1;
 
-// 第二遍 - 重点 递归重点
+// 第三遍 - 重点 递归：指向关系重定向后，之前的无用的指向关系要删除，否则就会有环：Error - Found cycle in the ListNode
 // 反转一个单链表。
 // 进阶:
 // 你可以迭代或递归地反转链表。你能否用两种方法解决这道题？
@@ -17,12 +17,12 @@ public class reverseList206 {
      * @return
      */
     public ListNode reverseList1(ListNode head) {
-        ListNode pre = null, cur = head, tmp;
+        ListNode pre = null, cur = head, nxt;
         while (cur != null) { // terminator
-            tmp = cur.next;
+            nxt = cur.next; // init
             cur.next = pre; // process
             pre = cur; // drill down
-            cur = tmp; // drill down
+            cur = nxt;
         }
         return pre;
     }
@@ -39,9 +39,9 @@ public class reverseList206 {
      */
     public ListNode reverseList2(ListNode head) {
         if (head == null || head.next == null) return head;
-        ListNode cur = reverseList2(head.next);
-        head.next.next = head; // 死记硬背！！！
-        head.next = null;// 死记硬背！！！
-        return cur;
+        ListNode newHead = reverseList2(head.next);
+        head.next.next = head; // head.next指回head
+        head.next = null;// 删除head指向head.next的关系！！！
+        return newHead;
     }
 }
