@@ -41,18 +41,18 @@ public class Preorder589 {
      * @return
      */
     public List<Integer> preorder11(Node root) {
-        LinkedList<Node> stack = new LinkedList<>();
-        LinkedList<Integer> output = new LinkedList<>();
-        if (root == null) return output;
-        stack.add(root);
-        while (!stack.isEmpty()) {
-            Node node = stack.pollLast();
-            output.add(node.val);
-            Collections.reverse(node.children);
-            for (Node item : node.children) {
-                stack.add(item);
+        LinkedList<Integer> results = new LinkedList<>();
+        if (root == null) return results;
+        LinkedList<Node> queue = new LinkedList<>();
+        queue.addFirst(root);
+        while (!queue.isEmpty()) {
+            root = queue.pollFirst();
+            results.addLast(root.val);
+            Collections.reverse(root.children);
+            for (Node node : root.children) {
+                queue.addFirst(node);
             }
         }
-        return output;
+        return results;
     }
 }
