@@ -1,5 +1,6 @@
 package com.xunlianying1;
 
+// 第一遍
 //设计实现双端队列。
 //你的实现需要支持以下操作：
 //MyCircularDeque(k)：构造函数,双端队列的大小为k。
@@ -14,16 +15,12 @@ package com.xunlianying1;
 // 思路
 // 主要还是判断条件，是我的弱势，需要加强
 public class MyCircularDeque641 {
-
     int[] myqueue;
-    int front;//队头指针
-    int rear;//队尾指针
-    int size;//队列当前的大小
-    int capacity;//队列的容量
+    int front; // 队头指针
+    int rear; // 队尾指针
+    int size; // 队列当前的大小
+    int capacity; // 队列的容量
 
-    /**
-     * Initialize your data structure here. Set the size of the deque to be k.
-     */
     public MyCircularDeque641(int k) {
         this.myqueue = new int[k];
         this.front = 0;
@@ -32,24 +29,18 @@ public class MyCircularDeque641 {
         this.capacity = k;
     }
 
-    /**
-     * Adds an item at the front of Deque. Return true if the operation is successful.
-     */
     public boolean insertFront(int value) {
-        if (rear == front && size == capacity) return false;//如果队列满，插入失败
+        if (rear == front && size == capacity) return false; //如果队列满，插入失败，// why &&，队头==队尾 不是满吗？size=capacity不是满吗？
         else {
-            front = (front + capacity - 1) % capacity;
+            front = (front - 1 + capacity) % capacity; // 先 +capacity 再 %capacity，不可以直接用front - 1，这样可能会出来负数，关键是负数还是有效的，
             myqueue[front] = value;
             size++;
             return true;
         }
     }
 
-    /**
-     * Adds an item at the rear of Deque. Return true if the operation is successful.
-     */
     public boolean insertLast(int value) {
-        if (rear == front && size == capacity) return false;//如果队列满，插入失败
+        if (rear == front && size == capacity) return false; //如果队列满，插入失败，// why &&，队头==队尾 不是满吗？size=capacity不是满吗？
         else {
             myqueue[rear] = value;
             rear = (rear + 1 + capacity) % capacity;
@@ -59,11 +50,8 @@ public class MyCircularDeque641 {
 
     }
 
-    /**
-     * Deletes an item from the front of Deque. Return true if the operation is successful.
-     */
     public boolean deleteFront() {
-        if (rear == front && size == 0) return false;
+        if (rear == front && size == 0) return false; // 所以满和空都要判断 rear == front，单纯判断size是不可以的？
         else {
             front = (front + 1) % capacity;
             size--;
@@ -72,51 +60,37 @@ public class MyCircularDeque641 {
 
     }
 
-    /**
-     * Deletes an item from the rear of Deque. Return true if the operation is successful.
-     */
     public boolean deleteLast() {
         if (rear == front && size == 0) return false;
         else {
-            rear = (rear - 1 + capacity) % capacity;
+            rear = (rear - 1 + capacity) % capacity; // 防止负数
             size--;
             return true;
         }
 
     }
 
-    /**
-     * Get the front item from the deque.
-     */
     public int getFront() {
-        if ((rear == front) && size == 0) return -1;
+        if (rear == front && size == 0) return -1;
         else {
             int frontE = myqueue[front];
-            //front = (front + 1) % capacity;
-            //size--;
             return frontE;
         }
     }
 
-    /**
-     * Get the last item from the deque.
-     */
     public int getRear() {
-        if ((rear == front) && size == 0) return -1;
+        if (rear == front && size == 0) return -1;
         else {
             int rearE = myqueue[(rear - 1 + capacity) % capacity];
-            // rear = (rear - 1 +capacity)%capacity;
-            //size--;
             return rearE;
         }
-
     }
 
     /**
      * Checks whether the circular deque is empty or not.
      */
     public boolean isEmpty() {
-        return (rear == front) && size == 0;
+        return rear == front && size == 0;
     }
 
     /**
@@ -124,7 +98,6 @@ public class MyCircularDeque641 {
      */
     public boolean isFull() {
         return rear == front && size == capacity;
-
     }
 }
 

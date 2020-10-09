@@ -5,10 +5,40 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.Stack;
 
-// 第四遍 - 重要 基本思想都是：原始数组前后加零
+// 第五遍 - 重要 解法1比较基础便于理解方法的精华， 解法2有空再去看，基本思想都是：原始数组前后加一位，其实就是双指针。
 // 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
 // 求在该柱状图中，能够勾勒出来的矩形的最大面积。
 public class largestRectangleArea84 {
+    /**
+     * 单调栈（双指针）
+     * 时间复杂度:O() - 99.77%
+     * 空间复杂度:O() - 44.39%
+     * 优点:
+     * 缺点:
+     *
+     * @param heights
+     * @return
+     */
+    public int largestRectangleArea1(int[] heights) {
+        int len = heights.length, result = 0, pos;
+        if (len == 0) return 0;
+        int[] left = new int[len], right = new int[len];
+        left[0] = -1;
+        right[len - 1] = len;
+        for (int i = 1; i < len; i++) {
+            pos = i - 1; // 左边的，也就是从heights的0开始
+            while (pos >= 0 && heights[pos] >= heights[i]) pos = left[pos]; // 取heights[i]左边连续大于自身的最远出的left值，否则就取i-1
+            left[i] = pos;
+        }
+        for (int i = len - 2; i >= 0; i--) {// 生成right数组：右侧最大值
+            pos = i + 1; // 右边的，也就是从heights的len-1开始
+            while (pos < len && heights[pos] >= heights[i]) pos = right[pos]; // 取heights[i]右边边连续大于自身的最远出的right值，否则就取i+1
+            right[i] = pos;
+        }
+        for (int i = 0; i < len; i++) result = Math.max(result, (right[i] - left[i] - 1) * heights[i]);
+        return result;
+    }
+
     /**
      * Deque(ArrayDeque)
      * 时间复杂度:O() - 94.70%
@@ -33,36 +63,6 @@ public class largestRectangleArea84 {
             }
             deque.push(i);
         }
-        return result;
-    }
-
-    /**
-     * 单调栈（双指针）
-     * 时间复杂度:O() - 99.77%
-     * 空间复杂度:O() - 44.39%
-     * 优点:
-     * 缺点:
-     *
-     * @param heights
-     * @return
-     */
-    public int largestRectangleArea1(int[] heights) {
-        int len = heights.length, result = 0, pos;
-        if (len == 0) return 0;
-        int[] left = new int[len], right = new int[len];
-        left[0] = -1;
-        right[len - 1] = len;
-        for (int i = 1; i < len; i++) {
-            pos = i - 1; // 左边的，也就是从heights的0开始
-            while (pos >= 0 && heights[pos] >= heights[i]) pos = left[pos];
-            left[i] = pos;
-        }
-        for (int i = len - 2; i >= 0; i--) {// 生成right数组：右侧最大值
-            pos = i + 1; // 右边的，也就是从heights的len-1开始
-            while (pos < len && heights[pos] >= heights[i]) pos = right[pos];
-            right[i] = pos;
-        }
-        for (int i = 0; i < len; i++) result = Math.max(result, (right[i] - left[i] - 1) * heights[i]);
         return result;
     }
 

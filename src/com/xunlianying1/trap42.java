@@ -2,7 +2,7 @@ package com.xunlianying1;
 
 import java.util.Stack;
 
-// 第三遍 - 重点：解法1 、 解法2
+// 第四遍 - 重点：解法1, 解法2太麻烦一点儿都不想看哈哈哈
 // 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
 public class trap42 {
     /**
@@ -21,7 +21,7 @@ public class trap42 {
         for (int i = 1; i < len - 1; i++) { //1 ~ len-2 的max
             left[i] = Math.max(left[i - 1], height[i - 1]);
         }
-        for (int i = len - 2; i > 0; i--) { //1 ~ len-2
+        for (int i = len - 2; i > 0; i--) { //1 ~ len-2的max
             right[i] = Math.max(right[i + 1], height[i + 1]);
         }
         for (int i = 1; i < len - 1; i++) { //1 ~ len-2
@@ -42,24 +42,18 @@ public class trap42 {
      * @return
      */
     public int trap2(int[] height) {
-        if (height == null || height.length == 0) return 0;
-        int left_index = 0, right_index = height.length - 1, result = 0;
-        int left_height = 0, right_height = 0;
-        while (left_index < right_index) {
-            if (height[left_index] < height[right_index]) {
-                if (height[left_index] < left_height) {
-                    result += left_height - height[left_index];
-                } else {
-                    left_height = height[left_index];
-                }
-                left_index++;
+        int result = 0, len = height.length;
+        if (len < 1) return result;
+        int left = 0, right = len - 1, left_height = 0, right_height = 0;
+        while (left < right) {
+            if (height[left] < height[right]) {
+                if (height[left] < left_height) result += left_height - height[left];
+                else left_height = height[left];
+                left++;
             } else {
-                if (height[right_index] < right_height) {
-                    result += right_height - height[right_index];
-                } else {
-                    right_height = height[right_index];
-                }
-                right_index--;
+                if (height[right] < right_height) result += right_height - height[right];
+                else right_height = height[right];
+                right--;
             }
         }
         return result;
