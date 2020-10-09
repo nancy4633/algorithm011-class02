@@ -4,7 +4,7 @@ import javafx.util.Pair;
 
 import java.util.LinkedList;
 
-// 第三遍
+// 第四遍 重点 解法1 解法3
 // 给定一个二叉树，找出其最大深度。
 // 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
 // 说明: 叶子节点是指没有子节点的节点。
@@ -12,7 +12,7 @@ public class MaxDepth104 {
     /**
      * 递归 + DFS(自身函数递归)
      * 时间复杂度：O(n) - 100.00%
-     * 空间复杂度：O(h) - h是树的最大深度 - 96.18%
+     * 空间复杂度：O(h) - 96.18% - h是树的最大深度
      *
      * @param root
      * @return
@@ -23,28 +23,7 @@ public class MaxDepth104 {
     }
 
     /**
-     * 递归 + DFS(新建递归函数)
-     * 时间复杂度:O() - 100.00%
-     * 空间复杂度:O() - 62.58%
-     * 优点:
-     * 缺点:
-     *
-     * @param root
-     * @return
-     */
-    public int maxDepth2(TreeNode root) {
-        if (root == null) return 0;
-        return dfs2(0, root);
-    }
-
-    public int dfs2(int result, TreeNode root) {
-        if (root == null) return result;
-        result++;
-        return Math.max(dfs2(result, root.left), dfs2(result, root.right));
-    }
-
-    /**
-     * 迭代 + BFS
+     * 迭 + BFS（层序遍历） 其实我真不太喜欢层序遍历的解法哈哈哈
      * 难度并不高，代码比较复杂，本期练的是递归，先就不写迭代的代码了
      * 时间复杂度：偏高 - 16.44%
      * 空间复杂度：O(1) - 89.27%
@@ -67,6 +46,27 @@ public class MaxDepth104 {
             }
         }
         return maxDepth;
+    }
+
+    /**
+     * 递归 + DFS(新建递归函数)
+     * 时间复杂度:O() - 100.00%
+     * 空间复杂度:O() - 62.58%
+     * 优点:
+     * 缺点:
+     *
+     * @param root
+     * @return
+     */
+    public int maxDepth2(TreeNode root) {
+        if (root == null) return 0;
+        return dfs2(0, root);
+    }
+
+    public int dfs2(int result, TreeNode root) {
+        if (root == null) return result;
+        result++;
+        return Math.max(dfs2(result, root.left), dfs2(result, root.right));
     }
 
     /**

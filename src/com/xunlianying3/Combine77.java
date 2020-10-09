@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-// 第八遍 隔了一周，居然还写对了，开心，
+// 第九遍 隔了一周，居然还写对了，开心，
 // 给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
 // 没有重复的集合！！！
 public class Combine77 {

@@ -3,7 +3,7 @@ package com.xunlianying3;
 import java.util.ArrayList;
 import java.util.List;
 
-// 第一遍 - 重点：char[] 代替String，这个想法太牛了～虽然也说不上是牛，但是习惯性的并不会想到用char[]
+// 第二遍 - 重点：char[] 代替String，这个想法太牛了～虽然也说不上是牛，但是习惯性的并不会想到用char[]
 // 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
 public class GenerateParenthesis22 {
     /**
@@ -26,16 +26,16 @@ public class GenerateParenthesis22 {
     }
 
     public void dfs1(int n, int left, int right, List<String> result, char[] dict) {
-        if (right == n) { // 这里不用判断left了，挺厉害的，可以把这个省了
+        if (right == n) { // 这里不用判断left了，判断最小的就可以了。
             result.add(new String(dict)); // 不清楚为什么比 String.valueOf(dict)快一丢丢～
-            return;
+            return; // 终止条件一定要记得加return;
         }
         if (left < n) {
-            dict[left + right] = '(';
-            dfs1(n, left + 1, right, result, dict);
+            dict[left + right] = '('; // 都是给dict[left + right]赋值，所以不需要清除此处的赋值
+            dfs1(n, left + 1, right, result, dict); //
         }
         if (right < left) {
-            dict[left + right] = ')';
+            dict[left + right] = ')'; // 都是给dict[left + right]赋值，所以不需要清除此处的赋值
             dfs1(n, left, right + 1, result, dict);
         }
     }

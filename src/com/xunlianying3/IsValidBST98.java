@@ -1,8 +1,10 @@
 package com.xunlianying3;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Stack;
 
-// 第三遍 重点：LinkedList的offer-addfirst  pop-removefirst  offer-add-addlast
+// 第四遍 重点：LinkedList的offer-addfirst  pop-removefirst  offer-add-addlast！！！二叉搜索树：节点值不可以相等！！！
 // 给定一个二叉树，判断其是否是一个有效的二叉搜索树。
 // 假设一个二叉搜索树具有如下特征：
 // 节点的左子树只包含小于当前节点的数。
@@ -21,7 +23,7 @@ public class IsValidBST98 {
     public boolean isValidBST1(TreeNode root) {
         if (root == null) return true;
         if (!isValidBST1(root.left)) return false; // 这句话之所以放在后面两句话的前面，是因为，要先递归到最左侧，才开始判断值，否则判断条件依然是不一致的。
-        if (root.val <= preroot) return false;
+        if (root.val <= preroot) return false; // 这里的小于一定要记得加"="！！！节点值相等的情况也不属于二叉搜索树
         preroot = root.val; // 父节点的值，给下一轮遍历用
         return isValidBST1(root.right);
     }
@@ -38,16 +40,41 @@ public class IsValidBST98 {
      */
     public boolean isValidBST2(TreeNode root) {
         Stack<TreeNode> stack = new Stack();
-        long preroot = Long.MIN_VALUE; // double inorder = -Double.MAX_VALUE; 作用就是超过int的取之范围，以免边缘值造成错误
-        stack.push(root); // Stack的push方法是继承自Vector的addElement方法。Vector的Object[] elementData数组实现的
-        while (!stack.isEmpty() && root != null) {
+        long min = Long.MIN_VALUE; // double inorder = -Double.MAX_VALUE; 作用就是超过int的取之范围，以免边缘值造成错误
+        while (!stack.isEmpty() || root != null) {
             while (root != null) {
-                root = root.left;
                 stack.push(root);
+                root = root.left;
             }
             root = stack.pop();
-            if (root.val <= preroot) return false; // 这里是： <=   一定要看清题目的条件！！！
-            preroot = root.val;
+            if (root.val <= min) return false; // 这里是： <=   一定要看清题目的条件！！！
+            min = root.val;
+            root = root.right;
+        }
+        return true;
+    }
+
+    /**
+     * 同解法2 - 用LinkedList实现
+     * 时间复杂度:O() - 31.59%
+     * 空间复杂度:O() - 99.00%
+     * 优点:
+     * 缺点:
+     *
+     * @param root
+     * @return
+     */
+    public boolean isValidBST3(TreeNode root) {
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        double min = -Double.MAX_VALUE;
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                stack.addFirst(root);
+                root = root.left;
+            }
+            root = stack.pollFirst();
+            if (root.val <= min) return false;
+            min = root.val; // min都那么小了， root.val一定要大于min才可以完成后面的赋值啊！！！所以前面的符号就定下来了。
             root = root.right;
         }
         return true;

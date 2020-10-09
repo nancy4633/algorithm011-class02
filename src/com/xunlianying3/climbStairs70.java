@@ -1,6 +1,6 @@
 package com.xunlianying3;
 
-// 第一遍
+// 第二遍 现在是十月份，和之前的结果对比起来，好像退步了，最优解都非最优了
 // 对于递归的初始条件，不要仅仅想到第一步，还要想到第零步，因为所有递归都是从第零步开始，然后所有步骤都是从第零步递归出来的
 // 所以真正重要的不是第一步而是第零步
 // climbStairs33中的i、j、k，纠结了好久，怎么去摆放0、1、1，最后才发现，只要知道第一步从何而来就可以了，它是从0、0、1来的，所以初始值这个方法最简单了
@@ -14,8 +14,25 @@ public class climbStairs70 {
      * @return
      */
     public int climbStairs1(int n) {
-        int p = 0, q = 1;
+        int temp = 0, result = 1;
         for (int i = 0; i < n; i++) {
+            result += temp;
+            temp = result - temp;
+        }
+        return result;
+    }
+
+    /**
+     * 解法1的另一种写法，把第一步省略，直接赋值
+     * 时间复杂度：O(n) - 100.00%
+     * 空间复杂度：O(1) - 99.27%
+     *
+     * @param n
+     * @return
+     */
+    public int climbStairs11(int n) {
+        int p = 1, q = 1;
+        for (int i = 1; i < n; i++) {
             q += p;
             p = q - p;
         }

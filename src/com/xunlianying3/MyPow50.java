@@ -14,7 +14,7 @@ public class MyPow50 {
      * @param n
      * @return
      */
-    public double myPow1(double x, int n) {
+    public double myPow1(double x, int n) { // 不断的开方
         double s = n != 0 ? myPow1(x, n / 2) : 1;
         x = ((n & 1) == 0 ? 1 : x); //也可以写成 ： x = ((n % 2) == 0 ? 1 : x);
         return n > 0 ? x * s * s : 1 / x * s * s; // 这里的1只除以x，不包含s，因为s是函数再次执行的结果，最后会递归成1，而且也有关于1/x的转换操作，所以不需要再用1除了
