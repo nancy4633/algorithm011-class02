@@ -2,15 +2,110 @@ package com.xunlianying2;
 
 import java.util.*;
 
-// 第三遍 - 重点！！！大顶堆
-// 自定义类MyHashMap，实现大顶堆
-// PriorityQueue内部int[]  ：  PriorityQueue<int[]> queue = new PriorityQueue<int[]>((n1, n2) -> (n1[1] - n2[1]));
-// PriorityQueue内部HashMap  PriorityQueue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));
+// 第四遍 - 重点！！！大顶堆，优先记住解法2、3、4，最后有时间再看看解法1。
+// 虽然解法1效率最高，但是实现过于复杂，面试时候应该只需要讲解原理就可以了，先不去记。
+// 解法2：List[]数组实现
+// 解法3：PriorityQueue内部int[]  ：  PriorityQueue<int[]> queue = new PriorityQueue<int[]>((n1, n2) -> (n1[1] - n2[1]));
+// 解法4：PriorityQueue内部HashMap的key值  PriorityQueue<Integer> heap = new PriorityQueue<>((n1, n2) -> map.get(n1) - map.get(n2));
+// 解法1：自定义类MyHashMap和MyEntry，实现大顶堆，不看不看！写的太繁琐了
 // 给定一个非空的整数数组，返回其中出现频率前 k 高的元素。
-// priorityqueue的poll()是移除第一个元素。所以这里面一定是用小顶堆。好生气哦。
+// priorityqueue的poll()是移除第一个元素。所以这里面一定是用小顶堆。好生气哦。p开头的都是First。
 public class TopKFrequent347 {
     /**
-     * 二叉搜索树： 优点队列 + 自定义类MyHashMap（二叉搜索树）
+     * 桶排序 (hashmap + list) -
+     * 相同计数的数字放到同一个桶里（数组的list里）数组相当于一系列的桶，数组由list<Integer>组成
+     * list<Integer>就相当于是一个桶
+     * 时间复杂度：O(n) - 98.28%
+     * 空间复杂度：O(n) - 97.61%
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] topKFrequent2(int[] nums, int k) {
+        int[] result = new int[k];
+        Map<Integer, Integer> map = new HashMap();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        List<Integer>[] listArray = new List[nums.length + 1];
+        for (int num : map.keySet()) {
+            int count = map.get(num);
+            if (listArray[count] == null) listArray[count] = new ArrayList();
+            listArray[count].add(num);
+        }
+        for (int m = nums.length, n = 0; m >= 0 && n < k; m--) {
+            if (listArray[m] == null) continue;
+            for (int temp : listArray[m]) {
+                result[n++] = temp;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 大顶堆 - 优先队列（内部是int[]）  int[0]是num值， int[1]是出现的次数(count) 比较的是int[1] ，结果存的是int[0]
+     * 时间复杂度:O() - 88.35%
+     * 空间复杂度:O() - 99.93%
+     * 优点:
+     * 缺点:
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] topKFrequent3(int[] nums, int k) {
+        int[] result = new int[k];
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<int[]> heap = new PriorityQueue<>((n1, n2) -> (n1[1] - n2[1])); // 这里为什么是数组的第二个，不是很理解
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) { // 也可以写成 for (int num : map.keySet())
+            int count = entry.getValue();
+            if (heap.size() == k) {
+                if (heap.peek()[1] >= count) continue;
+                heap.poll();
+            }
+            heap.offer(new int[]{entry.getKey(), count});
+        }
+        for (int i = 0; i < k; ++i) {
+            result[i] = heap.poll()[0];
+        }
+        return result;
+    }
+
+    /**
+     * 大顶堆 - 优先队列(内部是hashmap) - 先对比 比先入堆再出堆 更快，但是比较消耗存储空间。
+     * 时间复杂度：O(nlogk) k是堆的数目 - 60.28%
+     * 空间复杂度：O(n) - 97.59%
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] topKFrequent4(int[] nums, int k) {
+        int[] result = new int[k];
+        HashMap<Integer, Integer> map = new HashMap();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<Integer> heap = new PriorityQueue<>((n1, n2) -> map.get(n1) - map.get(n2));
+        for (int num : map.keySet()) {
+            if (heap.size() == k) {
+                if (map.get(heap.peek()) > map.get(num)) continue;
+                heap.poll();
+            }
+            heap.offer(num);
+        }
+        for (int i = 0; i < k; i++) {
+            result[i] = heap.poll();
+        }
+        return result;
+    }
+
+    /**
+     * 二叉搜索树： 优点队列 + 自定义类MyHashMap（二叉搜索树），这个方法过于复杂，暂时回避。
      * 时间复杂度:O() - 100.00%
      * 空间复杂度:O() - 28.06%
      * 优点:
@@ -43,97 +138,6 @@ public class TopKFrequent347 {
             ans[i] = iterator.next().key;
         }
         return ans;
-    }
-
-    /**
-     * 桶排序 (hashmap + list)
-     * 时间复杂度：O(n) - 98.28%
-     * 空间复杂度：O(n) - 69.43%
-     *
-     * @param nums
-     * @param k
-     * @return
-     */
-    public int[] topKFrequent2(int[] nums, int k) {
-        int[] result = new int[k];
-        HashMap<Integer, Integer> map = new HashMap();
-        for (int temp : nums) {
-            map.put(temp, map.getOrDefault(temp, 0) + 1);
-        }
-        List<Integer>[] list = new List[nums.length + 1];
-        for (int num : map.keySet()) {
-            int count = map.get(num);
-            if (list[count] == null) list[count] = new ArrayList();
-            list[count].add(num);
-        }
-        for (int i = nums.length, j = 0; i >= 0 && j < k; i--) {
-            if (list[i] == null) continue;
-            for (int temp : list[i]) {
-                result[j++] = temp;
-            }
-        }
-        return result;
-    }
-
-    /**
-     * 大顶堆 - 优先队列（内部是int[]）
-     * 时间复杂度:O() - 87.76%
-     * 空间复杂度:O() - 81.11%
-     * 优点:
-     * 缺点:
-     *
-     * @param nums
-     * @param k
-     * @return
-     */
-    public int[] topKFrequent3(int[] nums, int k) {
-        Map<Integer, Integer> occurrences = new HashMap<Integer, Integer>();
-        for (int num : nums) {
-            occurrences.put(num, occurrences.getOrDefault(num, 0) + 1);
-        }
-        PriorityQueue<int[]> heap = new PriorityQueue<int[]>((n1, n2) -> (n1[1] - n2[1]));
-        for (Map.Entry<Integer, Integer> entry : occurrences.entrySet()) {
-            int num = entry.getKey(), count = entry.getValue();
-            if (heap.size() == k) {
-                if (heap.peek()[1] < count) {
-                    heap.poll();
-                    heap.offer(new int[]{num, count});
-                }
-            } else {
-                heap.offer(new int[]{num, count});
-            }
-        }
-        int[] result = new int[k];
-        for (int i = 0; i < k; ++i) {
-            result[i] = heap.poll()[0];
-        }
-        return result;
-    }
-
-    /**
-     * 大顶堆 - 优先队列(内部是hashmap)
-     * 时间复杂度：O(nlogk) k是堆的数目 - 53.26%
-     * 空间复杂度：O(n) - 97.59%
-     *
-     * @param nums
-     * @param k
-     * @return
-     */
-    public int[] topKFrequent4(int[] nums, int k) {
-        HashMap<Integer, Integer> map = new HashMap();
-        for (int n : nums) {
-            map.put(n, map.getOrDefault(n, 0) + 1);
-        }
-        PriorityQueue<Integer> heap = new PriorityQueue<>((n1, n2) -> map.get(n1) - map.get(n2));
-        for (int n : map.keySet()) {
-            heap.add(n);
-            if (heap.size() > k) heap.poll();
-        }
-        int[] result = new int[k];
-        for (int i = 0; i <= k && !heap.isEmpty(); i++) {
-            result[i] = heap.poll();
-        }
-        return result;
     }
 }
 

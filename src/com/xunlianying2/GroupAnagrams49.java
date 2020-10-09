@@ -14,14 +14,23 @@ public class GroupAnagrams49 {
      * @return
      */
     public List<List<String>> groupAnagrams2(String[] strs) {
-        HashMap<String, List<String>> result = new HashMap();
-        for (int i = 0; i < strs.length; i++) {
-            char[] strsChars = strs[i].toCharArray(); // 中间变量该加就加吧，一开始不要想着代码简洁，以后练会了再考虑。
+        HashMap<String, List<String>> map = new HashMap();
+        for (String str : strs) {
+            char[] strsChars = str.toCharArray(); // 中间变量该加就加吧，一开始不要想着代码简洁，以后练会了再考虑。
             Arrays.sort(strsChars);
             String key = String.valueOf(strsChars); // 不可以用toString()
-            result.getOrDefault(key, new ArrayList<>()).add(strs[i]);
+            List<String> list; // 不可以用： map.getOrDefault(key, new ArrayList<>()).add(strs[i]);
+            if (map.containsKey(key)) {
+                list = map.get(key);
+                list.add(str);
+                map.put(key, list);
+            } else {
+                list = new ArrayList<>();
+                list.add(str);
+                map.put(key, list);
+            }
         }
-        return new ArrayList<>(result.values()); // new ArrayList<...>(hashmap.value())就可以把同类型的values转换位list了，太神奇了。
+        return new ArrayList<>(map.values()); // new ArrayList<...>(hashmap.value())就可以把同类型的values转换位list了，太神奇了。
     }
 
     /**

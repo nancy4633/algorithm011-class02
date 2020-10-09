@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-// 第四遍 - 对于遍历的理解更好一些了，每次复习默写都会理解的更深一层，看来机械的复习还是有用的。
+// 第五遍 - 对于遍历的理解更好一些了，每次复习默写都会理解的更深一层，看来机械的复习还是有用的。
 // 所以二叉树遍历写法的关键还是stack的实现，要么简单明了的用LinkedList，直接选择用addFirst和pollFirst，或者，addLast和pollLast
 // 只有次序是对的就没问题。还有一点，就是都检查一下root是否为空，这个最稳妥了。
 // 给定一个二叉树，返回它的中序 遍历。

@@ -3,6 +3,8 @@ package com.xunlianying2;
 import java.util.LinkedList;
 import java.util.List;
 
+// 第一遍 解法2的result用LinkedList实现，可以addFirst，List默认是addLast, 也就是在数组末尾增加一个元素。
+// 给定一个二叉树，返回它的 后序 遍历。
 public class postorderTraversal145 {
     /**
      * 递归（自身函数递归）
@@ -35,7 +37,7 @@ public class postorderTraversal145 {
      * @return
      */
     public List<Integer> postorderTraversal2(TreeNode root) {
-        LinkedList<Integer> result = new LinkedList<>(); // 重点
+        LinkedList<Integer> result = new LinkedList<>(); // 重点!!!巧妙之处！！！
         if (root == null) return result; // 重点
         LinkedList<TreeNode> stack = new LinkedList<>(); // 这里也可以使用stack，但是stack效率比较低，时间：58.04%
         stack.addFirst(root);// addFirst和pollFirst addLast和pollFirst 都可以。后进先出就可以 。

@@ -3,15 +3,10 @@ package com.xunlianying2;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 
-// 第三遍 - 遍历（LinkedList尤其要记住）
+// 第四遍 - 遍历（LinkedList尤其要记住）
 // 给定一个二叉树，返回它的 前序 遍历。
 public class PreorderTraversal144 {
-
-
-
-
     /**
      * 递归（自身递归）
      * 时间复杂度:O() - 100.00%
@@ -41,17 +36,17 @@ public class PreorderTraversal144 {
      * @return
      */
     public List<Integer> preorderTraversal2(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
+        List<Integer> results = new ArrayList<>();
         LinkedList<TreeNode> stack = new LinkedList();
         while (root != null || !stack.isEmpty()) {
             while (root != null) {
-                result.add(root.val); // 前序
+                results.add(root.val); // 前序
                 stack.addFirst(root); // addFirst和pollFirst addLast和pollLast
                 root = root.left;
             }
             root = stack.pollFirst();
             root = root.right;
         }
-        return result;
+        return results;
     }
 }
