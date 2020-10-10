@@ -3,7 +3,7 @@ package com.xunlianying3;
 import java.util.ArrayList;
 import java.util.List;
 
-// 第七遍 - 还需要刻苦练习 // 习惯性的在dfs第一句就判断index， 这里为什么不用判断index呢？ index是控制result长度的？ 这里就不需要判断了吗？需要再理解！！！
+// 第八遍 - 还需要刻苦练习 // 习惯性的在dfs第一句就判断index， 这里为什么不用判断index呢？ index是控制result长度的？ 这里就不需要判断了吗？需要再理解！！！
 // 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
 // 说明：解集不能包含重复的子集。
 public class Subsets78 {

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-// 第七遍 - 又对啦
+// 第八遍 - 又对啦
 // 给定一个 没有重复 数字的序列，返回其所有可能的全排列。
 public class Permute46 {
     /**
