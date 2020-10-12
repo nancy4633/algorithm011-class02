@@ -3,7 +3,7 @@ package com.xunlianying4;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-// 第三遍 解法一
+// 第四遍 解法一
 // 一条基因序列由一个带有8个字符的字符串表示，其中每个字符都属于 "A", "C", "G", "T"中的任意一个。
 // 假设我们要调查一个基因序列的变化。一次基因变化意味着这个基因序列中的一个字符发生了变化。
 // 例如，基因序列由"AACCGGTT" 变化至 "AACCGGTA" 即发生了一次基因变化。
@@ -14,7 +14,7 @@ public class MinMutation433 {
     /**
      * DFS + 回溯
      * 时间复杂度：O(n) - 100%
-     * 空间复杂度：O(h) 树的深度 - 95.35%
+     * 空间复杂度：O(h) -  - 95.35% - 树的深度
      * 优点：
      * 缺点：
      *
@@ -26,10 +26,10 @@ public class MinMutation433 {
     public int minMutation1(String start, String end, String[] bank) {
         if (start.equals(end)) return 0;
         dfs1(start, end, bank, 0, new HashSet<>());
-        return count1 == Integer.MAX_VALUE ? -1 : count1; // 这个很重要
+        return count1 == Integer.MAX_VALUE ? -1 : count1; // 这个很重要 // 特殊情况的返回值，一定要和面试官确认清楚！！！
     }
 
-    private int count1 = Integer.MAX_VALUE; // 这个初始化的值很重要，会影响结果的对错。
+    private int count1 = Integer.MAX_VALUE; // 初始化的值要慎重考虑！！！// 为什么要设置大的值：因为要取最小值。边界要扩大
 
     private void dfs1(String start, String end, String[] bank, int num, HashSet<String> visited) {
         if (start.equals(end)) {
@@ -41,7 +41,7 @@ public class MinMutation433 {
             if (visited.contains(bank[a])) continue;
             dif = 0;
             for (int b = 0; b < 8; b++) {
-                if (bank[a].charAt(b) != start.charAt(b)) dif++; // 这里比较的是start，切记！！！ // 误写成相等了，小地方多留意，还好可以测试。
+                if (bank[a].charAt(b) != start.charAt(b)) dif++; // 这里比较的是start！！！
                 if (dif > 1) break;
             }
             if (dif == 1) {
@@ -53,6 +53,11 @@ public class MinMutation433 {
     }
 
     /**
+     * 时间复杂度:O() - 100.00%
+     * 空间复杂度:O() - 56.48%
+     * 优点:
+     * 缺点:
+     *
      * @param start
      * @param end
      * @param bank
@@ -100,7 +105,50 @@ public class MinMutation433 {
         return;
     }
 
-    /***
+    /**
+     * DFS + 回溯
+     * 时间复杂度：O(n) - 100%
+     * 空间复杂度：O(h) 树的深度 - 14.09%
+     * 优点：代码更简洁
+     * 缺点：
+     *
+     * @param start
+     * @param end
+     * @param bank
+     * @return
+     */
+    public int minMutation2(String start, String end, String[] bank) {
+        HashSet<String> visited = new HashSet<>();
+        dfs2(start, end, bank, visited, 0);
+        return count2 == Integer.MAX_VALUE ? -1 : count2;
+    }
+
+    private int count2 = Integer.MAX_VALUE;
+
+    private void dfs2(String start, String end, String[] bank, HashSet<String> visited, int count) {
+        if (start.equals(end)) {                                    // terminator
+            count2 = Math.min(count2, count);
+            return;
+        }
+        for (int i = 0; i < bank.length; i++) {                     // process
+            if (match2(bank[i], start) && !visited.contains(bank[i])) {
+                visited.add(bank[i]);                                // subprocess
+                dfs2(bank[i], end, bank, visited, count + 1); // drill down
+                visited.remove(bank[i]);                             // reverse state
+            }
+        }
+    }
+
+    private boolean match2(String a, String b) {
+        int count = 0;
+        for (int i = 0; i < 8; i++) {
+            if (a.charAt(i) != b.charAt(i)) count++;
+            if (count > 1) return false;
+        }
+        return count == 1;
+    }
+
+    /**
      * 回溯 + BFS - Queue(LinkedList)
      * 时间复杂度：O() - 100%
      * 空间复杂度：O() - 72.17%
@@ -146,50 +194,6 @@ public class MinMutation433 {
     }
 
     private boolean match3(String a, String b) {
-        int count = 0;
-        for (int i = 0; i < 8; i++) {
-            if (a.charAt(i) != b.charAt(i)) count++;
-            if (count > 1) return false;
-        }
-        return count == 1;
-    }
-
-
-    /**
-     * DFS + 回溯
-     * 时间复杂度：O(n) - 100%
-     * 空间复杂度：O(h) 树的深度 - 14.09%
-     * 优点：代码更简洁
-     * 缺点：
-     *
-     * @param start
-     * @param end
-     * @param bank
-     * @return
-     */
-    public int minMutation2(String start, String end, String[] bank) {
-        HashSet<String> visited = new HashSet<>();
-        dfs2(start, end, bank, visited, 0);
-        return count2 == Integer.MAX_VALUE ? -1 : count2;
-    }
-
-    private int count2 = Integer.MAX_VALUE;
-
-    private void dfs2(String start, String end, String[] bank, HashSet<String> visited, int count) {
-        if (start.equals(end)) {                                    // terminator
-            count2 = Math.min(count2, count);
-            return;
-        }
-        for (int i = 0; i < bank.length; i++) {                     // process
-            if (match2(bank[i], start) && !visited.contains(bank[i])) {
-                visited.add(bank[i]);                                // subprocess
-                dfs2(bank[i], end, bank, visited, count + 1); // drill down
-                visited.remove(bank[i]);                             // reverse state
-            }
-        }
-    }
-
-    private boolean match2(String a, String b) {
         int count = 0;
         for (int i = 0; i < 8; i++) {
             if (a.charAt(i) != b.charAt(i)) count++;
