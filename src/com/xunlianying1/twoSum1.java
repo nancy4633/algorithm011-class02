@@ -3,12 +3,14 @@ package com.xunlianying1;
 import java.util.Arrays;
 import java.util.HashMap;
 
-// 第三遍 - 重点
+// 第四遍 - 重点
 // 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
 // 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。
 // 给定 nums = [2, 7, 11, 15], target = 9
 // 因为 nums[0] + nums[1] = 2 + 7 = 9
 // 所以返回 [0, 1]
+// 思路：
+// 1 保存下标 2 直接==定位目标函数比每次都相减之后要快 3 hashmap在数据量不大的时候比较适用
 public class twoSum1 {
     /**
      * 时间复杂度:O(n) - 99.60%
@@ -21,10 +23,10 @@ public class twoSum1 {
      * @return
      */
     public static int[] twoSum1(int[] nums, int target) {
-        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
         for (int i = 0; i < nums.length; i++) {
-            if (hashMap.containsKey(nums[i])) return new int[]{hashMap.get(nums[i]), i};
-            hashMap.put(target - nums[i], i);
+            if (map.containsKey(nums[i])) return new int[] {i, map.get(nums[i])};
+            map.put(target - nums[i], i);
         }
         return new int[2];
     }
